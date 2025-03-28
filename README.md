@@ -58,7 +58,7 @@ La inteligencia artificial se empleará como herramienta de apoyo, sugiriendo ma
 
 ### **5. Panel de Usuario**
 
-- Visualización de cursos inscritos y progreso.  
+- Visualización de cursos inscriptos y progreso.  
 - Historial de evaluaciones y resultados.  
 
 ### **6. Foro de Discusión (Opcional)**
