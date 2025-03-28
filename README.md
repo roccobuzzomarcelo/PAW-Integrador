@@ -96,4 +96,4 @@ La inteligencia artificial se empleará como herramienta de apoyo, sugiriendo ma
 
 ## **Sitemap**
 
-![alt text](../sitemap.png)
+![alt text](sitemap.png)
