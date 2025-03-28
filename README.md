@@ -69,6 +69,15 @@ La inteligencia artificial se empleará como herramienta de apoyo, sugiriendo ma
 
 - Administración de cursos, usuarios y evaluaciones.  
 
+#### **Infraestructura necesaria**
+- **Hosting web:** Un servidor que soporte PHP y la base de datos elegida.
+- **Dominio web:** URL para acceder a la plataforma.
+- **Almacenamiento y ancho de banda.**.
+
+#### **Recursos humanos**
+- **Desarrolladores:** Responsables de frontend y backend.
+- **Instructores o administradores:** Encargados de la carga y gestión de contenido.
+
 ---
 
 ## **Presupuesto Temporal**
