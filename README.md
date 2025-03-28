@@ -49,7 +49,7 @@ La inteligencia artificial se empleará como herramienta de apoyo, sugiriendo ma
 
 ### **3. Evaluaciones y Corrección de Ejercicios**
 
-- Creación y evaluación automática de ejercicios.
+- Creación y evaluación de ejercicios.
 - Registro del desempeño del usuario.  
 
 ### **4. IA para Sugerencia de Contenidos**  
