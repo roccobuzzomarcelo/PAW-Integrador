@@ -97,3 +97,7 @@ La inteligencia artificial se empleará como herramienta de apoyo, sugiriendo ma
 ## **Sitemap**
 
 ![alt text](sitemap.png)
+
+## **Wireframes del sitio Web**
+
+> Link a https://www.figma.com/design/uZdxBAje5vXS4cDJrv0ImX/TPI-PAW?node-id=2-402&p=f&t=XEqmoAcPtISWd8uh-0
