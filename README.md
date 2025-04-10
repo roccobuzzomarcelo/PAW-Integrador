@@ -84,13 +84,16 @@ La inteligencia artificial se empleará como herramienta de apoyo, sugiriendo ma
 
 | **Fase**                     | **Duración**  | **Tareas Claves**  |
 |------------------------------|--------------|--------------------|
-| **Análisis y planificación** | 1 semana     | Definir requerimientos, diseñar arquitectura, elegir tecnologías, asignar tareas. |
-| **Diseño de la plataforma**  | 2 semanas    | Crear wireframes, diseñar UI/UX, definir estructura de la base de datos. |
-| **Desarrollo del backend**   | 3 semanas    | Implementar autenticación, gestión de cursos y módulos, evaluación de ejercicios. |
-| **Desarrollo del frontend**  | 3 semanas    | Implementar interfaz de usuario y vistas de cursos. |
-| **Integración de IA**        | 1 semana     | Implementar sugerencias de contenido con IA. |
-| **Pruebas y correcciones**   | 1 semana     | Realizar pruebas funcionales y corregir errores. |
-| **Despliegue y documentación** | 1 semana  | Configurar servidor, desplegar la plataforma, documentar el sistema. |
+| **Planificación inicial**    | 22hs equipo  | Definir requerimientos, diseñar arquitectura, elegir tecnologías, asignar tareas. |
+| **Diseño de la plataforma**  | 22hs equipo  | Crear wireframes, diseñar UI/UX, definir estructura de la base de datos. |
+| **Autenticación y base del sistema**   | 66hs equipo    | Implementar autenticación e inicio de sesión, base de datos inicial, navegación básica.  |
+| **Gestión de cursos y módulos**  | 66hs equipo  | Gestión de cursos y módulos, interfaz para carga y visualización de contenido.|
+| **Sistema de ejercicios**  | 66hs equipo   | Carga y corrección de ejercicios, entorno de ejecución, interfaz de resolución. |
+| **Personalización y progreso**  | 22hs equipo  | Sistema de puntos y progreso, interfaz gráfica, recomendaciones básicas. |
+| **Integración de IA**        | 22hs equipo   | Implementar sugerencias de contenido con IA. |
+| **Certificación**   | 22hs equipo    | Generación de certificados y validación de cursos. |
+| **Pruebas y correcciones**   | 22hs equipo    | Realizar pruebas funcionales y corregir errores. |
+| **Despliegue y documentación** | 22hs equipo | Configurar servidor, desplegar la plataforma, documentar el sistema. |
 
 ---
 
