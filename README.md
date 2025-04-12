@@ -103,4 +103,6 @@ La inteligencia artificial se empleará como herramienta de apoyo, sugiriendo ma
 
 ## **Wireframes del sitio Web**
 
+# TP Integrador - Entrega 2
+
 > Link a https://www.figma.com/design/uZdxBAje5vXS4cDJrv0ImX/TPI-PAW?node-id=2-402&p=f&t=XEqmoAcPtISWd8uh-0
