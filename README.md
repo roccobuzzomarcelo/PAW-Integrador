@@ -106,3 +106,11 @@ La inteligencia artificial se empleará como herramienta de apoyo, sugiriendo ma
 # TP Integrador - Entrega 2
 
 > Link a https://www.figma.com/design/uZdxBAje5vXS4cDJrv0ImX/TPI-PAW?node-id=2-402&p=f&t=XEqmoAcPtISWd8uh-0
+
+## **Arquitectura de la Aplicacion**
+
+Usuario -> Capa de presentación (Frontend) -> Capa de lógica (PHP: controladores, servicios) -> Capa de datos (Modelo + Base de datos)
+
+## **Modelo de Objetos**
+
+![alt text](modelo.png)
