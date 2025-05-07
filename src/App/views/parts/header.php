@@ -1,6 +1,6 @@
 <header>
         <h1>
-            <a href="/">
+            <a class="logo" href="/">
                 <img src="images/PAD.png" alt="">
             </a>
         </h1>

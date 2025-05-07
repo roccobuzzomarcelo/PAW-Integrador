@@ -29,10 +29,13 @@
             </ul>
         </nav>
         <nav class="nav-faq">
-            <h3>Mas informacion</h3>
+            <h3>Mas información</h3>
             <ul class="info">
                 <li>
                     <a href="/soporte">Soporte Tecnico</a>
+                </li>
+                <li>
+                    <span class="separator">|</span>
                 </li>
                 <li>
                     <a href="/faq">Preguntas frecuentes</a>
