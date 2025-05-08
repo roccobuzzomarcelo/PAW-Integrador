@@ -20,7 +20,7 @@
                 </label>
                 <button type="submit">Acceder</button>
                 <a href="/recuperar-contraseña">¿Olvidaste tu contraseña?</a>
-                <a href="/registro">Registrarme</a>
+                <a href="/register">Registrarme</a>
             </form>
         </section>
     </main>

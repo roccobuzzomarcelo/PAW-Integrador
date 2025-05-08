@@ -1,14 +1,7 @@
-<?php include "parts/head.php"?>
-<body>
-    <?php include "parts/header.php"?>
-    <main>
-    <main>
-        <ul class="breadcrumb">
-            <li class="breadcrumb-item"><a class="breadcrumb-link" href="../">Home</a></li>
-            <li class="breadcrumb-item">Mi Cuenta</li>
-            <li class="breadcrumb-item" aria-current="page">Registro</li>
-        </ul>
+<?php include "parts/head.php" ?>
 
+<body>
+    <main>
         <section class="registrarse">
             <form class="registro-form" action="/registro" method="post">
                 <h3 class="subtitulo">Registrarse</h3>
@@ -25,15 +18,13 @@
                 <label for="inputConfirmarPassword">Confirmar Contraseña</label>
                 <input id="inputConfirmarPassword" type="password" name="inputConfirmarPassword"
                     placeholder="Confirmar Contraseña" required>
-
                 <p>Al registrarse, aceptas nuestros términos y condiciones </p>
 
                 <input type="submit" name="submit" value="Registrarme">
                 <p>¿Ya tienes cuenta creada?</p>
-                <a class= "login-link" href="/mi-cuenta">Iniciar Sesión</a>
+                <a class="login-link" href="/login">Iniciar Sesión</a>
             </form>
-           
+
         </section>
     </main>
-    <?php include "parts/footer.php"?>
 </body>

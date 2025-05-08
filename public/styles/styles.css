@@ -5,37 +5,37 @@
     padding: 0px;
     font-family: "Inter", sans-serif;
 
-    /* border: 0.5px solid black; */
+    border: 0.5px solid black;
 }
 
 :root {
     --color-background: #ffffff;
     --color-background-soft: #f8f8f8;
     --color-background-mute: #f2f2f2;
-  
+
     --color-border: rgba(60, 60, 60, 0.12);
     --color-border-hover: rgba(60, 60, 60, 0.29);
-  
+
     --color-heading: #035b5d;
     --color-text: #035b5d;
-  
+
     --section-gap: 160px;
 }
-  
+
 @media (prefers-color-scheme: dark) {
     :root {
-      --color-background: #181818;
-      --color-background-soft: #222222;
-      --color-background-mute: #282828;
-  
-      --color-border: rgba(84, 84, 84, 0.48);
-      --color-border-hover: rgba(84, 84, 84, 0.65);
-  
-      --color-heading: #ffffff;
-      --color-text: rgba(235, 235, 235, 0.64);
+        --color-background: #181818;
+        --color-background-soft: #222222;
+        --color-background-mute: #282828;
+
+        --color-border: rgba(84, 84, 84, 0.48);
+        --color-border-hover: rgba(84, 84, 84, 0.65);
+
+        --color-heading: #ffffff;
+        --color-text: rgba(235, 235, 235, 0.64);
     }
 }
-  
+
 body {
     background: var(--color-background);
     color: var(--color-text);
@@ -43,8 +43,8 @@ body {
     margin: 0;
     padding: 0;
 }
-  
-  /* --- HEADER --- */
+
+/* --- HEADER --- */
 header {
     display: flex;
     justify-content: space-between;
@@ -53,12 +53,12 @@ header {
     border-bottom: 1px solid var(--color-border);
     background-color: var(--color-background-soft);
 }
-  
+
 .logo img {
     height: 100px;
     width: auto;
 }
-  
+
 .nav-bar {
     display: flex;
     align-items: center;
@@ -73,19 +73,19 @@ header {
     margin: 0;
     padding: 0;
 }
-  
+
 .nav-bar li a {
     text-decoration: none;
     font-weight: bold;
     color: var(--color-heading);
     transition: color 0.2s;
 }
-  
+
 .nav-bar li a:hover {
-    color: #f7a630; 
+    color: #f7a630;
 }
-  
-  
+
+
 .hamburger-icon {
     background: none;
     border: none;
@@ -119,55 +119,59 @@ header {
     font-family: "Archivo Black", sans-serif;
 }
 
-  /* --- BODY --- */
+/* --- BODY --- */
 .presentacion {
     text-align: center;
     padding: 2rem;
 }
-  
+
 .presentacion h2 {
     font-size: 2rem;
     color: var(--color-heading);
 }
-  
+
 .presentacion p {
     font-size: 1.2rem;
     color: var(--color-text);
     margin-top: 1rem;
 }
-  
+
+/* -- Páginad de Registro */
+
+
+
 /* --- SECCIÓN CURSOS DESTACADOS Y BENEFICIOS --- */
 section {
     padding: 2rem;
     text-align: center;
 }
-  
+
 section h2 {
     color: var(--color-heading);
     margin-bottom: 1rem;
 }
-  
+
 section img {
     max-width: 100%;
     border-radius: 8px;
     transition: transform 0.3s;
 }
-  
+
 section img:hover {
     transform: scale(1.05);
 }
-  
+
 
 a {
     color: var(--color-heading);
     text-decoration: none;
 }
-  
+
 a:hover {
     color: #f7a630;
 }
-  
-  /* --- FOOTER --- */
+
+/* --- FOOTER --- */
 footer {
     display: grid;
     grid-template-columns: auto;
@@ -178,8 +182,8 @@ footer {
     text-align: center;
     font-size: 0.9rem;
     border-top: 1px solid var(--color-border);
-  }
-  
+}
+
 
 
 h3 {
@@ -282,9 +286,9 @@ h3 {
 
 .info li {
     margin: 0 0.5em;
-  }
-  
+}
+
 .separator {
     color: var(--main-color-shadow);
     padding: 0 0.5em;
-  }
+}
