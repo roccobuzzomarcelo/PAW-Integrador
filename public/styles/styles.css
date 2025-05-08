@@ -182,7 +182,9 @@ header {
 }
 
 .input-box {
+    display: flex;
     align-content: center;
+    align-items: center;
     width: 26em;
     height: 3em;
     position: relative;
@@ -387,4 +389,30 @@ h3 {
 .separator {
     color: var(--main-color-shadow);
     padding: 0 0.5em;
+}
+
+/* MEDIA QUERIES */
+@media (max-width: 536px) {
+    .container {
+        width: 100vw;
+        height: 100vh;
+        border-radius: 0;
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        padding: 1em;
+        box-sizing: border-box;
+        outline: none;
+    }
+
+    .input-box {
+        width: auto;
+    }
+
+    .input-box input {
+        font-size: 1em;
+    }
+
+    .form-box {
+        width: 20em;
+    }
 }
