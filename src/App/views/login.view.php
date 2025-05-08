@@ -1,32 +1,31 @@
-<?php include 'parts/head.php'?>
-<body>
-<?php include 'parts/header.php'; ?>
-<main>
-        <ul class="breadcrumb">
-            <li class="breadcrumb-item"><a class="breadcrumb-link" href="../">Home</a></li>
-            <li class="breadcrumb-item" aria-current="page">Inicio Sesion</li>
-        </ul>
-        <section class="iniciar-sesion">
-            <form class="login-form" action="/mi-cuenta" method="post">
-                <h2 class="subtitulo">Iniciar Sesión</h2>
-                <label for="inputEmail">Dirección de correo electrónico</label>
-                <input id="inputEmail" type="email" name="inputEmail" placeholder="Email" required>
+<?php include 'parts/head.php' ?>
 
-                <label for="inputPassword">Contraseña</label>
-                <input id="inputPassword" type="password" name="inputPassword" placeholder="Contraseña" required>
+<body>
+    <main class="login-main">
+        <section class="container">
+            <form class="form-box" action="/login" method="post">
+                <h1 class="subtitulo">Iniciar Sesión</h1>
+                <div class="input-box">
+                    <label for="inputEmail">Dirección de correo electrónico</label>
+                    <input id="inputEmail" type="email" name="inputEmail" placeholder="Email" required>
+                    <i class="fa-solid fa-user"></i> </input>
+                </div>
+                <div class="input-box">
+                    <label for="inputPassword">Contraseña</label>
+                    <input id="inputPassword" type="password" name="inputPassword" placeholder="Contraseña" required>
+                    <i class="fa-solid fa-lock"></i>
+                </div>
                 <label for="inputRecuerdame">
                     <input type="checkbox" name="recuerdame">
                     Recuérdame
                 </label>
-                <button type="submit">Acceder</button>
+                <button class="button-log" type="submit">Acceder</button>
                 <a href="/recuperar-contraseña">¿Olvidaste tu contraseña?</a>
                 <a href="/register">Registrarme</a>
             </form>
         </section>
     </main>
-
-    <?php include 'parts/footer.php'; ?> 
-
+    <?php include "parts/footer.php" ?>
 </body>
 
 </html>
