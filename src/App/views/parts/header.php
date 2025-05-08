@@ -13,7 +13,7 @@
                     <a href="/cursos">Cursos</a>
                 </li>
                 <li>
-                    <a href="/login">Iniciar Sesion</a>
+                    <a href="/login">Iniciar Sesión</a>
                 </li>
             </ul>
         </nav>
