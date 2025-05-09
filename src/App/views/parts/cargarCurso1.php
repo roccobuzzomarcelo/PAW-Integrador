@@ -1,4 +1,4 @@
-<form action="/agregar-curso" method="POST" enctype="multipart/form-data">
+<form class="form-cargarCurso" action="/agregar-curso" method="POST" enctype="multipart/form-data">
         
         <!-- Título -->
         <fieldset class="mb-3">
@@ -47,5 +47,5 @@
         </fieldset>
 
         <!-- Botón -->
-        <button type="submit">Guardar curso</button>
+        <button class= "boton-agregarCurso" type="submit">Guardar curso</button>
     </form>

@@ -52,5 +52,23 @@
             }
         ],
         "evaluacion": "sdadas"
+    },
+    {
+        "titulo": "Algoritmos recursivos",
+        "descripcion": "Este curso explicara sobre algoritmos ",
+        "temario": "Factorial",
+        "cantidadUnidades": 1,
+        "nivel": "básico",
+        "duracion": "3 horas",
+        "imagen": "",
+        "unidades": [
+            {
+                "subtitulo": "Recursividad",
+                "descripcion": "Factorial",
+                "recurso": "www.curso.edu.ar",
+                "ejercicio": "Factorial"
+            }
+        ],
+        "evaluacion": "Examen"
     }
 ]

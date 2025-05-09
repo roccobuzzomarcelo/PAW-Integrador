@@ -11,7 +11,7 @@
         <section class="seccion-cursos">
             <div class="tarjeta">
                 <h2>Cursos Destacados</h2>
-                <a href="/cursos"><img src="" alt="Imagen de un curso destacado"></a>
+                <a href="/cursos"><img src="/images/portadaCurso.jpg" alt="Imagen de un curso destacado"></a>
                 </a>
             </div>
             <div class="tarjeta">

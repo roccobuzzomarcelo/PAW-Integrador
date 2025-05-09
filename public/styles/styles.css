@@ -298,6 +298,103 @@ a:hover {
     color: #f7a630;
 }
 
+.main-agregarCurso,
+.main-agregarUnidades,
+.main-agregarEvaluacion {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #008080, #ff8c00);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.contenedor-agregarCurso,
+.contenedor-agregarUnidades,
+.contenedor-agregarEvaluacion {
+    width: 100%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    display: grid;
+    max-width: 28em;
+    padding: 2em;
+    background: transparent;
+    border-radius: 3em;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    backdrop-filter: blur(10em);
+    outline: #fff 3px solid;
+}
+
+
+.form-title {
+    text-align: center;
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+}
+
+.form-cargarCurso fieldset,
+.form-cargarUnidades fieldset,
+.form-cargarEvaluacion fieldset {
+    border: none;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-cargarCurso label,
+.form-cargarUnidades label,
+.form-cargarEvaluacion label {
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.form-cargarCurso input,
+.form-cargarCurso textarea,
+.form-cargarCurso select,
+.form-cargarUnidades input,
+.form-cargarUnidades textarea,
+.form-cargarUnidades select,
+.form-cargarEvaluacion input,
+.form-cargarEvaluacion textarea,
+.form-cargarEvaluacion select {
+    padding: 0.6rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+}
+
+.form-cargarCurso input[type="file"],
+.form-cargarUnidades input[type="fiel"],
+.form-cargarEvaluacion input [type="file"] {
+    background: transparent;
+    color: white;
+}
+
+.boton-agregarCurso,
+.boton-agregarUnidad,
+.boton-agregarEvaluacion {
+    margin-top: 1rem;
+    width: 100%;
+    padding: 0.8rem;
+    background-color: orange;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.boton-agregarCurso:hover 
+.boton-agregarUnidad:hover {
+    background-color: darkorange;
+}
+
+
 /* --- FOOTER --- */
 footer {
     display: grid;

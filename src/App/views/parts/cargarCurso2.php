@@ -1,6 +1,6 @@
 <h2>Unidad <?= $actual ?> de <?= $max ?></h2>
 
-<form action="/agregar-unidades" method="post">
+<form class="form-cargarUnidades" action="/agregar-unidades" method="post">
     <fieldset class="mb-3">
         <label for="subtitulo" class="form-label">Titulo de la unidad</label>
         <input type="text" class="form-control" id="subtitulo" name="subtitulo" required>
@@ -17,5 +17,5 @@
         <label for="ejercicio" class="form-label">Ejercicio</label>
         <input type="text" class="form-control" id="ejercicio" name="ejercicio" required>
     </fieldset>
-    <button type="submit">Guardar unidad</button>
+    <button class= "boton-agregarUnidad" type="submit">Guardar unidad</button>
 </form>
