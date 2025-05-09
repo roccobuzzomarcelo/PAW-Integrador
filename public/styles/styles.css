@@ -139,7 +139,7 @@ header {
     margin-top: 1rem;
 }
 
-/* -- Página del Curso -- */
+/* -- Página de los cursos -- */
 .curso-card {
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -162,6 +162,62 @@ header {
     margin-top: 0;
     margin-bottom: 10px;
     color: #21A899;
+}
+
+.temas-box {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+/* -- Página de un curso --*/
+
+.curso-detalle {
+    display: grid;
+    justify-content: left;
+}
+
+.curso-detalle h2 {
+    color: white;
+    margin: 2em 1em .3em 1em;
+    font-size: 36px;
+}
+
+.curso-box {
+    text-align: justify;
+    margin-bottom: 0.2em;
+}
+
+.curso-box p {
+    margin-bottom: .8em;
+}
+
+.curso-box ul {
+    margin-left: 3em;
+    margin-bottom: .8em;
+}
+
+.unidades-box {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min-content, 1fr));
+}
+
+.curso-subt {
+    color: #fff;
+    font-size: 28px;
+    margin-bottom: 1em;
+}
+
+.btn-resolver {
+    background-color: #035b5d;
+    padding: .8em;
+    border-radius: 1em;
+    outline: 2px solid white;
+}
+
+.btn-resolver:hover {
+    font-size: 20px;
+    transition: 0.25s;
 }
 
 /* -- Páginad de Registro */
@@ -303,7 +359,6 @@ a:hover {
 .main-agregarEvaluacion {
     margin: 0;
     padding: 0;
-    background: linear-gradient(135deg, #008080, #ff8c00);
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -314,19 +369,14 @@ a:hover {
 .contenedor-agregarUnidades,
 .contenedor-agregarEvaluacion {
     width: 100%;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     display: grid;
     max-width: 28em;
     padding: 2em;
-    background: transparent;
     border-radius: 3em;
     justify-content: center;
     align-items: center;
-    color: #fff;
     backdrop-filter: blur(10em);
-    outline: #fff 3px solid;
 }
-
 
 .form-title {
     text-align: center;
@@ -389,8 +439,7 @@ a:hover {
     transition: background 0.3s ease;
 }
 
-.boton-agregarCurso:hover 
-.boton-agregarUnidad:hover {
+.boton-agregarCurso:hover .boton-agregarUnidad:hover {
     background-color: darkorange;
 }
 
@@ -517,55 +566,55 @@ h3 {
 
 /* Estilos para la página de Preguntas Frecuentes */
 .faqs-container {
-  max-width: 800px;
-  margin: 60px auto;
-  padding: 20px;
-  background-color: var(--color-background-soft);
-  border-radius: 12px;
-  box-shadow: 0 4px 8px var(--main-color-shadow);
+    max-width: 800px;
+    margin: 60px auto;
+    padding: 20px;
+    background-color: var(--color-background-soft);
+    border-radius: 12px;
+    box-shadow: 0 4px 8px var(--main-color-shadow);
 }
 
 .faqs-titulo {
-  text-align: center;
-  font-size: 2.5rem;
-  margin-bottom: 30px;
-  color: var(--color-heading);
-  font-weight: bold;
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    color: var(--color-heading);
+    font-weight: bold;
 }
 
 .faq-item {
-  margin-bottom: 25px;
-  padding-left: 15px;
+    margin-bottom: 25px;
+    padding-left: 15px;
 }
 
 .faq-pregunta {
-  font-size: 1.4rem;
-  color: var(--color-text);
-  margin-bottom: 10px;
+    font-size: 1.4rem;
+    color: var(--color-text);
+    margin-bottom: 10px;
 }
 
 .faq-respuesta {
-  font-size: 1rem;
-  color: var(--color-text);
-  line-height: 1.6;
+    font-size: 1rem;
+    color: var(--color-text);
+    line-height: 1.6;
 }
 
 .boton-volver {
-  display:flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 40px;
-  padding: 12px 25px;
-  background-color: #21A899;
-  color: #fff;
-  border-radius: 30px;
-  text-decoration: none;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+    padding: 12px 25px;
+    background-color: #21A899;
+    color: #fff;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
 }
 
 .boton-volver:hover {
-  background-color: #035b5d;
+    background-color: #035b5d;
 }
 
 .formulario-contenedor {
@@ -625,6 +674,27 @@ h3 {
         padding: 1em;
         box-sizing: border-box;
         outline: none;
+    }
+
+    .contenedor-agregarCurso,
+    .contenedor-agregarUnidades,
+    .contenedor-agregarEvaluacion {
+        width: 100vw;
+        height: 100vh;
+        margin-bottom: 15em;
+        padding: 1em;
+        box-sizing: border-box;
+        outline: none;
+    }
+
+    .form-cargarCurso fieldset,
+    .form-cargarUnidades fieldset,
+    .form-cargarEvaluacion fieldset {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-bottom: 1rem;
+        width: 20em;
     }
 
     .input-box {
