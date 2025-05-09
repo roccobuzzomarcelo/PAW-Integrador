@@ -29,7 +29,7 @@
                         <p>Consulta y manipula bases de datos de manera efectiva.</p>
                     </a>
                 </section>
-            </sec>
+            </section>
 
             <section class="recursos">
                 <h3>Recursos educativos</h3>
@@ -48,10 +48,22 @@
 
             <h3>Cursos Activos</h3>
             <section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                <!--
                 <a href="cursos-activos" class="curso-card">
                     <h4>Java</h4>
                     <p>¡El curso de Java está activo! Inscríbete ahora.</p>
-                </a>
+                </a>-->
+                <?php foreach ($cursos as $curso): ?>
+                    <a href="/curso?titulo=<?= urlencode($curso['titulo']) ?>" class="curso-card">
+                        <h4><?= htmlspecialchars($curso['titulo']) ?></h4>
+                        <p><?= nl2br(htmlspecialchars($curso['descripcion'])) ?></p>
+                    </a>
+                <?php endforeach; ?>
+            </section>
+
+            <!-- Botón para agregar un curso -->
+            <section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                <a href="/agregar-curso" class="curso-card"><h4>Agregar un nuevo curso</h4></a>
             </section>
 
         </section>

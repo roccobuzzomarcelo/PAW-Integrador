@@ -471,6 +471,51 @@ h3 {
   background-color: #035b5d;
 }
 
+.formulario-contenedor {
+    max-width: 600px;
+    margin: auto;
+    padding: 2rem;
+}
+
+.formulario-curso .input-box {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.formulario-curso label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.formulario-curso input,
+.formulario-curso textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.formulario-curso textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.boton-agregar-curso {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.boton-agregar-curso:hover {
+    background-color: #45a049;
+}
+
 
 /* MEDIA QUERIES */
 @media (max-width: 536px) {
