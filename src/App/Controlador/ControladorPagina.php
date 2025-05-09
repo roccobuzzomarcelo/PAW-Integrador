@@ -62,6 +62,7 @@ class ControladorPagina
         $curso = $this->buscarCursoPorTitulo($_GET['curso'] ?? '');
         $unidadIndex = $_GET['unidad'] ?? 0;
         $unidad = $curso['unidades'][$unidadIndex] ?? null;
+        $recurso = $this->embedVideo($unidad['recurso'] ?? '');
         require $this->viewsDir . 'ver-unidad.view.php';
     }
 
@@ -361,5 +362,23 @@ class ControladorPagina
         return ''; // Fallback si falla el movimiento
     }
 
+    public function embedVideo(string $url): string
+    {
+        // Maneja URLs tipo: https://www.youtube.com/watch?v=VIDEOID
+        if (strpos($url, 'youtube.com/watch?v=') !== false) {
+            parse_str(parse_url($url, PHP_URL_QUERY), $params);
+            if (isset($params['v'])) {
+                return 'https://www.youtube.com/embed/' . htmlspecialchars($params['v']);
+            }
+        }
 
+        // Maneja URLs acortadas tipo: https://youtu.be/VIDEOID
+        if (strpos($url, 'youtu.be/') !== false) {
+            $videoId = basename(parse_url($url, PHP_URL_PATH));
+            return 'https://www.youtube.com/embed/' . htmlspecialchars($videoId);
+        }
+
+        // Si no es un link de YouTube válido, se devuelve el original
+        return $url;
+    }
 }

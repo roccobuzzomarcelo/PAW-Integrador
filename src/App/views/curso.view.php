@@ -23,7 +23,7 @@
     </ul>
 
     <h3>Evaluación final</h3>
-    <p><?= nl2br(htmlspecialchars($curso['evaluacion'])) ?></p>
+    <a href="/resolver-evaluacion?curso=<?= urlencode($curso['titulo'])?>">Resolver Evaluación</a>
 </main>
 <?php include "parts/footer.php"; ?>
 </body>
