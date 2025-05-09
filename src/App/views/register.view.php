@@ -30,9 +30,7 @@
                 </fieldset>
                 <p>Al registrarse, aceptas nuestros términos y condiciones</p>
                 <button class="button-reg" type="submit">Registrarse</button>
-                <p>¿Ya tienes cuenta creada? <strong><a class="login-link" href="/login">Iniciar Sesión</a></strong></a>
-                </p>
-
+                <p>¿Ya tienes cuenta creada? <strong><a class="login-link" href="/login">Iniciar Sesión</a></strong></a></p>
             </form>
         </section>
     </main>

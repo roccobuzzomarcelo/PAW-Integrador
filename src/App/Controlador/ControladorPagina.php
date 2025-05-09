@@ -7,6 +7,7 @@ class ControladorPagina
     public string $viewsDir;
     public array $menu;
     private array $cursos;
+    private array $evaluaciones;
 
     public function __construct()
     {
@@ -34,6 +35,7 @@ class ControladorPagina
             ],
         ];
         $this->cursos = $this->parsearCursos();
+        $this->evaluaciones = $this->parsearevaluaciones();
     }
 
     public function index()
@@ -64,6 +66,14 @@ class ControladorPagina
         $unidad = $curso['unidades'][$unidadIndex] ?? null;
         $recurso = $this->embedVideo($unidad['recurso'] ?? '');
         require $this->viewsDir . 'ver-unidad.view.php';
+    }
+
+    public function resolverEvaluacion()
+    {
+        $curso = $this->buscarCursoPorTitulo($_GET['curso'] ?? '');
+        $evaluacion = $this->obtenerEvaluacionPorCurso($curso['titulo'] ?? '');
+        $titulo = "PAD - Resolver Evaluación";
+        require $this->viewsDir . 'resolver-evaluacion.view.php';
     }
 
     public function agregarCurso()
@@ -296,6 +306,34 @@ class ControladorPagina
         exit;
     }
 
+    public function procesarResolverEvaluacion(){
+        session_start();
+        $respuestas = $_POST['respuestas'] ?? [];
+        $curso = $_POST['curso'] ?? '';
+        $evaluacion = $this->obtenerEvaluacionPorCurso($curso);
+        $respuestasCorrectas = 0;
+        foreach ($evaluacion['preguntas'] as $index => $pregunta) {
+            if (isset($respuestas[$index]) && $respuestas[$index] === $pregunta['respuesta_correcta']) {
+                $respuestasCorrectas++;
+            }
+        }
+        
+        // Respuestas correctas (deberías ajustarlas según la estructura de tu JSON de evaluaciones)
+        $respuestasCorrectas = [];
+        foreach ($evaluacion['preguntas'] as $index => $pregunta) {
+            $respuestasCorrectas[$index] = $pregunta['respuesta_correcta'];  // Asumimos que en cada pregunta hay una 'respuesta_correcta'
+        }
+
+        // Evaluar las respuestas
+        $resultado = 0;
+        foreach ($respuestas as $index => $respuesta) {
+            if ($respuesta === $respuestasCorrectas[$index]) {
+                $resultado++;  // Incrementamos el resultado si la respuesta es correcta
+            }
+        }
+        echo $resultado . " respuestas correctas de " . count($respuestas) . " preguntas.";
+    }
+
     function slugify($text) {
         $text = strtolower(trim($text));
         $text = preg_replace('/[^a-z0-9]+/', '-', $text);
@@ -319,6 +357,17 @@ class ControladorPagina
         }
 
         return $cursos;
+    }
+
+    public function parsearevaluaciones() {
+        $dirEvaluaciones = __DIR__ . "/../../evaluaciones.json";
+        $evaluaciones = [];
+
+        if (file_exists($dirEvaluaciones)) {
+            $evaluaciones = json_decode(file_get_contents($dirEvaluaciones), true);
+        }
+
+        return $evaluaciones;
     }
 
     public function buscarCursoPorTitulo(string $tituloBuscado): ?array {
@@ -380,5 +429,16 @@ class ControladorPagina
 
         // Si no es un link de YouTube válido, se devuelve el original
         return $url;
+    }
+
+    public function obtenerEvaluacionPorCurso(string $nombreCurso)
+    {
+        foreach ($this->evaluaciones as $evaluacion) {
+            if (isset($evaluacion['curso']) && $evaluacion['curso'] === $nombreCurso) {
+                return $evaluacion;
+            }
+        }
+
+        return null; // No se encontró evaluación para ese curso
     }
 }

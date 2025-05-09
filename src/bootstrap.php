@@ -19,6 +19,8 @@ $router->get("/", "ControladorPagina@index");
 $router->get("/cursos", "ControladorPagina@cursos");
 $router->get("/curso", "ControladorPagina@curso");
 $router->get("/ver-unidad", "ControladorPagina@verUnidad");
+$router->get("/resolver-evaluacion", "ControladorPagina@resolverEvaluacion");
+$router->post("/resolver-evaluacion", "ControladorPagina@procesarResolverEvaluacion");
 $router->get("/agregar-curso","ControladorPagina@agregarCurso");
 $router->post("/agregar-curso","ControladorPagina@procesarAgregarCurso");
 $router->get("/agregar-unidades", "ControladorPagina@agregarUnidades");
