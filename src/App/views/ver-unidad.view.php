@@ -8,8 +8,8 @@
         <p><strong>Descripción:</strong> <?= nl2br(htmlspecialchars($unidad['descripcion'])) ?></p>
     <?php endif; ?>
 
-    <p><strong>Recurso:</strong> <?= htmlspecialchars($unidad['recurso']) ?></p>
-    <p><strong>Ejercicio:</strong> <?= htmlspecialchars($unidad['ejercicio']) ?></p>
+    <p><strong>Recurso:</strong></p>
+    <iframe width="560" height="315" src="<?=$recurso?>" frameborder="0" allowfullscreen title="Video de Youtube"></iframe>
 
     <a href="/curso?titulo=<?= urlencode($curso['titulo']) ?>">← Volver al curso</a>
 </main>

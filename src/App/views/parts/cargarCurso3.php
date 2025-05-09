@@ -1,9 +1,36 @@
 <h2>Evaluación final</h2>
 
-<form class="form-cargarEvaluacion" action="/agregar-evaluacion" method="post">
-    <fieldset class="mb-3">
-        <label for="evaluacion" class="form-label">Evaluacion Final:</label>
-        <textarea name="evaluacion" required></textarea>
+<form action="/agregar-evaluacion" method="post">
+
+    <!-- Pregunta 1 -->
+    <fieldset>
+        <legend>Pregunta 1</legend>
+        <label>Texto:</label>
+        <input type="text" name="preguntas[0][pregunta]" required>
+
+        <label>Opciones:</label><br>
+        <input type="text" name="preguntas[0][opciones][]" required>
+        <input type="text" name="preguntas[0][opciones][]" required>
+        <input type="text" name="preguntas[0][opciones][]" required>
+
+        <label>Respuesta correcta:</label>
+        <input type="text" name="preguntas[0][respuesta_correcta]" required>
     </fieldset>
-    <button class= "boton-agregarEvaluacion" type="submit">Finalizar curso</button>
+
+    <!-- Pregunta 2 -->
+    <fieldset>
+        <legend>Pregunta 2</legend>
+        <label>Texto:</label>
+        <input type="text" name="preguntas[1][pregunta]" required>
+
+        <label>Opciones:</label><br>
+        <input type="text" name="preguntas[1][opciones][]" required>
+        <input type="text" name="preguntas[1][opciones][]" required>
+        <input type="text" name="preguntas[1][opciones][]" required>
+
+        <label>Respuesta correcta:</label>
+        <input type="text" name="preguntas[1][respuesta_correcta]" required>
+    </fieldset>
+
+    <button type="submit">Guardar evaluación</button>
 </form>

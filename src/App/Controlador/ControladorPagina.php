@@ -62,6 +62,7 @@ class ControladorPagina
         $curso = $this->buscarCursoPorTitulo($_GET['curso'] ?? '');
         $unidadIndex = $_GET['unidad'] ?? 0;
         $unidad = $curso['unidades'][$unidadIndex] ?? null;
+        $recurso = $this->embedVideo($unidad['recurso'] ?? '');
         require $this->viewsDir . 'ver-unidad.view.php';
     }
 
@@ -199,13 +200,35 @@ class ControladorPagina
     public function procesarAgregarEvaluacion()
     {
         session_start();
-        $_SESSION['curso']['evaluacion'] = $_POST['evaluacion'];
+        if (!isset($_SESSION['curso'])) {
+            die("No hay curso en sesión.");
+        }
+        $curso = $_SESSION['curso'];
+        $tituloCurso = $curso['titulo'];
+        $preguntas = $_POST['preguntas'] ?? [];
+
+        // Armamos la nueva evaluación con referencia al curso
+        $nuevaEvaluacion = [
+            'curso' => $tituloCurso,
+            'preguntas' => $preguntas
+        ];
+
+        // Ruta del archivo
+        $archivoEvaluacion = __DIR__ . "/../../evaluaciones.json";
+
+        // Cargar evaluaciones anteriores (si existen)
+        $evaluaciones = file_exists($archivoEvaluacion) ? json_decode(file_get_contents($archivoEvaluacion), true) : [];
+
+        // Agregar la nueva evaluación
+        $evaluaciones[] = $nuevaEvaluacion;
+
+        // Guardar en el JSON
+        file_put_contents($archivoEvaluacion, json_encode($evaluaciones, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
         // Obtener el curso actual de la sesión
         $curso = $_SESSION['curso'];
         
         // Crear un "slug" del título para el archivo
-        $slug = preg_replace('/[^a-z0-9]+/i', '-', strtolower($curso['titulo']));
         $archivo = __DIR__ . "/../../cursos/cursos.json"; // Archivo único para todos los cursos
 
         // Si el archivo JSON ya existe, cargar los cursos actuales
@@ -224,12 +247,14 @@ class ControladorPagina
         // Guardar todos los cursos nuevamente en el archivo JSON
         file_put_contents($archivo, json_encode($cursos, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
-        // Limpiar la sesión
+        // Limpiar la sesión del curso
         unset($_SESSION['curso'], $_SESSION['unidad_actual']);
 
-        // Redirigir o mostrar los cursos, dependiendo de lo que quieras hacer después
-        $this->cursos();
+        // Redirigir o mostrar mensaje
+        header("Location: /cursos");
+        exit;
     }
+
 
     public function procesarAgregarCurso()
     {
@@ -248,38 +273,6 @@ class ControladorPagina
         $_SESSION['unidad_actual'] = 1;
 
         header("Location: /agregar-unidades");
-
-        // // Preparar curso
-        // $nuevoCurso = [
-        //     'titulo' => $titulo,
-        //     'descripcion' => $descripcion,
-        //     'temario' => $temario,
-        //     'imagen' => $nombreImagen,
-        //     'nivel' => $nivel,
-        //     'duracion' => $duracion,
-        //     'estado' => $estado,
-        // ];
-
-        // $archivoCursos = __DIR__ . "/../../cursos/cursos.json";
-
-        // // Leer cursos existentes
-        // $cursos = [];
-        // if (file_exists($archivoCursos)) {
-        //     $contenido = file_get_contents($archivoCursos);
-        //     $cursos = json_decode($contenido, true);
-        //     if (!is_array($cursos)) {
-        //         $cursos = []; // Si el JSON está mal, empezamos desde cero
-        //     }
-        // }
-
-        // // Agregar nuevo curso
-        // $cursos[] = $nuevoCurso;
-
-        // // Guardar el JSON actualizado
-        // file_put_contents($archivoCursos, json_encode($cursos, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-
-        // // Redirigir o continuar flujo
-        // $this->cursos();
     }
 
     public function procesarAgregarUnidades()
@@ -290,7 +283,6 @@ class ControladorPagina
             'subtitulo' => $_POST['subtitulo'],
             'descripcion' => $_POST['descripcion'],
             'recurso' => $_POST['recurso'],
-            'ejercicio' => $_POST['ejercicio']
         ];
         // Avanzar de unidad
         $_SESSION['unidad_actual']++;
@@ -370,5 +362,23 @@ class ControladorPagina
         return ''; // Fallback si falla el movimiento
     }
 
+    public function embedVideo(string $url): string
+    {
+        // Maneja URLs tipo: https://www.youtube.com/watch?v=VIDEOID
+        if (strpos($url, 'youtube.com/watch?v=') !== false) {
+            parse_str(parse_url($url, PHP_URL_QUERY), $params);
+            if (isset($params['v'])) {
+                return 'https://www.youtube.com/embed/' . htmlspecialchars($params['v']);
+            }
+        }
 
+        // Maneja URLs acortadas tipo: https://youtu.be/VIDEOID
+        if (strpos($url, 'youtu.be/') !== false) {
+            $videoId = basename(parse_url($url, PHP_URL_PATH));
+            return 'https://www.youtube.com/embed/' . htmlspecialchars($videoId);
+        }
+
+        // Si no es un link de YouTube válido, se devuelve el original
+        return $url;
+    }
 }

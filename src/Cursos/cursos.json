@@ -1,74 +1,38 @@
 [
     {
-        "titulo": "Prueba",
-        "descripcion": "dadsd",
-        "temario": "dasda",
-        "cantidadUnidades": 2,
+        "titulo": "Programación Estructurada",
+        "descripcion": "Curso introductorio a los fundamentos de la programación usando el paradigma estructurado.",
+        "temario": "Introducción a la programación\r\nTipos de datos y operadores\r\nEstructuras de control\r\nFunciones y procedimientos\r\nArreglos y matrices\r\nAlgoritmos clásicos",
+        "cantidadUnidades": 5,
         "nivel": "básico",
-        "duracion": "",
-        "imagen": "prueba.png",
-        "unidades": [
-            {
-                "subtitulo": "Unidad 1",
-                "descripcion": "asdad",
-                "recurso": "sad",
-                "ejercicio": "dsada"
-            },
-            {
-                "subtitulo": "Unidad 2",
-                "descripcion": "dsdad",
-                "recurso": "dsadas",
-                "ejercicio": "dsadsad"
-            }
-        ],
-        "evaluacion": "sadsadasd"
-    },
-    {
-        "titulo": "Prueba2",
-        "descripcion": "sadasd",
-        "temario": "dsadsa",
-        "cantidadUnidades": 3,
-        "nivel": "básico",
-        "duracion": "",
+        "duracion": "6 semanas",
         "imagen": "",
         "unidades": [
             {
-                "subtitulo": "Unidad 1",
-                "descripcion": "sdadsa",
-                "recurso": "dsadas",
-                "ejercicio": "dsadsa"
+                "subtitulo": "Unidad 1: Introducción a la programación",
+                "descripcion": "Conceptos básicos de algoritmos, pseudocódigo y lenguajes de programación.",
+                "recurso": "https:\/\/www.youtube.com\/watch?v=VxrIZGQfxmE&ab_channel=HolaMundo"
             },
             {
-                "subtitulo": "Unidad 2",
-                "descripcion": "dsadsa",
-                "recurso": "dsad",
-                "ejercicio": "dsads"
+                "subtitulo": "Unidad 2: Tipos de datos y operadores",
+                "descripcion": "Tipos de datos primitivos, variables, constantes, operadores aritméticos y lógicos.",
+                "recurso": "https:\/\/www.youtube.com\/watch?v=numQzIgpOo0&ab_channel=BitBoss"
             },
             {
-                "subtitulo": "Unidad 3",
-                "descripcion": "sdasd",
-                "recurso": "dsad",
-                "ejercicio": "dsada"
-            }
-        ],
-        "evaluacion": "sdadas"
-    },
-    {
-        "titulo": "Algoritmos recursivos",
-        "descripcion": "Este curso explicara sobre algoritmos ",
-        "temario": "Factorial",
-        "cantidadUnidades": 1,
-        "nivel": "básico",
-        "duracion": "3 horas",
-        "imagen": "",
-        "unidades": [
+                "subtitulo": "Unidad 3: Estructuras de control",
+                "descripcion": "Condicionales (if-else), ciclos (for, while, do-while).",
+                "recurso": "https:\/\/www.youtube.com\/watch?v=w53HiWSZnzU&ab_channel=BitBoss"
+            },
             {
-                "subtitulo": "Recursividad",
-                "descripcion": "Factorial",
-                "recurso": "www.curso.edu.ar",
-                "ejercicio": "Factorial"
+                "subtitulo": "Unidad 4: Funciones y procedimientos",
+                "descripcion": "Modularización, paso de parámetros, ámbito de variables.",
+                "recurso": "https:\/\/www.youtube.com\/watch?v=9k91jETchkI&ab_channel=BitBoss"
+            },
+            {
+                "subtitulo": "Unidad 5: Arreglos y matrices",
+                "descripcion": "Arreglos unidimensionales y bidimensionales, recorrido y búsqueda.",
+                "recurso": "https:\/\/www.youtube.com\/watch?v=twRXsDm2FUo&ab_channel=Cegamer"
             }
-        ],
-        "evaluacion": "Examen"
+        ]
     }
 ]
