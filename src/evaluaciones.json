@@ -1,0 +1,25 @@
+[
+    {
+        "curso": "Programación Estructurada",
+        "preguntas": [
+            {
+                "pregunta": "¿Qué es un algoritmo?",
+                "opciones": [
+                    "Un conjunto de instrucciones ordenadas para resolver un problema",
+                    "Una estructura de datos",
+                    "Una aplicación informática"
+                ],
+                "respuesta_correcta": "Un conjunto de instrucciones ordenadas para resolver un problema"
+            },
+            {
+                "pregunta": "¿Cuál de los siguientes NO es un tipo de dato primitivo?",
+                "opciones": [
+                    "int",
+                    "string",
+                    "matrix"
+                ],
+                "respuesta_correcta": "matrix"
+            }
+        ]
+    }
+]
