@@ -1,0 +1,14 @@
+Tareas pendientes:
+
+1- se puede "agregar" un curso, las comillas son porque:
+     - no tengo muy claro que guardar de cada curso, hasta ahora es un titulo, descripcion, imagen, y pocas cosas mas.
+     - no se como vamos a mostrar los datos mas alla del titulo, descripcion e imagen, por ejemplo, si metemos un link a un video, como y donde lo mostramos?
+     - hasta ahora se guarda todo en un json, pero si quiero cargar unos ejercicios o evaluacion no sabria como meterlo.
+     - falta el css
+     - no esta lo de las unidades
+
+2- no esta el dinamismo de /cursos, los que muestra no existen, menos al final de la pagina, que son lo que estan en el json.
+
+3- se puede registrar y logear, hay que ver si necesitamos algun dato mas.
+
+4- falta todo lo de mostrar un curso y realizarlo, hasta ahora solo muestra titulo, imagen y descripcion.
