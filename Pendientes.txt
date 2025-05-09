@@ -1,10 +1,3 @@
 Tareas pendientes:
 
-1- se puede agregar un curso:
-     - hasta ahora se guarda todo en un json, pero si quiero cargar unos ejercicios o evaluacion de verdad no sabria como meterlo.
-
-2- no esta el dinamismo de /cursos, los que muestra no existen, menos al final de la pagina, que son lo que estan en el json.
-
-3- se puede registrar y logear, hay que ver si necesitamos algun dato mas.
-
-4- falta todo lo de mostrar un curso y realizarlo, hasta ahora solo muestra titulo, imagen y descripcion.
+1- no esta el dinamismo de /cursos, los que muestra no existen, menos al final de la pagina, que son lo que estan en el json.
