@@ -1,20 +1,22 @@
 <?php include 'parts/head.php' ?>
 
 <body>
+    <?php include 'parts/header.php' ?>
     <main class="login-main">
         <section class="container">
             <form class="form-box" action="/login" method="post">
                 <h1 class="subtitulo">Iniciar Sesión</h1>
-                <div class="input-box">
+                <fieldset class ="input-box">
                     <label for="inputEmail">Dirección de correo electrónico</label>
                     <input id="inputEmail" type="email" name="inputEmail" placeholder="Email" required>
-                    <i class="fa-solid fa-user"></i> </input>
-                </div>
-                <div class="input-box">
+                    <i class="fa-solid fa-user"></i>
+                </fieldset>
+
+                <fieldset class ="input-box">
                     <label for="inputPassword">Contraseña</label>
                     <input id="inputPassword" type="password" name="inputPassword" placeholder="Contraseña" required>
                     <i class="fa-solid fa-lock"></i>
-                </div>
+                </fieldset>
                 <label for="inputRecuerdame">
                     <input type="checkbox" name="recuerdame">
                     Recuérdame

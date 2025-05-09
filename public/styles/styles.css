@@ -418,6 +418,60 @@ h3 {
     padding: 0 0.5em;
 }
 
+/* Estilos para la página de Preguntas Frecuentes */
+.faqs-container {
+  max-width: 800px;
+  margin: 60px auto;
+  padding: 20px;
+  background-color: var(--color-background-soft);
+  border-radius: 12px;
+  box-shadow: 0 4px 8px var(--main-color-shadow);
+}
+
+.faqs-titulo {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  color: var(--color-heading);
+  font-weight: bold;
+}
+
+.faq-item {
+  margin-bottom: 25px;
+  padding-left: 15px;
+}
+
+.faq-pregunta {
+  font-size: 1.4rem;
+  color: var(--color-text);
+  margin-bottom: 10px;
+}
+
+.faq-respuesta {
+  font-size: 1rem;
+  color: var(--color-text);
+  line-height: 1.6;
+}
+
+.boton-volver {
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
+  padding: 12px 25px;
+  background-color: #21A899;
+  color: #fff;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.boton-volver:hover {
+  background-color: #035b5d;
+}
+
+
 /* MEDIA QUERIES */
 @media (max-width: 536px) {
     .container {
