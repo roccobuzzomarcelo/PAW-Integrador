@@ -4,7 +4,7 @@
     <?php include "parts/header.php" ?>
     <main class="formulario-contenedor">
         <h1>Agregar nuevo curso</h1>
-        <?php include "parts/cargarCurso1.php" ?>
+        <?php include "parts/cargarCurso2.php" ?>
     </main>
     <?php include "parts/footer.php" ?>
 </body>

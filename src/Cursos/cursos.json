@@ -1,14 +1,56 @@
 [
     {
         "titulo": "Prueba",
-        "descripcion": "dasd",
-        "temario": "sada",
-        "imagen": "prueba.png",
-        "recursos": "sda",
-        "ejercicios": "dsadas",
-        "evaluacion": "sda",
+        "descripcion": "dadsd",
+        "temario": "dasda",
+        "cantidadUnidades": 2,
         "nivel": "básico",
         "duracion": "",
-        "estado": "activo"
+        "imagen": "",
+        "unidades": [
+            {
+                "subtitulo": "Unidad 1",
+                "descripcion": "asdad",
+                "recurso": "sad",
+                "ejercicio": "dsada"
+            },
+            {
+                "subtitulo": "Unidad 2",
+                "descripcion": "dsdad",
+                "recurso": "dsadas",
+                "ejercicio": "dsadsad"
+            }
+        ],
+        "evaluacion": "sadsadasd"
+    },
+    {
+        "titulo": "Prueba2",
+        "descripcion": "sadasd",
+        "temario": "dsadsa",
+        "cantidadUnidades": 3,
+        "nivel": "básico",
+        "duracion": "",
+        "imagen": "",
+        "unidades": [
+            {
+                "subtitulo": "Unidad 1",
+                "descripcion": "sdadsa",
+                "recurso": "dsadas",
+                "ejercicio": "dsadsa"
+            },
+            {
+                "subtitulo": "Unidad 2",
+                "descripcion": "dsadsa",
+                "recurso": "dsad",
+                "ejercicio": "dsads"
+            },
+            {
+                "subtitulo": "Unidad 3",
+                "descripcion": "sdasd",
+                "recurso": "dsad",
+                "ejercicio": "dsada"
+            }
+        ],
+        "evaluacion": "sdadas"
     }
 ]

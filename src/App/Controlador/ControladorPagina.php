@@ -172,64 +172,128 @@ class ControladorPagina
         $this->index();
     }
 
-    public function procesarAgregarCurso() {
-        // Sanitizar campos
-        $titulo = trim($_POST['titulo']);
-        $descripcion = trim($_POST['descripcion']);
-        $temario = trim($_POST['temario']);
-        $recursos = trim($_POST['recursos']);
-        $ejercicios = trim($_POST['ejercicios']);
-        $evaluacion = trim($_POST['evaluacion']);
-        $nivel = $_POST['nivel'] ?? 'básico';
-        $duracion = $_POST['duracion'] ?? '';
-        $estado = $_POST['estado'] ?? 'borrador';
+    public function agregarUnidades()
+    {
+        session_start();
+        $actual = $_SESSION['unidad_actual'];
+        $max = $_SESSION['curso']['cantidadUnidades'];
+        $titulo = "PAD - Agregar Unidades";
+        require $this->viewsDir . 'agregar-unidades.view.php';
+    }
 
-        // Manejo de imagen
-        $nombreImagen = '';
-        if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
-            $ext = pathinfo($_FILES['imagen']['name'], PATHINFO_EXTENSION);
-            $nombreImagen = uniqid('img_') . '.' . $ext;
-            $uploadsDir = "uploads/";
-            if (!is_dir($uploadsDir)) {
-                mkdir($uploadsDir, 0777, true);
+    public function agregarEvaluacion()
+    {
+        session_start();
+        $titulo = "PAD - Agregar Evaluación";
+        require $this->viewsDir . 'agregar-evaluacion.view.php';
+    }
+
+    public function procesarAgregarEvaluacion()
+    {
+        session_start();
+        $_SESSION['curso']['evaluacion'] = $_POST['evaluacion'];
+
+        // Obtener el curso actual de la sesión
+        $curso = $_SESSION['curso'];
+        
+        // Crear un "slug" del título para el archivo
+        $slug = preg_replace('/[^a-z0-9]+/i', '-', strtolower($curso['titulo']));
+        $archivo = __DIR__ . "/../../cursos/cursos.json"; // Archivo único para todos los cursos
+
+        // Si el archivo JSON ya existe, cargar los cursos actuales
+        if (file_exists($archivo)) {
+            $cursos = json_decode(file_get_contents($archivo), true);
+            if (!is_array($cursos)) {
+                $cursos = []; // Si no es un array válido, iniciar como array vacío
             }
-            move_uploaded_file($_FILES['imagen']['tmp_name'], $uploadsDir . $nombreImagen);
+        } else {
+            $cursos = []; // Si no existe el archivo, inicializar como array vacío
         }
 
-        // Preparar curso
-        $nuevoCurso = [
-            'titulo' => $titulo,
-            'descripcion' => $descripcion,
-            'temario' => $temario,
-            'imagen' => $nombreImagen,
-            'recursos' => $recursos,
-            'ejercicios' => $ejercicios,
-            'evaluacion' => $evaluacion,
-            'nivel' => $nivel,
-            'duracion' => $duracion,
-            'estado' => $estado,
+        // Agregar el nuevo curso al array de cursos
+        $cursos[] = $curso; // Añadir el curso actual al array
+
+        // Guardar todos los cursos nuevamente en el archivo JSON
+        file_put_contents($archivo, json_encode($cursos, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
+        // Limpiar la sesión
+        unset($_SESSION['curso'], $_SESSION['unidad_actual']);
+
+        // Redirigir o mostrar los cursos, dependiendo de lo que quieras hacer después
+        $this->cursos();
+    }
+
+    public function procesarAgregarCurso()
+    {
+        session_start();
+         $_SESSION['curso'] = [
+            'titulo' => $_POST['titulo'],
+            'descripcion' => $_POST['descripcion'],
+            'temario' => $_POST['temario'],
+            'cantidadUnidades' => (int)$_POST['cantidadUnidades'],
+            'nivel' => $_POST['nivel'],
+            'duracion' => $_POST['duracion'],
+            'imagen' => $this->guardarImagen($_FILES['imagen']), // función para mover imagen
+            'unidades' => []
         ];
 
-        $archivoCursos = __DIR__ . "/../../cursos/cursos.json";
+        $_SESSION['unidad_actual'] = 1;
 
-        // Leer cursos existentes
-        $cursos = [];
-        if (file_exists($archivoCursos)) {
-            $contenido = file_get_contents($archivoCursos);
-            $cursos = json_decode($contenido, true);
-            if (!is_array($cursos)) {
-                $cursos = []; // Si el JSON está mal, empezamos desde cero
-            }
+        header("Location: /agregar-unidades");
+
+        // // Preparar curso
+        // $nuevoCurso = [
+        //     'titulo' => $titulo,
+        //     'descripcion' => $descripcion,
+        //     'temario' => $temario,
+        //     'imagen' => $nombreImagen,
+        //     'nivel' => $nivel,
+        //     'duracion' => $duracion,
+        //     'estado' => $estado,
+        // ];
+
+        // $archivoCursos = __DIR__ . "/../../cursos/cursos.json";
+
+        // // Leer cursos existentes
+        // $cursos = [];
+        // if (file_exists($archivoCursos)) {
+        //     $contenido = file_get_contents($archivoCursos);
+        //     $cursos = json_decode($contenido, true);
+        //     if (!is_array($cursos)) {
+        //         $cursos = []; // Si el JSON está mal, empezamos desde cero
+        //     }
+        // }
+
+        // // Agregar nuevo curso
+        // $cursos[] = $nuevoCurso;
+
+        // // Guardar el JSON actualizado
+        // file_put_contents($archivoCursos, json_encode($cursos, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
+        // // Redirigir o continuar flujo
+        // $this->cursos();
+    }
+
+    public function procesarAgregarUnidades()
+    {
+        session_start();
+        // Guardar los datos de esta unidad
+        $_SESSION['curso']['unidades'][] = [
+            'subtitulo' => $_POST['subtitulo'],
+            'descripcion' => $_POST['descripcion'],
+            'recurso' => $_POST['recurso'],
+            'ejercicio' => $_POST['ejercicio']
+        ];
+        // Avanzar de unidad
+        $_SESSION['unidad_actual']++;
+        if ($_SESSION['unidad_actual'] > $_SESSION['curso']['cantidadUnidades']) {
+            // Ir a la evaluación final
+            header("Location: /agregar-evaluacion");
+        } else {
+            // Mostrar siguiente unidad
+            header("Location: /agregar-unidades");
         }
-
-        // Agregar nuevo curso
-        $cursos[] = $nuevoCurso;
-
-        // Guardar el JSON actualizado
-        file_put_contents($archivoCursos, json_encode($cursos, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-
-        // Redirigir o continuar flujo
-        $this->cursos();
+        exit;
     }
 
     function slugify($text) {
@@ -265,4 +329,38 @@ class ControladorPagina
         }
         return null; // No se encontró ningún curso con ese título
     }
+
+    function guardarImagen($inputName = 'imagen', $directorio = 'uploads/') {
+        // Asegurar que el nombre sea string
+        if (!is_string($inputName)) {
+            return ''; // Previene errores
+        }
+
+        // Verificar existencia y que sea un array
+        if (!isset($_FILES[$inputName]) || !is_array($_FILES[$inputName])) {
+            return '';
+        }
+
+        // Verificar que no haya errores
+        if ($_FILES[$inputName]['error'] !== UPLOAD_ERR_OK) {
+            return '';
+        }
+
+        $ext = pathinfo($_FILES[$inputName]['name'], PATHINFO_EXTENSION);
+        $nombreImagen = uniqid('img_') . '.' . $ext;
+
+        if (!is_dir($directorio)) {
+            mkdir($directorio, 0777, true);
+        }
+
+        $rutaDestino = rtrim($directorio, '/') . '/' . $nombreImagen;
+
+        if (move_uploaded_file($_FILES[$inputName]['tmp_name'], $rutaDestino)) {
+            return $nombreImagen;
+        }
+
+        return ''; // Fallback si falla el movimiento
+    }
+
+
 }
