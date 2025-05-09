@@ -1,7 +1,6 @@
 <?php include "parts/head.php" ?>
 
 <body>
-    <?php include "parts/header.php" ?>
     <main class="register-main">
         <section class="container">
             <form class="form-box" action="/register" method="post">

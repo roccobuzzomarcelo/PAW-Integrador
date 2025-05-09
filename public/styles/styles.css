@@ -174,7 +174,7 @@ header {
 
 .curso-detalle {
     display: grid;
-    justify-content: left;
+    justify-content: center;
 }
 
 .curso-detalle h2 {
@@ -443,6 +443,52 @@ a:hover {
     background-color: darkorange;
 }
 
+/* -- Página de Evaluación -- */
+
+.form-evalucion {
+    margin: 0.8em;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+}
+
+.mb-4 {
+    display: grid;
+    margin-bottom: .8em;
+    background-color: #333;
+    padding: 1em;
+    border-radius: 1em;
+    color: #fff;
+}
+
+.mb-4 label {
+    color: #181818;
+    padding: 1em;
+    margin: .2em;
+    border-radius: 1em;
+    background: #fff;
+}
+
+.mb-4 .checkbox {
+    margin-right: 1em;
+}
+
+.btn-enviar-resp {
+    background: linear-gradient(90deg, #EE7919, #F8A731);
+    width: 50%;
+    padding: 1em;
+    font-size: 18px;
+    outline: white 3px solid;
+    border: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 1em;
+}
+
+.btn-enviar-resp:hover {
+    transform: scale(1.1);
+    transition: 0.25s;
+}
 
 /* --- FOOTER --- */
 footer {

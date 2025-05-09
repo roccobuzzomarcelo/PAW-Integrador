@@ -99,7 +99,7 @@ class ControladorPagina
         $titulo = "PAD - Perfil de Usuario";
         require $this->viewsDir . 'user-profile.view.php';
     }
-    
+
     public function faq()
     {
         $titulo = "PAD - FAQ";
@@ -144,12 +144,12 @@ class ControladorPagina
 
     public function procesarRegistro()
     {
-        if(
+        if (
             empty($_POST['inputNombre']) ||
             empty($_POST['inputEmail']) ||
             empty($_POST['inputPassword']) ||
             empty($_POST['inputConfirmarPassword'])
-        ){
+        ) {
             echo "⚠️ Todos los campos obligatorios deben estar completos.";
             return;
         }
@@ -237,7 +237,7 @@ class ControladorPagina
 
         // Obtener el curso actual de la sesión
         $curso = $_SESSION['curso'];
-        
+
         // Crear un "slug" del título para el archivo
         $archivo = __DIR__ . "/../../cursos/cursos.json"; // Archivo único para todos los cursos
 
@@ -269,11 +269,11 @@ class ControladorPagina
     public function procesarAgregarCurso()
     {
         session_start();
-         $_SESSION['curso'] = [
+        $_SESSION['curso'] = [
             'titulo' => $_POST['titulo'],
             'descripcion' => $_POST['descripcion'],
             'temario' => $_POST['temario'],
-            'cantidadUnidades' => (int)$_POST['cantidadUnidades'],
+            'cantidadUnidades' => (int) $_POST['cantidadUnidades'],
             'nivel' => $_POST['nivel'],
             'duracion' => $_POST['duracion'],
             'imagen' => $this->guardarImagen($_FILES['imagen']), // función para mover imagen
@@ -306,41 +306,53 @@ class ControladorPagina
         exit;
     }
 
-    public function procesarResolverEvaluacion(){
+    public function procesarResolverEvaluacion()
+    {
         session_start();
         $respuestas = $_POST['respuestas'] ?? [];
         $curso = $_POST['curso'] ?? '';
         $evaluacion = $this->obtenerEvaluacionPorCurso($curso);
-        $respuestasCorrectas = 0;
+
+        $correctas = 0;
+        $totalPreguntas = count($evaluacion['preguntas']);
+
         foreach ($evaluacion['preguntas'] as $index => $pregunta) {
             if (isset($respuestas[$index]) && $respuestas[$index] === $pregunta['respuesta_correcta']) {
-                $respuestasCorrectas++;
+                $correctas++;
             }
-        }
-        
-        // Respuestas correctas (deberías ajustarlas según la estructura de tu JSON de evaluaciones)
-        $respuestasCorrectas = [];
-        foreach ($evaluacion['preguntas'] as $index => $pregunta) {
-            $respuestasCorrectas[$index] = $pregunta['respuesta_correcta'];  // Asumimos que en cada pregunta hay una 'respuesta_correcta'
         }
 
-        // Evaluar las respuestas
-        $resultado = 0;
-        foreach ($respuestas as $index => $respuesta) {
-            if ($respuesta === $respuestasCorrectas[$index]) {
-                $resultado++;  // Incrementamos el resultado si la respuesta es correcta
-            }
-        }
-        echo $resultado . " respuestas correctas de " . count($respuestas) . " preguntas.";
+        // Calcular puntuación del 1 al 10
+        $puntuacion = round(($correctas / $totalPreguntas) * 10);
+
+        // Guardar resultado en sesión
+        $_SESSION['resultado_evaluacion'] = [
+            'curso' => $curso,
+            'correctas' => $correctas,
+            'total' => $totalPreguntas,
+            'puntuacion' => $puntuacion
+        ];
+
+        header("Location: /resultado-evaluacion");
+        exit;
     }
 
-    function slugify($text) {
+
+    public function resultadoEvaluacion()
+    {
+        $titulo = "PAD - Resultados";
+        require $this->viewsDir . 'resultados.view.php';
+    }
+
+    function slugify($text)
+    {
         $text = strtolower(trim($text));
         $text = preg_replace('/[^a-z0-9]+/', '-', $text);
         return trim($text, '-');
     }
 
-    public function parsearCursos() {
+    public function parsearCursos()
+    {
         $dirCursos = __DIR__ . "/../../cursos/";
         $cursos = [];
 
@@ -359,7 +371,8 @@ class ControladorPagina
         return $cursos;
     }
 
-    public function parsearevaluaciones() {
+    public function parsearevaluaciones()
+    {
         $dirEvaluaciones = __DIR__ . "/../../evaluaciones.json";
         $evaluaciones = [];
 
@@ -370,7 +383,8 @@ class ControladorPagina
         return $evaluaciones;
     }
 
-    public function buscarCursoPorTitulo(string $tituloBuscado): ?array {
+    public function buscarCursoPorTitulo(string $tituloBuscado): ?array
+    {
         foreach ($this->cursos as $curso) {
             if (strcasecmp($curso['titulo'], $tituloBuscado) === 0) { // compara sin distinguir mayúsculas/minúsculas
                 return $curso;
@@ -379,7 +393,8 @@ class ControladorPagina
         return null; // No se encontró ningún curso con ese título
     }
 
-    function guardarImagen($inputName = 'imagen', $directorio = 'uploads/') {
+    function guardarImagen($inputName = 'imagen', $directorio = 'uploads/')
+    {
         // Asegurar que el nombre sea string
         if (!is_string($inputName)) {
             return ''; // Previene errores
