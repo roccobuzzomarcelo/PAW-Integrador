@@ -217,7 +217,7 @@ Controladores principales:
 
 Para subir esta aplicación a internet, se utilizará Render con Docker.
 
-5. Base de datos:
+Base de datos:
    Usamos el diagrama `modelo.png` como guía, actualmente guardamos los datos de usuarios en usuarios.txt y la información de los cursos en cursos.json.
 
 ## Registro de errores
