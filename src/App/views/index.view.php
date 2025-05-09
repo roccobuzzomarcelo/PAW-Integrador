@@ -1,6 +1,7 @@
-<?php include "parts/head.php"?>
+<?php include "parts/head.php" ?>
+
 <body>
-    <?php include "parts/header.php"?>
+    <?php include "parts/header.php" ?>
     <main>
         <section class="presentacion">
             <h2>Plataforma de Aprendizaje Dinámico</h2>
@@ -21,5 +22,5 @@
             </div>
         </section>
     </main>
-    <?php include "parts/footer.php"?>
+    <?php include "parts/footer.php" ?>
 </body>
