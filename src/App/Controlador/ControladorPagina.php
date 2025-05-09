@@ -57,6 +57,14 @@ class ControladorPagina
         require $this->viewsDir . 'curso.view.php';
     }
 
+    public function verUnidad()
+    {
+        $curso = $this->buscarCursoPorTitulo($_GET['curso'] ?? '');
+        $unidadIndex = $_GET['unidad'] ?? 0;
+        $unidad = $curso['unidades'][$unidadIndex] ?? null;
+        require $this->viewsDir . 'ver-unidad.view.php';
+    }
+
     public function agregarCurso()
     {
         $titulo = "PAD - Agregar Curso";
