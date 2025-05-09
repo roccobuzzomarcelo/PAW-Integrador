@@ -114,3 +114,114 @@ Usuario -> Capa de presentación (Frontend) -> Capa de lógica (PHP: controlador
 ## **Modelo de Objetos**
 
 ![alt text](modelo.png)
+
+# Plataforma de Aprendizaje Dinámico (PAD) - Entrega 3
+
+Este proyecto es una aplicación web desarrollada en PHP con arquitectura MVC, cuyo objetivo es ofrecer una plataforma de aprendizaje estructurada en cursos, unidades, ejercicios y evaluaciones.
+
+## Descripción General
+
+La Plataforma de Aprendizaje Dinámico (PAD) permite a los usuarios:
+- Registrarse e iniciar sesión.
+- Crear cursos con unidades, ejercicios y evaluaciones.
+- Consultar una lista de cursos.
+- Visualizar preguntas frecuentes (FAQ).
+- Administrar su perfil personal.
+
+
+## Tecnologías Utilizadas
+
+| Tecnología     | Utilidad    |
+|----------------|-------------|
+| HTML		 | Maquetado   |
+| CSS		 | Estilo      |
+| PHP            | Programación en backend |
+| Composer       | Gestión de dependencias |
+| Servidor local | PHP built-in (`php -S`) |
+| Render         | Para despliegue final |
+| Docker         | Para contenedorización y despliegue |
+
+**Frameworks / Librerías:**
+  - [Whoops](https://github.com/filp/whoops) (gestión de errores amigable)
+  - [Monolog](https://github.com/Seldaek/monolog) (sistema de logging)
+  - [PHPMailer](https://github.com/PHPMailer/PHPMailer) (envío de emails)
+  - [PHP Dotenv](https://github.com/vlucas/phpdotenv) (manejo de variables de entorno)
+
+
+## Instalación Local
+
+### Requisitos
+
+- PHP instalado en el sistema 
+- Composer instalado globalmente
+- Editor de texto recomendado: VS Code
+- Git (opcional)
+
+### Pasos de instalación
+
+1. Clonar o descomprimir el proyecto:
+
+```bash
+git clone https://github.com/usuario/PAW-Integrador.git
+cd PAW-Integrador
+````
+
+2. Instalar dependencias con Composer:
+
+```bash
+composer install
+```
+
+3. Ejecutar servidor local:
+
+```bash
+php -S localhost:8000 -t public
+```
+
+4. Acceder a la aplicación desde el navegador:
+
+```
+http://localhost:8000
+```
+
+### Archivos de configuración modificados
+
+#### `php.ini`
+
+Verificar que las siguientes líneas estén habilitadas:
+
+```ini
+extension=pdo_mysql
+display_errors = On
+error_reporting = E_ALL
+```
+
+## Funcionamiento de la Aplicación
+
+Las rutas principales están definidas en `router.php`. Algunas de ellas incluyen:
+
+* `/` → Página de inicio.
+* `/cursos` → Lista de cursos.
+* `/agregar-curso` → Formulario para agregar un curso.
+* `/agregar-unidades` → Formulario para agregar unidades.
+* `/login` y `/register` → Autenticación de usuarios.
+* `/user-profile` → Vista del perfil del usuario.
+
+Controladores principales:
+
+* `ControladorPagina`: maneja las vistas y operaciones generales.
+* `ControladorError`: maneja errores como `404` y `500`.
+
+
+## Despliegue en Render con Docker
+
+Para subir esta aplicación a internet, se utilizará Render con Docker.
+
+Base de datos:
+   Usamos el diagrama `modelo.png` como guía, actualmente guardamos los datos de usuarios en usuarios.txt y la información de los cursos en cursos.json.
+
+## Registro de errores
+
+* Todos los errores se registran en el directorio `logs/`.
+* El sistema utiliza Monolog para registrar eventos importantes.
+* Whoops proporciona trazas detalladas en entorno de desarrollo.
