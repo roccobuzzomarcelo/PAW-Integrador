@@ -1,25 +1,18 @@
-[
-    {
-        "curso": "Programación Estructurada",
-        "preguntas": [
-            {
-                "pregunta": "¿Qué es un algoritmo?",
-                "opciones": [
-                    "Un conjunto de instrucciones ordenadas para resolver un problema",
-                    "Una estructura de datos",
-                    "Una aplicación informática"
-                ],
-                "respuesta_correcta": "Un conjunto de instrucciones ordenadas para resolver un problema"
-            },
-            {
-                "pregunta": "¿Cuál de los siguientes NO es un tipo de dato primitivo?",
-                "opciones": [
-                    "int",
-                    "string",
-                    "matrix"
-                ],
-                "respuesta_correcta": "matrix"
-            }
-        ]
-    }
-]
+CURSO: Programación Estructurada
+PREGUNTAS:
+
+PREGUNTA 1: ¿Qué es un algoritmo?
+OPCIONES:
+1) Un conjunto de instrucciones ordenadas para resolver un problema
+2) Una estructura de datos
+3) Una aplicación informática
+Respuesta correcta: Un conjunto de instrucciones ordenadas para resolver un problema
+
+PREGUNTA 2: ¿Cuál de los siguientes NO es un tipo de dato primitivo?
+OOPCIONES:
+1) int
+2) string
+3) matrix
+Respuesta correcta: matrix
+
+---

@@ -1,38 +1,40 @@
-[
-    {
-        "titulo": "Programación Estructurada",
-        "descripcion": "Curso introductorio a los fundamentos de la programación usando el paradigma estructurado.",
-        "temario": "Introducción a la programación\r\nTipos de datos y operadores\r\nEstructuras de control\r\nFunciones y procedimientos\r\nArreglos y matrices\r\nAlgoritmos clásicos",
-        "cantidadUnidades": 5,
-        "nivel": "básico",
-        "duracion": "6 semanas",
-        "imagen": "",
-        "unidades": [
-            {
-                "subtitulo": "Unidad 1: Introducción a la programación",
-                "descripcion": "Conceptos básicos de algoritmos, pseudocódigo y lenguajes de programación.",
-                "recurso": "https:\/\/www.youtube.com\/watch?v=VxrIZGQfxmE&ab_channel=HolaMundo"
-            },
-            {
-                "subtitulo": "Unidad 2: Tipos de datos y operadores",
-                "descripcion": "Tipos de datos primitivos, variables, constantes, operadores aritméticos y lógicos.",
-                "recurso": "https:\/\/www.youtube.com\/watch?v=numQzIgpOo0&ab_channel=BitBoss"
-            },
-            {
-                "subtitulo": "Unidad 3: Estructuras de control",
-                "descripcion": "Condicionales (if-else), ciclos (for, while, do-while).",
-                "recurso": "https:\/\/www.youtube.com\/watch?v=w53HiWSZnzU&ab_channel=BitBoss"
-            },
-            {
-                "subtitulo": "Unidad 4: Funciones y procedimientos",
-                "descripcion": "Modularización, paso de parámetros, ámbito de variables.",
-                "recurso": "https:\/\/www.youtube.com\/watch?v=9k91jETchkI&ab_channel=BitBoss"
-            },
-            {
-                "subtitulo": "Unidad 5: Arreglos y matrices",
-                "descripcion": "Arreglos unidimensionales y bidimensionales, recorrido y búsqueda.",
-                "recurso": "https:\/\/www.youtube.com\/watch?v=twRXsDm2FUo&ab_channel=Cegamer"
-            }
-        ]
-    }
-]
+TITULO: Programación Estructurada
+DESCRIPCION: Curso introductorio a los fundamentos de la programación usando el paradigma estructurado.
+TEMARIO: 
+Introducción a la programación
+Tipos de datos y operadores
+Estructuras de control
+Funciones y procedimientos
+Arreglos y matrices
+Algoritmos clásicos
+CANTIDAD_UNIDADES: 5
+NIVEL: básico
+DURACION: 6 semanas
+IMAGEN:
+
+UNIDAD:
+SUBTITULO: Unidad 1: Introducción a la programación
+DESCRIPCION: Conceptos básicos de algoritmos, pseudocódigo y lenguajes de programación.
+RECURSO: https://www.youtube.com/watch?v=VxrIZGQfxmE&ab_channel=HolaMundo
+
+UNIDAD:
+SUBTITULO: Unidad 2: Tipos de datos y operadores
+DESCRIPCION: Tipos de datos primitivos, variables, constantes, operadores aritméticos y lógicos.
+RECURSO: https://www.youtube.com/watch?v=numQzIgpOo0&ab_channel=BitBoss
+
+UNIDAD:
+SUBTITULO: Unidad 3: Estructuras de control
+DESCRIPCION: Condicionales (if-else), ciclos (for, while, do-while).
+RECURSO: https://www.youtube.com/watch?v=w53HiWSZnzU&ab_channel=BitBoss
+
+UNIDAD:
+SUBTITULO: Unidad 4: Funciones y procedimientos
+DESCRIPCION: Modularización, paso de parámetros, ámbito de variables.
+RECURSO: https://www.youtube.com/watch?v=9k91jETchkI&ab_channel=BitBoss
+
+UNIDAD:
+SUBTITULO: Unidad 5: Arreglos y matrices
+DESCRIPCION: Arreglos unidimensionales y bidimensionales, recorrido y búsqueda.
+RECURSO: https://www.youtube.com/watch?v=twRXsDm2FUo&ab_channel=Cegamer
+
+---
