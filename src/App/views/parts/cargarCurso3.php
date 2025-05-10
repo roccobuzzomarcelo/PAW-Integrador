@@ -3,7 +3,7 @@
 <form action="/agregar-evaluacion" method="post">
 
     <!-- Pregunta 1 -->
-    <fieldset>
+    <fieldset class="fs-add-evaluacion">
         <legend>Pregunta 1</legend>
         <label>Texto:</label>
         <input type="text" name="preguntas[0][pregunta]" placeholder="Ej: En Python, ¿que hace la funcion print()?" required>
@@ -18,7 +18,7 @@
     </fieldset>
 
     <!-- Pregunta 2 -->
-    <fieldset>
+    <fieldset class="fs-add-evaluacion">
         <legend>Pregunta 2</legend>
         <label>Texto:</label>
         <input type="text" name="preguntas[1][pregunta]" required>
