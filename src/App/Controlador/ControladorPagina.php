@@ -339,7 +339,10 @@ class ControladorPagina
 
     public function resultadoEvaluacion()
     {
+        session_start();
+        $resultado = $_SESSION['resultado_evaluacion'] ?? null;
         $titulo = "PAD - Resultados";
+        unset($_SESSION['resultado_evaluacion']);
         require $this->viewsDir . 'resultados.view.php';
     }
 

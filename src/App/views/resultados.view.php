@@ -2,10 +2,6 @@
 
 <body>
     <?php include 'parts/header.php' ?>
-    <?php
-    session_start();
-    $resultado = $_SESSION['resultado_evaluacion'] ?? null;
-    ?>
 
     <main class="curso-detalle">
         <section class="curso-box">

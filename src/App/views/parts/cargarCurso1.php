@@ -3,7 +3,7 @@
     <!-- Título -->
     <fieldset class="mb-3">
         <label for="titulo" class="form-label">Título del curso</label>
-        <input type="text" class="form-control" id="titulo" name="titulo" required>
+        <input type="text" class="form-control" id="titulo" name="titulo" placeholder="Ej: Introducción a la programación" required>
     </fieldset>
 
     <!-- Descripción -->
