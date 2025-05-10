@@ -215,7 +215,7 @@ Controladores principales:
 
 ## Despliegue en Render con Docker
 
-Para subir esta aplicación a internet, se utilizará Render con Docker.
+Para subir esta aplicación a internet, se utilizará Render con Docker, el dominio asignado fue: https://paw-integrador.onrender.com/.
 
 Base de datos:
    Usamos el diagrama `modelo.png` como guía, actualmente guardamos los datos de usuarios en usuarios.txt y la información de los cursos en cursos.json.
