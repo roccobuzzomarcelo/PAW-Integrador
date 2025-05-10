@@ -263,7 +263,7 @@ class ControladorPagina
         $datosCurso .= "\n";
         $datosCurso .= "---\n";
         // Guardar curso
-        $archivoCurso = __DIR__ . "/../../cursos/cursos.txt";
+        $archivoCurso = __DIR__ . "/../../cursos.txt";
         file_put_contents($archivoCurso, $datosCurso, FILE_APPEND);
 
         // Limpiar sesión
@@ -364,7 +364,7 @@ class ControladorPagina
 
     public function parsearCursos()
     {
-        $ruta = __DIR__ . "/../../cursos/cursos.txt";
+        $ruta = __DIR__ . "/../../cursos.txt";
         $cursos = [];
 
         if (!file_exists($ruta)) {
