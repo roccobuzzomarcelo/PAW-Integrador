@@ -5,6 +5,7 @@ namespace PAW\src\App\Controlador;
 class ControladorError
 {
     public string $viewsDir;
+    public array $menu;
 
     public function __construct()
     {

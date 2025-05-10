@@ -1,0 +1,8 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8888"
+    volumes:
+      - .:/var/www/html
+    container_name: paw_integrador
