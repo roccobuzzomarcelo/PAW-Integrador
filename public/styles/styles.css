@@ -494,12 +494,15 @@ a:hover {
 /* Estilos para unidad-detalle.php, adaptados al estilo del sitio */
 
 .unidad-detalle {
-    background: var(--color-background-soft); /* Fondo más suave */
+    background: var(--color-background-soft);
+    /* Fondo más suave */
     border-radius: 1em;
     padding: 2em;
-    margin: 2em auto; /* Más espacio alrededor */
+    margin: 2em auto;
+    /* Más espacio alrededor */
     max-width: 80%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Sombra sutil */
 }
 
 .unidad-detalle h2 {
@@ -518,7 +521,8 @@ a:hover {
 
 .unidad-detalle p strong {
     font-weight: bold;
-    color: var(--color-heading); /* Resaltar el "Descripción" */
+    color: var(--color-heading);
+    /* Resaltar el "Descripción" */
 }
 
 .unidad-detalle iframe {
@@ -527,14 +531,17 @@ a:hover {
     border: none;
     border-radius: 0.5em;
     margin-bottom: 1.5em;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra en el video */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Sombra en el video */
 }
 
 .unidad-detalle a {
     display: inline-block;
     padding: 0.8em 1.5em;
-    background-color: #f7a630; /* Naranja */
-    color: var(--color-background); /* Texto claro */
+    background-color: #f7a630;
+    /* Naranja */
+    color: var(--color-background);
+    /* Texto claro */
     text-decoration: none;
     border-radius: 0.5em;
     transition: background-color 0.3s ease;
@@ -542,10 +549,85 @@ a:hover {
 }
 
 .unidad-detalle a:hover {
-    background-color: #EE7919; /* Naranja más oscuro */
+    background-color: #EE7919;
+    /* Naranja más oscuro */
 }
 
-/* Si es necesario, ajusta el header y footer para que se vean bien con esta página  */
+/* Estilos para agregar-evaluacion.php, adaptado al estilo del sitio */
+
+.main-agregarEvaluacion {
+    background: var(--color-background-soft);
+    border-radius: 1em;
+    padding: 2em;
+    margin: 2em auto;
+    max-width: 80%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.contenedor-agregarEvaluacion {
+    padding: 1em;
+}
+
+.form-title {
+    color: var(--color-heading);
+    font-size: 2em;
+    margin-bottom: 0.5em;
+    border-bottom: 2px solid var(--color-border);
+    padding-bottom: 0.5em;
+}
+
+.fs-add-evaluacion{
+    border: 1px solid var(--color-border);
+    border-radius: 0.5em;
+    margin-bottom: 1.5em;
+    padding: 1em;
+    background-color: #333;
+}
+
+.fs-add-evaluacion legend {
+    color: var(--color-heading);
+    font-weight: bold;
+    padding: 0.5em;
+}
+
+form label {
+    display: block;
+    margin-top: 0.5em;
+    color: var(--color-text);
+}
+
+form input[type="text"] {
+    width: 100%;
+    padding: 0.8em;
+    margin-top: 0.3em;
+    border: 1px solid var(--color-border);
+    border-radius: 0.3em;
+    box-sizing: border-box;
+}
+
+form input[type="text"]:focus {
+    outline: none;
+    border-color: #f7a630;
+    box-shadow: 0 0 0.2em #f7a630;
+}
+
+form button[type="submit"] {
+    display: block;
+    padding: 0.8em 1.5em;
+    background-color: #f7a630;
+    color: var(--color-background);
+    text-decoration: none;
+    border-radius: 0.5em;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    margin-top: 1em;
+}
+
+form button[type="submit"]:hover {
+    background-color: #EE7919;
+}
 
 /* --- FOOTER --- */
 footer {
