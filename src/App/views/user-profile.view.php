@@ -1,21 +1,22 @@
-<?php include "parts/head.php"?>
+<?php include "parts/head.php" ?>
+
 <body>
-    <?php include "parts/header.php"?>
+    <?php include "parts/header.php" ?>
     <main>
         <section class="seccion-perfil">
             <h2>USUARIO<br><small>(nombre de usuario)</small></h2>
-            
+
             <section>
                 <!-- Datos personales -->
                 <div>
                     <h3>Datos Personales</h3>
                     <ul>
                         <li>
-                            Nombre 
+                            Nombre
                             <button title="Editar">✎</button>
                         </li>
                         <li>
-                            Contraseña 
+                            Contraseña
                             <button title="Editar">✎</button>
                         </li>
                     </ul>
@@ -50,6 +51,6 @@
 
             </section>
         </section>
-        </main>
-        <?php include "parts/footer.php"?>
+    </main>
+    <?php include "parts/footer.php" ?>
 </body>

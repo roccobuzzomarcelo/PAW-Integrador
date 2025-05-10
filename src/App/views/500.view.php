@@ -15,4 +15,5 @@
     </main>
     <?php include 'parts/footer.php' ?>
 </body>
+
 </html>

@@ -1,3 +1,7 @@
 Tareas pendientes:
 
 1- no esta el dinamismo de /cursos, los que muestra no existen, menos al final de la pagina, que son lo que estan en el json.
+
+2- Terminar CSS:
+    - resultados.view.php
+    - ver-unidad.view.php

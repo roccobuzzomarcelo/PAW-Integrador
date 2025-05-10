@@ -6,18 +6,22 @@
         <h1 class="faqs-titulo">Preguntas Frecuentes</h1>
         <section class="faq-item">
             <h2 class="faq-pregunta">¿Cómo puedo registrarme en el sitio?</h2>
-            <p class="faq-respuesta">Para registrarte, hacé clic en el botón “Registrarse” en la parte superior derecha e ingresá tus datos.</p>
+            <p class="faq-respuesta">Para registrarte, hacé clic en el botón “Registrarse” en la parte superior derecha
+                e ingresá tus datos.</p>
         </section>
         <section class="faq-item">
             <h2 class="faq-pregunta">¿Olvidé mi contraseña, qué hago?</h2>
-            <p class="faq-respuesta">Podés restablecer tu contraseña haciendo clic en “¿Olvidaste tu contraseña?” en la pantalla de inicio de sesión.</p>
+            <p class="faq-respuesta">Podés restablecer tu contraseña haciendo clic en “¿Olvidaste tu contraseña?” en la
+                pantalla de inicio de sesión.</p>
         </section>
         <section class="faq-item">
             <h2 class="faq-pregunta">¿Cómo contacto al soporte?</h2>
-            <p class="faq-respuesta">Podés enviarnos un mensaje desde la sección de contacto o escribirnos a soporte@tusitio.com.</p>
+            <p class="faq-respuesta">Podés enviarnos un mensaje desde la sección de contacto o escribirnos a
+                soporte@tusitio.com.</p>
         </section>
         <a href="/" class="boton-volver">Volver al inicio</a>
     </main>
     <?php include 'parts/footer.php'; ?>
 </body>
+
 </html>

@@ -337,7 +337,6 @@ class ControladorPagina
         exit;
     }
 
-
     public function resultadoEvaluacion()
     {
         $titulo = "PAD - Resultados";

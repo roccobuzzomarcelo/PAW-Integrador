@@ -13,5 +13,5 @@
         <label for="recurso" class="form-label">Link al recurso teorico</label>
         <input type="text" class="form-control" id="recurso" name="recurso" required>
     </fieldset>
-    <button class= "boton-agregarUnidad" type="submit">Guardar unidad</button>
+    <button class="boton-agregarUnidad" type="submit">Guardar unidad</button>
 </form>

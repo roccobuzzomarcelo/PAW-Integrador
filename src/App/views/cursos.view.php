@@ -7,33 +7,19 @@
             <h2>Aprenda y mejore habilidades de programación</h2>
             <section class="temas">
                 <h3>Prepararse por temas</h3>
-                <section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
-                    <a href="/algoritmos" class="curso-card">
-                        <h4>Algoritmos</h4>
-                        <p>Descubre los fundamentos de la lógica de programación.</p>
-                    </a>
-                    <a href="/estructuras-de-datos" class="curso-card">
-                        <h4>Estructuras de datos</h4>
-                        <p>Organiza y gestiona información de manera eficiente.</p>
-                    </a>
-                    <a href="/c++" class="curso-card">
-                        <h4>C++</h4>
-                        <p>Domina un lenguaje de programación potente y versátil.</p>
-                    </a>
-                    <a href="/java" class="curso-card">
-                        <h4>Java</h4>
-                        <p>Aprende a desarrollar aplicaciones robustas y escalables.</p>
-                    </a>
-                    <a href="/sql" class="curso-card">
-                        <h4>SQL</h4>
-                        <p>Consulta y manipula bases de datos de manera efectiva.</p>
-                    </a>
+                <section class="temas-box">
+                    <?php foreach ($cursos as $curso): ?>
+                        <a href="/curso?titulo=<?= urlencode($curso['titulo']) ?>" class="curso-card">
+                            <h4><?= htmlspecialchars($curso['titulo']) ?></h4>
+                            <p><?= nl2br(htmlspecialchars($curso['descripcion'])) ?></p>
+                        </a>
+                    <?php endforeach; ?>
                 </section>
             </section>
 
             <section class="recursos">
                 <h3>Recursos educativos</h3>
-                <section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                <section class="temas-box">
                     <a href="/videos" class="curso-card">
                         <h4>Videos</h4>
                         <p>Explicaciones visuales para facilitar tu aprendizaje.</p>
@@ -45,25 +31,25 @@
                 </section>
             </section>
 
-
             <h3>Cursos Activos</h3>
-            <section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
-                <!--
-                <a href="cursos-activos" class="curso-card">
-                    <h4>Java</h4>
-                    <p>¡El curso de Java está activo! Inscríbete ahora.</p>
-                </a>-->
-                <?php foreach ($cursos as $curso): ?>
-                    <a href="/curso?titulo=<?= urlencode($curso['titulo']) ?>" class="curso-card">
-                        <h4><?= htmlspecialchars($curso['titulo']) ?></h4>
-                        <p><?= nl2br(htmlspecialchars($curso['descripcion'])) ?></p>
-                    </a>
-                <?php endforeach; ?>
+            <section class="temas-box">
+                <p class="curso-card">Lo siento! No tienes ningun curso activo en este momento.</p>
+                <!-- Aca deberia ir la logica que se encargue de mostrar cuales son los cursos activos del usuario 
+                y en caso de que no tenga deberia avisar -->
             </section>
 
             <!-- Botón para agregar un curso -->
-            <section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
-                <a href="/agregar-curso" class="curso-card"><h4>Agregar un nuevo curso</h4></a>
+            <!-- AVISO: esto no deberia tener acceso cualquier usuario, solo los administradores -->
+            <section>
+                <a href="/agregar-curso" class="curso-card">
+                    <h4>Agregar un nuevo curso</h4>
+                </a>
+                <!--
+                Despues tenemos que implementar el boton para dar de baja un curso
+                <a href="/eliminar-curso" class="curso-card">
+                    <h4>Dar de baja un curso</h4>
+                </a> 
+                -->
             </section>
 
         </section>

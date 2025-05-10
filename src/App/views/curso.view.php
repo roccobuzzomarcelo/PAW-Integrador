@@ -31,9 +31,10 @@
                 <?php endforeach; ?>
             </ul>
         </section>
-        <section >
+        <section>
             <h3 class="curso-subt">Evaluación final</h3>
-            <a class="btn-resolver" href="/resolver-evaluacion?curso=<?= urlencode($curso['titulo']) ?>">Resolver Evaluación</a>
+            <a class="btn-resolver" href="/resolver-evaluacion?curso=<?= urlencode($curso['titulo']) ?>">Resolver
+                Evaluación</a>
         </section>
     </main>
     <?php include "parts/footer.php"; ?>

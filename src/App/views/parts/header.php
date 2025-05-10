@@ -12,9 +12,6 @@
             <li>
                 <a href="/login">Acceder</a>
             </li>
-            <li>
-                <a href="/register">Crear Cuenta</a>
-            </li>
         </ul>
     </nav>
     <button class="hamburger-icon"><i class="fa-solid fa-bars"></i></button>
