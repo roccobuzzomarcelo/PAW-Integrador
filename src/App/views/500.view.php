@@ -4,7 +4,6 @@
     <?php include 'parts/header.php' ?>
     <main class="error-container">
         <section class="error-box">
-            <img src="/images/error.svg" alt="Error" class="error-icon">
             <h1 class="error-titulo">¡Uy! Algo salió mal.</h1>
             <p class="error-descripcion">
                 Estamos teniendo algunos problemas técnicos.<br>

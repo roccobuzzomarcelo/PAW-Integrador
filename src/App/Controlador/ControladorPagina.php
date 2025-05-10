@@ -224,7 +224,7 @@ class ControladorPagina
         ];
 
         // Ruta del archivo
-        $archivoEvaluacion = __DIR__ . "/../../evaluaciones.json";
+        $archivoEvaluacion = __DIR__ . "/../../evaluaciones.txt";
 
         // Cargar evaluaciones anteriores (si existen)
         $evaluaciones = file_exists($archivoEvaluacion) ? json_decode(file_get_contents($archivoEvaluacion), true) : [];
@@ -239,7 +239,7 @@ class ControladorPagina
         $curso = $_SESSION['curso'];
 
         // Crear un "slug" del título para el archivo
-        $archivo = __DIR__ . "/../../cursos/cursos.json"; // Archivo único para todos los cursos
+        $archivo = __DIR__ . "/../../cursos/cursos.txt"; // Archivo único para todos los cursos
 
         // Si el archivo JSON ya existe, cargar los cursos actuales
         if (file_exists($archivo)) {
@@ -359,7 +359,7 @@ class ControladorPagina
         $cursos = [];
 
         if (is_dir($dirCursos)) {
-            foreach (glob($dirCursos . "*.json") as $archivo) {
+            foreach (glob($dirCursos . "*.txt") as $archivo) {
                 $datos = json_decode(file_get_contents($archivo), true);
 
                 if ($datos === null) {
@@ -375,7 +375,7 @@ class ControladorPagina
 
     public function parsearevaluaciones()
     {
-        $dirEvaluaciones = __DIR__ . "/../../evaluaciones.json";
+        $dirEvaluaciones = __DIR__ . "/../../evaluaciones.txt";
         $evaluaciones = [];
 
         if (file_exists($dirEvaluaciones)) {
