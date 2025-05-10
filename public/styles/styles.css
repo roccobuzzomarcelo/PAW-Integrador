@@ -490,8 +490,62 @@ a:hover {
     transition: 0.25s;
 }
 
-/* -- Elementos de resultados.view.php --*/
+/* -- Elementos de ver-unidad.view.php --*/
+/* Estilos para unidad-detalle.php, adaptados al estilo del sitio */
 
+.unidad-detalle {
+    background: var(--color-background-soft); /* Fondo más suave */
+    border-radius: 1em;
+    padding: 2em;
+    margin: 2em auto; /* Más espacio alrededor */
+    max-width: 80%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+}
+
+.unidad-detalle h2 {
+    color: var(--color-heading);
+    font-size: 2em;
+    margin-bottom: 0.5em;
+    border-bottom: 2px solid var(--color-border);
+    padding-bottom: 0.5em;
+}
+
+.unidad-detalle p {
+    color: var(--color-text);
+    line-height: 1.6;
+    margin-bottom: 1em;
+}
+
+.unidad-detalle p strong {
+    font-weight: bold;
+    color: var(--color-heading); /* Resaltar el "Descripción" */
+}
+
+.unidad-detalle iframe {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: none;
+    border-radius: 0.5em;
+    margin-bottom: 1.5em;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra en el video */
+}
+
+.unidad-detalle a {
+    display: inline-block;
+    padding: 0.8em 1.5em;
+    background-color: #f7a630; /* Naranja */
+    color: var(--color-background); /* Texto claro */
+    text-decoration: none;
+    border-radius: 0.5em;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+}
+
+.unidad-detalle a:hover {
+    background-color: #EE7919; /* Naranja más oscuro */
+}
+
+/* Si es necesario, ajusta el header y footer para que se vean bien con esta página  */
 
 /* --- FOOTER --- */
 footer {
