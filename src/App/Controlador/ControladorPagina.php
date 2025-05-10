@@ -35,6 +35,8 @@ class ControladorPagina
             ],
         ];
         $this->cursos = $this->parsearCursos();
+        var_dump($this->cursos);
+        die;
         $this->evaluaciones = $this->parsearevaluaciones();
     }
 
