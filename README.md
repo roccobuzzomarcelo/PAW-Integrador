@@ -126,7 +126,6 @@ La Plataforma de Aprendizaje Dinámico (PAD) permite a los usuarios:
 - Crear cursos con unidades, ejercicios y evaluaciones.
 - Consultar una lista de cursos.
 - Visualizar preguntas frecuentes (FAQ).
-- Administrar su perfil personal.
 
 
 ## Tecnologías Utilizadas
@@ -205,7 +204,6 @@ Las rutas principales están definidas en `router.php`. Algunas de ellas incluye
 * `/agregar-curso` → Formulario para agregar un curso.
 * `/agregar-unidades` → Formulario para agregar unidades.
 * `/login` y `/register` → Autenticación de usuarios.
-* `/user-profile` → Vista del perfil del usuario.
 
 Controladores principales:
 
