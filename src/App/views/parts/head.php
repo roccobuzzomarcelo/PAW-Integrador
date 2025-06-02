@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<html class="<?= htmlspecialchars($htmlClass ?? '') ?>" lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -12,5 +10,7 @@
         href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <script src="js/components/paw.js"></script>
+    <script src="js/app.js" defer></script>
     <title><?= htmlspecialchars($titulo ?? 'Sin título') ?></title>
 </head>

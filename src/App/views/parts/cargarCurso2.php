@@ -10,8 +10,15 @@
         <textarea class="form-control" id="descripcion" name="descripcion" rows="2" required></textarea>
     </fieldset>
     <fieldset class="mb-3">
-        <label for="recurso" class="form-label">Link al recurso teorico</label>
-        <input type="text" class="form-control" id="recurso" name="recurso" required placeholder="Link a video de Youtube">
+        <label class="form-label">Contenido adjunto</label>
+        <div id="dropzone" class="dropzone">
+            Soltá un archivo aquí o hacé clic para subirlo
+        </div>
+        <button type="button" id="botonSeleccionarArchivo" class="btn btn-secondary mt-2">Seleccionar archivo</button>
+        <input type="file" class= "archivo" id="archivo" name="archivo" />
+        <div id="preview" class= "preview"></div>
     </fieldset>
     <button class="boton-agregarUnidad" type="submit">Guardar unidad</button>
 </form>
+
+

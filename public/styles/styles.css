@@ -443,6 +443,28 @@ a:hover {
     background-color: darkorange;
 }
 
+.archivo {
+    display: none;
+}
+
+.preview {
+    margin-top: 10px; 
+    font-style: italic;
+}
+
+.dropzone {
+    border: 2px dashed #888;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    background-color: #f9f9f9;
+    transition: background-color 0.3s ease;
+}
+
+.dropzone.dragover {
+    background-color: #e0f7fa;
+}
+
 /* -- Página de Evaluación -- */
 
 .form-evalucion {

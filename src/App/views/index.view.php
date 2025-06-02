@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html class="<?= htmlspecialchars($htmlClass ?? '') ?>" lang="es">
 <?php include "parts/head.php" ?>
 
 <body>
