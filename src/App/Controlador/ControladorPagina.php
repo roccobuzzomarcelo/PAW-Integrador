@@ -64,9 +64,10 @@ class ControladorPagina
         $curso = $this->buscarCursoPorTitulo($_GET['curso'] ?? '');
         $unidadIndex = $_GET['unidad'] ?? 0;
         $unidad = $curso['unidades'][$unidadIndex] ?? null;
-        $recurso = $this->embedVideo($unidad['recurso'] ?? '');
+        $recursoHtml = $this->embedRecurso($unidad['recurso'] ?? '');
         require $this->viewsDir . 'ver-unidad.view.php';
     }
+
 
     public function resolverEvaluacion()
     {
@@ -294,26 +295,64 @@ class ControladorPagina
         header("Location: /agregar-unidades");
     }
 
-    public function procesarAgregarUnidades()
-    {
+    
+    public function procesarAgregarUnidades(){
         session_start();
-        // Guardar los datos de esta unidad
+
+        // Directorio donde guardaremos los archivos subidos
+        $uploadDir = __DIR__ . '/../../public/uploads/';
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0755, true);
+        }
+
+        $recursoFinal = '';
+
+        // 1) Si subieron un archivo
+        if (isset($_FILES['recursoArchivo']) && $_FILES['recursoArchivo']['error'] === UPLOAD_ERR_OK) {
+            $archivoTemp   = $_FILES['recursoArchivo']['tmp_name'];
+            $nombreOriginal = basename($_FILES['recursoArchivo']['name']);
+            // Crear un nombre único para evitar sobreescrituras:
+            $extension = pathinfo($nombreOriginal, PATHINFO_EXTENSION);
+            $nombreUnico = uniqid('recurso_') . '.' . $extension;
+            $destino = $uploadDir . $nombreUnico;
+
+            if (move_uploaded_file($archivoTemp, $destino)) {
+                // Guardamos la URL pública (ajusta según tu .htaccess o tu base URL)
+                // Por ejemplo, si public/ es la raíz web, podrías usar "/uploads/{$nombreUnico}"
+                $recursoFinal = '/uploads/' . $nombreUnico;
+            } else {
+                // Manejo de error al mover el archivo
+                $recursoFinal = '';
+            }
+        }
+        // 2) Si en lugar de archivo, pegaron un enlace
+        elseif (!empty($_POST['recursoLink'])) {
+            // Sanitizar la URL
+            $url = filter_var($_POST['recursoLink'], FILTER_SANITIZE_URL);
+            if (filter_var($url, FILTER_VALIDATE_URL)) {
+                $recursoFinal = $url;
+            } else {
+                $recursoFinal = ''; // URL inválida
+            }
+        }
+
+        // 3) Guardamos en la sesión
         $_SESSION['curso']['unidades'][] = [
-            'subtitulo' => $_POST['subtitulo'],
+            'subtitulo'   => $_POST['subtitulo'],
             'descripcion' => $_POST['descripcion'],
-            'recurso' => $_POST['recurso'],
+            'recurso'     => $recursoFinal, 
         ];
+
         // Avanzar de unidad
         $_SESSION['unidad_actual']++;
         if ($_SESSION['unidad_actual'] > $_SESSION['curso']['cantidadUnidades']) {
-            // Ir a la evaluación final
             header("Location: /agregar-evaluacion");
         } else {
-            // Mostrar siguiente unidad
             header("Location: /agregar-unidades");
         }
         exit;
     }
+
 
     public function procesarResolverEvaluacion()
     {
@@ -551,24 +590,68 @@ class ControladorPagina
         return ''; // Fallback si falla el movimiento
     }
 
-    public function embedVideo(string $url): string
+
+    public function embedRecurso(string $rutaOUrl): string
     {
-        // Maneja URLs tipo: https://www.youtube.com/watch?v=VIDEOID
-        if (strpos($url, 'youtube.com/watch?v=') !== false) {
-            parse_str(parse_url($url, PHP_URL_QUERY), $params);
+        if (empty($rutaOUrl)) {
+            return '<p>No hay recurso para esta unidad.</p>';
+        }
+
+        // 1) Detectar YouTube
+        if (strpos($rutaOUrl, 'youtube.com/watch?v=') !== false) {
+            parse_str(parse_url($rutaOUrl, PHP_URL_QUERY), $params);
             if (isset($params['v'])) {
-                return 'https://www.youtube.com/embed/' . htmlspecialchars($params['v']);
+                $videoId = htmlspecialchars($params['v']);
+                return "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/{$videoId}\" frameborder=\"0\" allowfullscreen></iframe>";
             }
         }
-
-        // Maneja URLs acortadas tipo: https://youtu.be/VIDEOID
-        if (strpos($url, 'youtu.be/') !== false) {
-            $videoId = basename(parse_url($url, PHP_URL_PATH));
-            return 'https://www.youtube.com/embed/' . htmlspecialchars($videoId);
+        if (strpos($rutaOUrl, 'youtu.be/') !== false) {
+            $videoId = basename(parse_url($rutaOUrl, PHP_URL_PATH));
+            $videoId = htmlspecialchars($videoId);
+            return "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/{$videoId}\" frameborder=\"0\" allowfullscreen></iframe>";
         }
 
-        // Si no es un link de YouTube válido, se devuelve el original
-        return $url;
+        // 2) Si es URL externa cualquiera (que no sea YouTube), devolvemos link
+        if (filter_var($rutaOUrl, FILTER_VALIDATE_URL)) {
+            // Si la URL termina en .pdf -> embebemos
+            $ext = strtolower(pathinfo(parse_url($rutaOUrl, PHP_URL_PATH), PATHINFO_EXTENSION));
+            if ($ext === 'pdf') {
+                return "<embed src=\"{$rutaOUrl}\" type=\"application/pdf\" width=\"100%\" height=\"600px\" />";
+            }
+            // Para audio externos
+            if (in_array($ext, ['mp3','wav','ogg'])) {
+                return "<audio controls src=\"{$rutaOUrl}\">Tu navegador no soporta audio.</audio>";
+            }
+            // Para imágenes externas
+            if (in_array($ext, ['jpg','jpeg','png','gif','webp'])) {
+                return "<img src=\"{$rutaOUrl}\" alt=\"Recurso imagen\" style=\"max-width:100%;\" />";
+            }
+            // Cualquier otro link externo
+            return "<p><a href=\"{$rutaOUrl}\" target=\"_blank\" rel=\"noopener\">Ver recurso</a></p>";
+        }
+
+        // 3) Si no es URL válida, asumimos que es ruta interna hacia /uploads/ (archivo subido)
+        // Verificamos la extensión para decidir cómo mostrarlo.
+        $rutaAbsoluta = $_SERVER['DOCUMENT_ROOT'] . $rutaOUrl;
+        $ext = strtolower(pathinfo($rutaOUrl, PATHINFO_EXTENSION));
+
+        switch ($ext) {
+            case 'pdf':
+                return "<embed src=\"{$rutaOUrl}\" type=\"application/pdf\" width=\"100%\" height=\"600px\" />";
+            case 'mp3':
+            case 'wav':
+            case 'ogg':
+                return "<audio controls src=\"{$rutaOUrl}\">Tu navegador no soporta audio.</audio>";
+            case 'jpg':
+            case 'jpeg':
+            case 'png':
+            case 'gif':
+            case 'webp':
+                return "<img src=\"{$rutaOUrl}\" alt=\"Recurso imagen\" style=\"max-width:100%;\" />";
+            default:
+                // Para cualquier otro tipo (ZIP, DOCX, XLSX, etc.), devolvemos enlace de descarga
+                return "<p><a href=\"{$rutaOUrl}\" download>Descargar recurso</a></p>";
+        }
     }
 
     public function obtenerEvaluacionPorCurso(string $nombreCurso)

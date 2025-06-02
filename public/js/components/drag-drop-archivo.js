@@ -61,5 +61,5 @@ class DragAndDropArchivo {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-	new DragAndDropArchivo("#dropzone", "#archivo", "#preview");
+	new DragAndDropArchivo("#dropzone", "#recursoArchivo", "#preview");
 });

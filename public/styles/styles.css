@@ -447,12 +447,12 @@ a:hover {
     display: none;
 }
 
-.preview {
+#preview {
     margin-top: 10px; 
     font-style: italic;
 }
 
-.dropzone {
+#dropzone {
     border: 2px dashed #888;
     padding: 20px;
     text-align: center;
@@ -461,10 +461,20 @@ a:hover {
     transition: background-color 0.3s ease;
 }
 
-.dropzone.dragover {
+#dropzone.dragover {
     background-color: #e0f7fa;
 }
 
+#preview {
+    margin-top: 10px;
+    font-style: italic;
+}
+
+#zonaEnlace {
+    display: none; 
+    margin-top: 10px;
+
+}
 /* -- Página de Evaluación -- */
 
 .form-evalucion {

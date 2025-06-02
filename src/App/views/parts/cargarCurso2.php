@@ -15,9 +15,18 @@
             Soltá un archivo aquí o hacé clic para subirlo
         </div>
         <button type="button" id="botonSeleccionarArchivo" class="btn btn-secondary mt-2">Seleccionar archivo</button>
-        <input type="file" class= "archivo" id="archivo" name="archivo" />
+        <input type="file" class= "archivo" id="recursoArchivo" name="recursoArchivo" />
         <div id="preview" class= "preview"></div>
+        <div class="form-check mt-3">
+            <input class="form-check-input" type="checkbox" id="usarEnlace" name="usarEnlace">
+            <label class="form-check-label" for="usarEnlace">Usar un enlace en lugar de un archivo</label>
+        </div>
+        <div id="zonaEnlace" style="display: none;" class="zonaEnlace mt-2">
+            <input type="url" id="recursoLink" name="recursoLink" class="form-control" placeholder="https://ejemplo.com/archivo.pdf">
+        </div>
+        <div id="previewUrl" class="preview mt-2"></div>
     </fieldset>
+
     <button class="boton-agregarUnidad" type="submit">Guardar unidad</button>
 </form>
 
