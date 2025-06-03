@@ -2,19 +2,27 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
-use PAW\src\App\Controlador\ControladorPagina;
 use PAW\src\Core\Router;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
+use PAW\src\Core\Config;
+use PAW\src\Core\Request;
+
+$config = new Config;
 
 $log = new Logger('PawPrints-app');
-$log->pushHandler(new StreamHandler(__DIR__ . '/../log/app.log', Logger::DEBUG));
+$handler = new StreamHandler($config->get('LOG_PATH'));
+$handler->setLevel($config->get('LOG_LEVEL'));
+$log->pushHandler($handler);
 
 $whoops = new \Whoops\Run;
 $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler);
 $whoops->register();
 
+$request = new Request;
+
 $router = new Router;
+$router->setLogger($log);
 $router->get("/", "ControladorPagina@index");
 $router->get("/cursos", "ControladorPagina@cursos");
 $router->get("/curso", "ControladorPagina@curso");
@@ -34,5 +42,3 @@ $router->get("/register", "ControladorPagina@register");
 $router->post("/register", "ControladorPagina@procesarRegistro");
 $router->get("/user-profile", "ControladorPagina@userProfile");
 $router->get('/faq', 'ControladorPagina@faq');
-$router->get("not-found", "ControladorError@notFound");
-$router->get("error-interno", "ControladorError@errorInterno");
