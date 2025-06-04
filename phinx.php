@@ -28,10 +28,10 @@ return
         'development' => [
             'adapter' => getenv("DB_ADAPTER") ?? 'pgsql',
             'host' => getenv("DB_HOSTNAME")??'localhost',
-            'name' => getenv("DB_NAME") ?? 'development_db',
-            'user' => getenv("DB_USERNAME") ?? 'root',
+            'name' => getenv("DB_NAME") ?? 'paw',
+            'user' => getenv("DB_USERNAME") ?? 'admin',
             'pass' => getenv("DB_PASSWORD") ?? '',
-            'port' => getenv("DB_PORT") ?? '3306',
+            'port' => getenv("DB_PORT") ?? '5432',
             'charset' => getenv("DB_CHARSET") ?? 'utf8',
         ],
         'testing' => [
