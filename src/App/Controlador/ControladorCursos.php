@@ -23,7 +23,9 @@ class ControladorCursos extends Controlador{
         global $request;
         $cursoId = $request->get('id');
         $curso = $this->modeloInstancia->get($cursoId);
-        $titulo = htmlspecialchars($curso['titulo'] ?? 'Curso no encontrado');
+        $temas = $this->modeloInstancia->getTemasCurso($cursoId);
+        $modulos = $this->modeloInstancia->getModulosCurso($cursoId);
+        $titulo = htmlspecialchars($curso->campos['titulo'] ?? 'Curso no encontrado');
         require $this->viewsDir . 'curso.view.php';
     }
 
@@ -31,8 +33,8 @@ class ControladorCursos extends Controlador{
     {
         global $request;
         $cursoId = $request->get("idCurso");
-        $unidadId = $request->get("idUnidad");
-        $unidad = $this->modeloInstancia->getModulo($cursoId, $unidadId);
+        $moduloId = $request->get("modulo");
+        $modulo = $this->modeloInstancia->getModulo($moduloId);
         $recursoHtml = $this->embedRecurso($unidad['recurso'] ?? '');
         require $this->viewsDir . 'ver-unidad.view.php';
     }
@@ -82,8 +84,8 @@ class ControladorCursos extends Controlador{
         }
 
         $modulos = $request->get("modulos");
+        $cont = 1;
         foreach($modulos as $modulo){
-            $cont = 1;
             $datosModulo = [
                 "curso_id" => $cursoId,
                 "titulo" => $modulo["titulo"],

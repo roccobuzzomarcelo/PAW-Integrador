@@ -3,37 +3,37 @@
 <body>
     <?php include "parts/header.php"; ?>
     <main class="curso-detalle">
-        <h2><?= htmlspecialchars($curso['titulo']) ?></h2>
-        <?php if (!empty($curso['imagen'])): ?>
-            <img src="/uploads/<?= htmlspecialchars($curso['imagen']) ?>" alt="Imagen del curso">
+        <h2><?= htmlspecialchars($curso->campos['titulo']) ?></h2>
+        <?php if (!empty($curso->campos['imagen'])): ?>
+            <img src="/uploads/<?= htmlspecialchars($curso->campos['imagen']) ?>" alt="Imagen del curso">
         <?php endif; ?>
         <section class="curso-box">
-            <p><strong>Descripción:</strong> <?= nl2br(htmlspecialchars($curso['descripcion'])) ?></p>
+            <p><strong>Descripción:</strong> <?= nl2br(htmlspecialchars($curso->campos['descripcion'])) ?></p>
             <p><strong>Temario:</strong></p>
             <ul>
-                <?php foreach (explode("\n", $curso['temario']) as $item): ?>
-                    <li><?= htmlspecialchars(trim($item)) ?></li>
+                <?php foreach ($temas as $tema): ?>
+                    <li><?= htmlspecialchars($tema["titulo"]) ?></li>
                 <?php endforeach; ?>
             </ul>
-            <p><strong>Nivel:</strong> <?= htmlspecialchars($curso['nivel']) ?></p>
-            <p><strong>Duración:</strong> <?= htmlspecialchars($curso['duracion']) ?></p>
+            <p><strong>Nivel:</strong> <?= htmlspecialchars($curso->campos['nivel']) ?></p>
+            <p><strong>Duración:</strong> <?= htmlspecialchars($curso->campos['duracion']) ?></p>
         </section>
         <section class="unidades-box">
             <h3 class="curso-subt">Unidades</h3>
             <ul>
-                <?php foreach ($curso['unidades'] as $i => $unidad): ?>
+                <?php foreach ($modulos as $modulo): ?>
                     <li class="curso-card">
-                        <a href="/ver-unidad?curso=<?= urlencode($curso['titulo']) ?>&unidad=<?= $i ?>">
-                            <?= htmlspecialchars($unidad['subtitulo']) ?>
+                        <a href="/ver-modulo?modulo=<?= urlencode($modulo['id']) ?>">
+                            <?= htmlspecialchars($modulo['titulo']) ?>
                         </a>
-                        <p><?= htmlspecialchars($unidad['descripcion']) ?></p>
+                        <p><?= htmlspecialchars($modulo['descripcion']) ?></p>
                     </li>
                 <?php endforeach; ?>
             </ul>
         </section>
         <section>
             <h3 class="curso-subt">Evaluación final</h3>
-            <a class="btn-resolver" href="/resolver-evaluacion?curso=<?= urlencode($curso['titulo']) ?>">Resolver
+            <a class="btn-resolver" href="/resolver-evaluacion?curso=<?= urlencode($curso->campos['id']) ?>">Resolver
                 Evaluación</a>
         </section>
     </main>

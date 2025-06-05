@@ -40,14 +40,18 @@ class ColeccionCursos extends Modelo
     }
 
     public function getModulosCurso($idCurso){
-        return $this->queryBuilder->select("modulos", ["id_curso"=>$idCurso]);
+        return $this->queryBuilder->select("modulos", ["curso_id"=>$idCurso]);
     }
 
-    public function getModulo($idCurso, $idModulo){
-        return $this->queryBuilder->select("modulos", ["id_curso" => $idCurso, "id" => $idModulo]);
+    public function getTemasCurso($idCurso){
+        return $this->queryBuilder->select("temas", ["curso_id" => $idCurso]);
+    }
+
+    public function getModulo($idModulo){
+        return current($this->queryBuilder->select("modulos", ["id" => $idModulo]));
     }
 
     public function getEvaluacion($idCurso){
-        return $this->queryBuilder->select("evaluaciones", ["id_curso" => $idCurso]);
+        return $this->queryBuilder->select("evaluaciones", ["curso_id" => $idCurso]);
     }
 }

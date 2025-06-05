@@ -9,9 +9,9 @@
                 <h3>Prepararse por temas</h3>
                 <section class="temas-box">
                     <?php foreach ($cursos as $curso): ?>
-                        <a href="/curso?titulo=<?= urlencode($curso['titulo']) ?>" class="curso-card">
-                            <h4><?= htmlspecialchars($curso['titulo']) ?></h4>
-                            <p><?= nl2br(htmlspecialchars($curso['descripcion'])) ?></p>
+                        <a href="/curso?id=<?= urlencode($curso->campos['id']) ?>" class="curso-card">
+                            <h4><?= htmlspecialchars($curso->campos['titulo']) ?></h4>
+                            <p><?= nl2br(htmlspecialchars($curso->campos['descripcion'])) ?></p>
                         </a>
                     <?php endforeach; ?>
                 </section>

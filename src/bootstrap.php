@@ -32,7 +32,7 @@ $router->get("/", "ControladorPagina@index");
 $router->get('/faq', 'ControladorPagina@faq');
 $router->get("/cursos", "ControladorCursos@cursos");
 $router->get("/curso", "ControladorCursos@curso");
-$router->get("/ver-unidad", "ControladorCursos@verUnidad");
+$router->get("/ver-modulo", "ControladorCursos@verUnidad");
 $router->get("/resolver-evaluacion", "ControladorCursos@resolverEvaluacion");
 $router->post("/resolver-evaluacion", "ControladorCursos@procesarResolverEvaluacion");
 $router->get("/agregar-curso", "ControladorCursos@agregarCurso");
