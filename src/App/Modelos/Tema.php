@@ -46,10 +46,8 @@ class Tema extends Modelo
             if (!isset($valores[$campo])) {
                 continue;
             }
-            $metodo = "set" . str_replace(' ', '', ucwords(str_replace('_', ' ', $campo)));
-            if (method_exists($this, $metodo)) {
-                $this->$metodo($valores[$campo]);
-            }
+            $metodo = "set" . ucfirst($campo);
+            $this->$metodo($valores[$campo]);
         }
     }
 

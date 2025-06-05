@@ -11,11 +11,8 @@ class ControladorUsuarios extends Controlador
 
     public function login()
     {
-        var_dump($_SESSION["usuario"]);
-        die;
         global $request;
-        $rol = $_SESSION['usuario']['rol'] ?? null;
-        if(!is_null( $rol )) {
+        if(!is_null( $_SESSION['usuario'] )) {
             $this->userProfile();
             return;
         }

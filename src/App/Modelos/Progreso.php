@@ -60,10 +60,6 @@ class Progreso extends Modelo
 
     public function setFecha_completado($fecha)
     {
-        $dt = \DateTime::createFromFormat('Y-m-d', $fecha);
-        if (!$dt || $dt->format('Y-m-d') !== $fecha) {
-            throw new InvalidValueFormatException("La fecha de completado debe tener el formato 'YYYY-MM-DD'.");
-        }
         $this->campos['fecha_completado'] = $fecha;
     }
 
@@ -73,10 +69,8 @@ class Progreso extends Modelo
             if (!isset($valores[$campo])) {
                 continue;
             }
-            $metodo = "set" . str_replace(' ', '', ucwords(str_replace('_', ' ', $campo)));
-            if (method_exists($this, $metodo)) {
-                $this->$metodo($valores[$campo]);
-            }
+            $metodo = "set" . ucfirst($campo);
+            $this->$metodo($valores[$campo]);
         }
     }
 

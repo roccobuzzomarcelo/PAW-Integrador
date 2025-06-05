@@ -42,10 +42,6 @@ class Inscripcion extends Modelo
 
     public function setFecha_inscripcion(string $fecha)
     {
-        $dt = \DateTime::createFromFormat('Y-m-d', $fecha);
-        if (!$dt || $dt->format('Y-m-d') !== $fecha) {
-            throw new InvalidValueFormatException("La fecha de inscripcion debe tener el formato 'YYYY-MM-DD'.");
-        }
         $this->campos['fecha_inscripcion'] = $fecha;
     }
 
@@ -55,10 +51,8 @@ class Inscripcion extends Modelo
             if (!isset($valores[$campo])) {
                 continue;
             }
-            $metodo = "set" . str_replace(' ', '', ucwords(str_replace('_', ' ', $campo)));
-            if (method_exists($this, $metodo)) {
-                $this->$metodo($valores[$campo]);
-            }
+            $metodo = "set" . ucfirst($campo);
+            $this->$metodo($valores[$campo]);
         }
     }
 

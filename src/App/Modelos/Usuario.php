@@ -11,7 +11,7 @@ class Usuario extends Modelo
 
     public $campos = [
         "id" => null,
-        "email" => null,
+        "correo" => null,
         "password" => null,
         "nombre" => null,
         "tipo_usuario" => null,
@@ -38,7 +38,7 @@ class Usuario extends Modelo
         $this->campos['nombre'] = $nombre;
     }
 
-    public function setEmail(string $email)
+    public function setCorreo(string $email)
     {
         $email = trim($email);
         if (strlen($email) > 100) {
@@ -47,7 +47,7 @@ class Usuario extends Modelo
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             throw new InvalidValueFormatException("El formato del email no es válido.");
         }
-        $this->campos['email'] = $email;
+        $this->campos['correo'] = $email;
     }
 
     public function setPassword(string $password)
@@ -64,18 +64,14 @@ class Usuario extends Modelo
     public function setTipo_usuario(string $rol)
     {
         $rol = strtolower(trim($rol));
-        if (!in_array($rol, ['usuario', 'admin'])) {
-            throw new InvalidValueFormatException("El rol debe ser 'usuario' o 'admin'.");
+        if (!in_array($rol, ['normal', 'admin'])) {
+            throw new InvalidValueFormatException("El rol debe ser 'normal' o 'admin'.");
         }
         $this->campos['tipo_usuario'] = $rol;
     }
 
     public function setFecha_creacion(string $fecha)
     {
-        $dt = \DateTime::createFromFormat('Y-m-d', $fecha);
-        if (!$dt || $dt->format('Y-m-d') !== $fecha) {
-            throw new InvalidValueFormatException("La fecha de creación debe tener el formato 'YYYY-MM-DD'.");
-        }
         $this->campos['fecha_creacion'] = $fecha;
     }
 
@@ -85,10 +81,8 @@ class Usuario extends Modelo
             if (!isset($valores[$campo])) {
                 continue;
             }
-            $metodo = "set" . str_replace(' ', '', ucwords(str_replace('_', ' ', $campo)));
-            if (method_exists($this, $metodo)) {
-                $this->$metodo($valores[$campo]);
-            }
+            $metodo = "set" . ucfirst($campo);
+            $this->$metodo($valores[$campo]);
         }
     }
 }
