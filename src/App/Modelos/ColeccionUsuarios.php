@@ -16,10 +16,7 @@ class ColeccionUsuarios extends Modelo
 
     public function autenticar($email, $password)
     {
-        $resultado = $this->queryBuilder->select($this->table, [
-            "condiciones" => ["email = :email"],
-            "binds" => [":email" => $email]
-        ]);
+        $resultado = $this->queryBuilder->select($this->table, ["correo" => $email]);
 
         if (empty($resultado)) {
             return null;
@@ -43,10 +40,7 @@ class ColeccionUsuarios extends Modelo
 
     public function existeEmail($email)
     {
-        $resultado = $this->queryBuilder->select($this->table, [
-            "condiciones" => ["email = :email"],
-            "binds" => [":email" => $email]
-        ]);
+        $resultado = $this->queryBuilder->select($this->table, ["correo" => $email]);
         return !empty($resultado);
     }
 }

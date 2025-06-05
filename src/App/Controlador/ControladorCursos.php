@@ -5,12 +5,7 @@ use PAW\src\Core\Controlador;
 use PAW\src\App\Modelos\ColeccionCursos;
 
 class ControladorCursos extends Controlador{
-
-    public function agregarCurso()
-    {
-        $titulo = "PAD - Agregar Curso";
-        require $this->viewsDir . 'agregar-curso.view.php';
-    }
+    public ?string $modelo = ColeccionCursos::class;
 
     public function cursos()
     {
@@ -21,6 +16,10 @@ class ControladorCursos extends Controlador{
 
     public function curso()
     {
+        if(!isset($_SESSION['usuario'])){
+            echo "<script>alert('⚠️ Debes iniciar sesion para ver un curso'); window.location.href = '/login'</script>";
+            return;
+        }
         global $request;
         $cursoId = $request->get('id');
         $curso = $this->modeloInstancia->get($cursoId);
@@ -30,13 +29,51 @@ class ControladorCursos extends Controlador{
 
     public function verUnidad()
     {
-        $curso = $this->buscarCursoPorTitulo($_GET['curso'] ?? '');
-        $unidadIndex = $_GET['unidad'] ?? 0;
-        $unidad = $curso['unidades'][$unidadIndex] ?? null;
+        global $request;
+        $cursoId = $request->get("idCurso");
+        $unidadId = $request->get("idUnidad");
+        $unidad = $this->modeloInstancia->getModulo($cursoId, $unidadId);
         $recursoHtml = $this->embedRecurso($unidad['recurso'] ?? '');
         require $this->viewsDir . 'ver-unidad.view.php';
     }
 
+    public function agregarCurso()
+    {
+        $titulo = "PAD - Agregar Curso";
+        require $this->viewsDir . 'agregar-curso.view.php';
+    }
+
+    public function procesarAgregarCurso()
+    {
+        global $request;
+        $tituloCurso = $request->get("titulo");
+        $descripcionCurso = $request->get("descripcion");
+        $creado_por = $_SESSION["usuario"]["id"] ?? null;
+        $nivel = $request->get("nivel");
+        $duracion = $request->get("duracion");
+        $imagen = $request->get("imagen");
+
+        $datosCurso = [
+            'titulo' => $tituloCurso,
+            'descripcion' => $descripcionCurso,
+            'creado_por' => $creado_por,
+            'nivel' => $nivel,
+            'duracion' => $duracion,
+            'imagen' => $imagen
+        ];
+
+        if(!$this->modeloInstancia->crear($datosCurso)){
+            echo "<script>alert('⚠️ Error al crear el curso'); window.history.back();</script>";
+            return;
+        }
+
+        $temas = $request->get("temario");
+        var_dump($datosCurso, $temas);
+        die;
+
+
+        header("Location: /agregar-unidades");
+    }
 
     public function resolverEvaluacion()
     {
@@ -127,27 +164,6 @@ class ControladorCursos extends Controlador{
         header("Location: /cursos");
         exit;
     }
-
-
-    public function procesarAgregarCurso()
-    {
-        session_start();
-        $_SESSION['curso'] = [
-            'titulo' => $_POST['titulo'],
-            'descripcion' => $_POST['descripcion'],
-            'temario' => $_POST['temario'],
-            'cantidadUnidades' => (int) $_POST['cantidadUnidades'],
-            'nivel' => $_POST['nivel'],
-            'duracion' => $_POST['duracion'],
-            'imagen' => $this->guardarImagen($_FILES['imagen']), // función para mover imagen
-            'unidades' => []
-        ];
-
-        $_SESSION['unidad_actual'] = 1;
-
-        header("Location: /agregar-unidades");
-    }
-
     
     public function procesarAgregarUnidades(){
         session_start();

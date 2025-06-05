@@ -26,7 +26,7 @@ $whoops->register();
 
 $request = new Request;
 
-$router = new Router;
+$router = new Router([$config]);
 $router->setLogger($log);
 $router->get("/", "ControladorPagina@index");
 $router->get('/faq', 'ControladorPagina@faq');
@@ -47,3 +47,4 @@ $router->post("/login", "ControladorUsuarios@procesarLogin");
 $router->get("/register", "ControladorUsuarios@register");
 $router->post("/register", "ControladorUsuarios@procesarRegistro");
 $router->get("/user-profile", "ControladorUsuarios@userProfile");
+$router->get("/logout", "ControladorUsuario@logout");

@@ -5,16 +5,18 @@ namespace PAW\src\App\Controlador;
 use PAW\src\Core\Controlador;
 use PAW\src\App\Modelos\ColeccionUsuarios;
 
-class ControladorUsuario extends Controlador
+class ControladorUsuarios extends Controlador
 {
     public ?string $modelo = ColeccionUsuarios::class;
 
     public function login()
     {
+        var_dump($_SESSION["usuario"]);
+        die;
         global $request;
         $rol = $_SESSION['usuario']['rol'] ?? null;
         if(!is_null( $rol )) {
-            $this->cuenta();
+            $this->userProfile();
             return;
         }
         $htmlClass = "mi-cuenta-pages";
@@ -22,10 +24,10 @@ class ControladorUsuario extends Controlador
         require $this->viewsDir . 'login.view.php';
     }
 
-    public function cuenta(){
+    public function userProfile(){
         $datos = $_SESSION['usuario'];
+        $titulo = 'PAD - Mi cuenta';
         $htmlClass = "mi-cuenta-pages";
-        $titulo = "PAD - Perfil de Usuario";
         require $this->viewsDir . 'user-profile.view.php';
     }
 
@@ -35,6 +37,108 @@ class ControladorUsuario extends Controlador
         echo "<script>
             alert('✅ Sesión cerrada exitosamente');
             window.location.href = '/';
+        </script>";
+    }
+
+    public function procesarLogin()
+    {
+        global $request;
+        // Recoger los datos del formulario
+        $email = $request->get('inputEmail');
+        $password = $request->get('inputPassword');
+
+        // Validación mínima de formato
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            echo "<script>alert('⚠️ Email no valido'); window.history.back();</script>";
+            return;
+        }
+        if (empty($password)) {
+            echo "<script>alert('⚠️ La contraseña no puede estar vacia'); window.history.back();</script>";
+            return;
+        }
+        if(strlen($password) < 8){
+            echo "<script>alert('⚠️ La contraseña debe tener al menos 8 caracteres'); window.history.back();</script>";
+            return;
+        }
+
+        $usuario = $this->modeloInstancia->autenticar($email, $password);
+        if (empty($usuario)) {
+            echo "<script>alert('⚠️ Email o contraseña incorrectos'); window.history.back();</script>";
+            return;
+        }
+        $_SESSION['usuario'] = $usuario->campos;
+        // Éxito: redirigir a página principal u otra
+        echo "<script>
+            alert('✅ Sesion iniciada exitosamente');
+            window.location.href = '/';
+        </script>";
+        exit();
+    }
+
+    public function register()
+    {
+        $titulo = "PAD - Registro";
+        $htmlClass = "mi-cuenta-pages";
+        require $this->viewsDir . 'register.view.php';
+    }
+
+    public function procesarRegistro()
+    {
+        global $request;
+        if (
+            empty($request->get('inputNombre')) ||
+            empty($request->get('inputEmail')) ||
+            empty($request->get('inputPassword')) ||
+            empty($request->get('inputConfirmarPassword'))
+        ) {
+            echo "<script>alert('⚠️ Todos los campos obligatorios deben completarse'); window.history.back();</script>";
+            return;
+        }
+        // Recoger los datos del formulario
+        $nombre = $request->get('inputNombre');
+        $email = $request->get('inputEmail');
+        $password = $request->get('inputPassword');
+        $confirmarPassword = $request->get('inputConfirmarPassword');
+        $datos = [
+            'nombre' => $nombre,
+            'correo' => $email,
+            'password' => $password,
+        ];
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            echo "<script>alert('⚠️ Email no valido'); window.history.back();</script>";
+            return;
+        }
+
+        if (!preg_match("/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/", $nombre)) {
+            echo "<script>alert('⚠️ Nombre no valido'); window.history.back();</script>";
+            return;
+        }
+
+        if(strlen($password) < 8){
+            echo "<script>alert('⚠️ La contraseña debe tener al menos 8 caracteres'); window.history.back();</script>";
+            return;
+        }
+
+        if ($password !== $confirmarPassword) {
+            echo "<script>alert('⚠️ Las contraseña no coinciden'); window.history.back();</script>";
+            return;
+        }
+
+        if($this->modeloInstancia->existeEmail($email)){
+            echo "<script>alert('⚠️ El Email ya esta registrado'); window.history.back();</script>";
+            return;
+        }
+
+        // Crear un nuevo usuario
+        if(!$this->modeloInstancia->crear($datos)){
+            echo "<script>alert('⚠️ Error al crear el usuario'); window.history.back();</script>";
+            return;
+        }
+        // Éxito: redirigir a página principal u otra
+        echo "<script>
+            alert('✅ Registro exitoso');
+            window.location.href = '/user-profile';
         </script>";
     }
 
@@ -102,109 +206,6 @@ class ControladorUsuario extends Controlador
         // Éxito: redirigir a página principal u otra
         echo "<script>
             alert('✅ Usuario actualizado exitosamente');
-            window.location.href = '/mi-cuenta';
-        </script>";
-    }
-
-    public function procesarLogin()
-    {
-        global $request;
-        // Recoger los datos del formulario
-        $email = $request->get('inputEmail');
-        $password = $request->get('inputPassword');
-        // Validación mínima de formato
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            echo "<script>alert('⚠️ Email no valido'); window.history.back();</script>";
-            return;
-        }
-        if (empty($password)) {
-            echo "<script>alert('⚠️ La contraseña no puede estar vacia'); window.history.back();</script>";
-            return;
-        }
-        if(strlen($password) < 8){
-            echo "<script>alert('⚠️ La contraseña debe tener al menos 8 caracteres'); window.history.back();</script>";
-            return;
-        }
-        // Lógica de autenticación delegada
-        $usuario = $this->modeloInstancia->autenticar($email, $password);
-        if (empty($usuario)) {
-            echo "<script>alert('⚠️ Email o contraseña incorrectos'); window.history.back();</script>";
-            return;
-        }
-        // Guardar datos de sesión
-        $_SESSION['usuario'] = $usuario->campos;
-        // Éxito: redirigir a página principal u otra
-        echo "<script>
-            alert('✅ Sesion iniciada exitosamente');
-            window.location.href = '/';
-        </script>";
-        exit();
-    }
-
-
-    public function register()
-    {
-        $titulo = "PAD - Registro";
-        $htmlClass = "mi-cuenta-pages";
-        require $this->viewsDir . 'register.view.php';
-    }
-
-    public function procesarRegistro()
-    {
-        global $request;
-        if (
-            empty($request->get('inputNombre')) ||
-            empty($request->get('inputEmail')) ||
-            empty($request->get('inputPassword')) ||
-            empty($request->get('inputConfirmarPassword'))
-        ) {
-            echo "<script>alert('⚠️ Todos los campos obligatorios deben completarse'); window.history.back();</script>";
-            return;
-        }
-        // Recoger los datos del formulario
-        $nombre = $request->get('inputNombre');
-        $email = $request->get('inputEmail');
-        $password = $request->get('inputPassword');
-        $confirmarPassword = $request->get('inputConfirmarPassword');
-        $datos = [
-            'nombre' => $nombre,
-            'email' => $email,
-            'password' => $password,
-        ];
-
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            echo "<script>alert('⚠️ Email no valido'); window.history.back();</script>";
-            return;
-        }
-
-        if (!preg_match("/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/", $nombre)) {
-            echo "<script>alert('⚠️ Nombre no valido'); window.history.back();</script>";
-            return;
-        }
-
-        if(strlen($password) < 8){
-            echo "<script>alert('⚠️ La contraseña debe tener al menos 8 caracteres'); window.history.back();</script>";
-            return;
-        }
-
-        if ($password !== $confirmarPassword) {
-            echo "<script>alert('⚠️ Las contraseña no coinciden'); window.history.back();</script>";
-            return;
-        }
-
-        if($this->modeloInstancia->existeEmail($email)){
-            echo "<script>alert('⚠️ El Email ya esta registrado'); window.history.back();</script>";
-            return;
-        }
-
-        // Crear un nuevo usuario
-        if(!$this->modeloInstancia->crear($datos)){
-            echo "<script>alert('⚠️ Error al crear el usuario'); window.history.back();</script>";
-            return;
-        }
-        // Éxito: redirigir a página principal u otra
-        echo "<script>
-            alert('✅ Registro exitoso');
             window.location.href = '/mi-cuenta';
         </script>";
     }

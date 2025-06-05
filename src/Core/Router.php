@@ -17,7 +17,10 @@ class Router{
     public String $notFound = 'not-found';
     public String $internalError = 'error-interno';
 
-    public function __construct(){
+    public array $dependencias = [];
+
+    public function __construct(array $dependencias){
+        $this->dependencias = $dependencias;
         $this->get($this->notFound, "ControladorError@notFound");
         $this->get($this->internalError, "ControladorError@errorInterno");
     }
@@ -47,7 +50,7 @@ class Router{
 
     public function call($controlador, $metodo){
         $nombreClase = "PAW\\src\\App\\Controlador\\{$controlador}";
-        $controladorObjeto = new $nombreClase();
+        $controladorObjeto = new $nombreClase(...$this->dependencias);
         $controladorObjeto->$metodo();
     }
 
