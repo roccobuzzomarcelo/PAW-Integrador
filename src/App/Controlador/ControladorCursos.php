@@ -32,9 +32,9 @@ class ControladorCursos extends Controlador{
     public function verUnidad()
     {
         global $request;
-        $cursoId = $request->get("idCurso");
         $moduloId = $request->get("modulo");
         $modulo = $this->modeloInstancia->getModulo($moduloId);
+        $cursoId = $modulo["curso_id"];
         $recursoHtml = $this->embedRecurso($unidad['recurso'] ?? '');
         require $this->viewsDir . 'ver-unidad.view.php';
     }
