@@ -2,38 +2,10 @@
 
 namespace PAW\src\App\Controlador;
 
-class ControladorError
+use PAW\src\Core\Controlador;
+
+class ControladorError extends Controlador
 {
-    public string $viewsDir;
-    public array $menu;
-
-    public function __construct()
-    {
-        $this->viewsDir = __DIR__ . "/../views/";
-        $this->menu = [
-            [
-                "href" => "/",
-                "name" => "Inicio"
-            ],
-            [
-                "href" => "/cursos",
-                "name" => "Cursos"
-            ],
-            [
-                "href" => "/login",
-                "name" => "Iniciar Sesion"
-            ],
-            [
-                "href" => "/register",
-                "name" => "Registrarse"
-            ],
-            [
-                "href" => "/user-profile",
-                "name" => "Perfil de Usuario"
-            ],
-        ];
-    }
-
     public function notFound()
     {
         http_response_code(404);

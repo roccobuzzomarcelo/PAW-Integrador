@@ -8,14 +8,14 @@ use PAW\src\Core\Modelo;
 class Usuario extends Modelo
 {
     public $table = 'usuarios';
+
     public $campos = [
         "id" => null,
-        "nombre" => null,
         "email" => null,
         "password" => null,
-        "rol" => null,
+        "nombre" => null,
+        "tipo_usuario" => null,
         "fecha_creacion" => null,
-        "activo" => null,
     ];
 
     public function setId($id)
@@ -28,6 +28,10 @@ class Usuario extends Modelo
 
     public function setNombre(string $nombre)
     {
+        $nombre = trim($nombre);
+        if (strlen($nombre) === 0) {
+            throw new InvalidValueFormatException("El nombre no puede estar vacío.");
+        }
         if (strlen($nombre) > 50) {
             throw new InvalidValueFormatException("El nombre no puede tener más de 50 caracteres.");
         }
@@ -36,6 +40,7 @@ class Usuario extends Modelo
 
     public function setEmail(string $email)
     {
+        $email = trim($email);
         if (strlen($email) > 100) {
             throw new InvalidValueFormatException("El email no puede tener más de 100 caracteres.");
         }
@@ -47,37 +52,31 @@ class Usuario extends Modelo
 
     public function setPassword(string $password)
     {
-        if (strlen($password) > 255) {
-            throw new InvalidValueFormatException("La contraseña no puede tener más de 255 caracteres.");
-        }
         if (strlen($password) < 8) {
             throw new InvalidValueFormatException("La contraseña debe tener al menos 8 caracteres.");
+        }
+        if (strlen($password) > 255) {
+            throw new InvalidValueFormatException("La contraseña no puede tener más de 255 caracteres.");
         }
         $this->campos['password'] = $password;
     }
 
-    public function setRol(string $rol)
+    public function setTipo_usuario(string $rol)
     {
-        $rol = strtolower($rol);
+        $rol = strtolower(trim($rol));
         if (!in_array($rol, ['usuario', 'admin'])) {
             throw new InvalidValueFormatException("El rol debe ser 'usuario' o 'admin'.");
         }
-        $this->campos['rol'] = $rol;
+        $this->campos['tipo_usuario'] = $rol;
     }
 
     public function setFecha_creacion(string $fecha)
     {
-        $this->campos['fecha_creacion'] = $fecha;
-    }
-
-    public function setActivo($activo)
-    {
-        // Se permite booleano o valores tipo string/número que representen true/false
-        $valor = filter_var($activo, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
-        if (is_null($valor)) {
-            throw new InvalidValueFormatException("El campo 'activo' debe ser un valor booleano.");
+        $dt = \DateTime::createFromFormat('Y-m-d', $fecha);
+        if (!$dt || $dt->format('Y-m-d') !== $fecha) {
+            throw new InvalidValueFormatException("La fecha de creación debe tener el formato 'YYYY-MM-DD'.");
         }
-        $this->campos['activo'] = $valor;
+        $this->campos['fecha_creacion'] = $fecha;
     }
 
     public function set(array $valores)
@@ -86,8 +85,10 @@ class Usuario extends Modelo
             if (!isset($valores[$campo])) {
                 continue;
             }
-            $metodo = "set" . ucfirst($campo);
-            $this->$metodo($valores[$campo]);
+            $metodo = "set" . str_replace(' ', '', ucwords(str_replace('_', ' ', $campo)));
+            if (method_exists($this, $metodo)) {
+                $this->$metodo($valores[$campo]);
+            }
         }
     }
 }

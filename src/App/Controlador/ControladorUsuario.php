@@ -17,16 +17,16 @@ class ControladorUsuario extends Controlador
             $this->cuenta();
             return;
         }
-        $titulo = 'PAWPrints - Login';
         $htmlClass = "mi-cuenta-pages";
+        $titulo = "PAD - Login";
         require $this->viewsDir . 'login.view.php';
     }
 
     public function cuenta(){
         $datos = $_SESSION['usuario'];
-        $titulo = 'PAWPrints - Mi cuenta';
         $htmlClass = "mi-cuenta-pages";
-        require $this->viewsDir . 'mi-cuenta.view.php';
+        $titulo = "PAD - Perfil de Usuario";
+        require $this->viewsDir . 'user-profile.view.php';
     }
 
     public function logout(){
@@ -142,11 +142,11 @@ class ControladorUsuario extends Controlador
     }
 
 
-    public function registro()
+    public function register()
     {
-        $titulo = 'PAWPrints - Registro';
+        $titulo = "PAD - Registro";
         $htmlClass = "mi-cuenta-pages";
-        require $this->viewsDir . 'registro.view.php';
+        require $this->viewsDir . 'register.view.php';
     }
 
     public function procesarRegistro()
