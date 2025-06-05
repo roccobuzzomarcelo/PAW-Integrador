@@ -81,6 +81,27 @@ class ControladorCursos extends Controlador{
             }
         }
 
+        $modulos = $request->get("modulos");
+        foreach($modulos as $modulo){
+            $cont = 1;
+            $datosModulo = [
+                "curso_id" => $cursoId,
+                "titulo" => $modulo["titulo"],
+                "descripcion" => $modulo["descripcion"],
+                "tipo" => $modulo["contenido_tipo"],
+                "url" => $modulo["contenido_url"],
+                "orden" => $cont
+            ];
+            $cont++;
+            if (!$this->modeloInstancia->guardarModulos($datosModulo)) {
+                echo "<script>alert('⚠️ Error al guardar un tema'); window.history.back();</script>";
+                return;
+            }
+        }
+        echo "<script>
+            alert('✅ Curso guardado exitosamente');
+            window.location.href = '/cursos';
+        </script>";
     }
 
     public function resolverEvaluacion()

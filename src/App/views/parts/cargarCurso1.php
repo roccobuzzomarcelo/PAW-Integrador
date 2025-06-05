@@ -78,18 +78,29 @@ function agregarModulo() {
         <label for="modulo-descripcion-${moduloIndex}">Descripción</label>
         <textarea id="modulo-descripcion-${moduloIndex}" name="modulos[${moduloIndex}][descripcion]" required></textarea><br>
 
-        <div class="contenidos-container" id="contenidos-container-${moduloIndex}">
-            <h4>Contenidos del módulo</h4>
-            <!-- Contenido inicial -->
-            ${crearContenidoHTML(moduloIndex, 0)}
+        <div class="contenido-unico-container mb-3">
+            <h4>Contenido del módulo</h4>
+
+            <label>Tipo</label>
+            <select name="modulos[${moduloIndex}][contenido_tipo]" required class="form-select">
+                <option value="texto">Texto</option>
+                <option value="youtube">YouTube</option>
+                <option value="pdf">PDF</option>
+                <option value="archivo">Archivo</option>
+                <option value="link">Link</option>
+            </select>
+
+            <label>URL / Ruta del contenido</label>
+            <input type="text" name="modulos[${moduloIndex}][contenido_url]" required class="form-control">
         </div>
-        <button type="button" onclick="agregarContenido(${moduloIndex})">Agregar contenido</button>
-        <br><br>
+
+        <br>
         <button type="button" onclick="eliminarModulo(this)">Eliminar módulo</button>
     `;
     container.appendChild(art);
     moduloIndex++;
 }
+
 
 
 function eliminarModulo(boton) {
@@ -116,33 +127,6 @@ function eliminarTema(boton) {
     const tema = boton.closest('.tema-item');
     tema.remove();
     temaIndex--;
-}
-
-let contenidoIndex = {};
-
-function crearContenidoHTML(modIndex, contIndex) {
-    return `
-        <div class="contenido-item mb-3" data-index="${contIndex}">
-            <label>Título</label>
-            <input type="text" name="modulos[${modIndex}][contenidos][${contIndex}][titulo]" required class="form-control">
-
-            <label>Tipo</label>
-            <select name="modulos[${modIndex}][contenidos][${contIndex}][tipo]" required class="form-select">
-                <option value="texto">Texto</option>
-                <option value="youtube">YouTube</option>
-                <option value="pdf">PDF</option>
-                <option value="archivo">Archivo</option>
-                <option value="link">Link</option>
-            </select>
-
-            <label>URL / Ruta del contenido</label>
-            <input type="text" name="modulos[${modIndex}][contenidos][${contIndex}][url]" required class="form-control">
-
-            <input type="hidden" name="modulos[${modIndex}][contenidos][${contIndex}][orden]" value="${contIndex}">
-
-            <button type="button" onclick="eliminarContenido(this)">Eliminar contenido</button>
-        </div>
-    `;
 }
 
 function agregarContenido(modIndex) {

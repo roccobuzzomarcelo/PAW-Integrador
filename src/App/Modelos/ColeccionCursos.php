@@ -36,7 +36,7 @@ class ColeccionCursos extends Modelo
     }
 
     public function guardarModulos(array $datos){
-
+        return $this->queryBuilder->insert("modulos", $datos);
     }
 
     public function getModulosCurso($idCurso){
