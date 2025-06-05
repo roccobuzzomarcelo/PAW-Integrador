@@ -48,9 +48,9 @@ class ControladorCursos extends Controlador{
         global $request;
         $tituloCurso = $request->get("titulo");
         $descripcionCurso = $request->get("descripcion");
-        $creado_por = $_SESSION["usuario"]["id"] ?? null;
+        $creado_por = $_SESSION["usuario"]["id"];
         $nivel = $request->get("nivel");
-        $duracion = $request->get("duracion");
+        $duracion =(int) $request->get("duracion");
         $imagen = $request->get("imagen");
 
         $datosCurso = [
@@ -62,17 +62,25 @@ class ControladorCursos extends Controlador{
             'imagen' => $imagen
         ];
 
-        if(!$this->modeloInstancia->crear($datosCurso)){
+        $cursoId = $this->modeloInstancia->crear($datosCurso);
+
+        if(!$cursoId){
             echo "<script>alert('⚠️ Error al crear el curso'); window.history.back();</script>";
             return;
         }
-
         $temas = $request->get("temario");
-        var_dump($datosCurso, $temas);
-        die;
+        foreach ($temas as $orden => $temaTitulo) {
+            $temaDatos = [
+                'curso_id' => $cursoId,
+                'titulo' => $temaTitulo,
+            ];
 
+            if (!$this->modeloInstancia->guardarTema($temaDatos)) {
+                echo "<script>alert('⚠️ Error al guardar un tema'); window.history.back();</script>";
+                return;
+            }
+        }
 
-        header("Location: /agregar-unidades");
     }
 
     public function resolverEvaluacion()
@@ -82,150 +90,9 @@ class ControladorCursos extends Controlador{
         $titulo = "PAD - Resolver Evaluación";
         require $this->viewsDir . 'resolver-evaluacion.view.php';
     }
-    public function agregarUnidades()
-    {
-        session_start();
-        $actual = $_SESSION['unidad_actual'];
-        $max = $_SESSION['curso']['cantidadUnidades'];
-        $titulo = "PAD - Agregar Unidades";
-        require $this->viewsDir . 'agregar-unidades.view.php';
-    }
-
-    public function agregarEvaluacion()
-    {
-        session_start();
-        $titulo = "PAD - Agregar Evaluación";
-        require $this->viewsDir . 'agregar-evaluacion.view.php';
-    }
-
-   public function procesarAgregarEvaluacion()
-    {
-        session_start();
-        if (!isset($_SESSION['curso'])) {
-            die("No hay curso en sesión.");
-        }
-
-        $curso = $_SESSION['curso'];
-        $tituloCurso = $curso['titulo'];
-        $preguntas = $_POST['preguntas'] ?? [];
-
-        // Armamos la evaluación en texto plano
-        $datosEvaluacion = "CURSO: " . $tituloCurso . "\n";
-        $datosEvaluacion .= "PREGUNTAS:\n";
-
-        $contador = 1;
-        foreach ($preguntas as $pregunta) {
-            $datosEvaluacion .= "\n";
-            $datosEvaluacion .= "PREGUNTA " . $contador . ": " . $pregunta['pregunta'] . "\n";
-
-            $datosEvaluacion .= "OPCIONES:\n";
-            $contador2 = 1;
-            foreach ($pregunta['opciones'] as $respuesta) {
-                $datosEvaluacion .= $contador2 . ") " . $respuesta . "\n";
-                $contador2++;
-            }
-
-            $datosEvaluacion .= "Respuesta correcta: " . $pregunta['respuesta_correcta'] . "\n";
-            $contador++;
-        }
-
-        $datosEvaluacion .= "\n---\n";
-
-        // Guardar evaluación en modo texto plano
-        $archivoEvaluacion = __DIR__ . "/../../evaluaciones.txt";
-        file_put_contents($archivoEvaluacion, $datosEvaluacion, FILE_APPEND);
-
-        // Armar curso en texto plano
-        $datosCurso = "TITULO: " . $curso['titulo'] . "\n";
-        $datosCurso .= "DESCRIPCION: " . $curso['descripcion'] . "\n";
-        $datosCurso .= "TEMARIO: \n" . $curso['temario'] . "\n";
-        $datosCurso .= "CANTIDAD_UNIDADES: " . $curso['cantidadUnidades'] . "\n";
-        $datosCurso .= "NIVEL: " . $curso['nivel'] . "\n";
-        $datosCurso .= "DURACION: " . $curso['duracion'] . "\n";
-        $datosCurso .= "IMAGEN: " . $curso['imagen'] . "\n";
-        $datosCurso .= "UNIDADES:\n";
-        foreach ($curso['unidades'] as $unidad) {
-            $datosCurso .= "\n";
-            $datosCurso .= "UNIDAD:\n";
-            $datosCurso .= "SUBTITULO: " . $unidad['subtitulo'] . "\n";
-            $datosCurso .= "DESCRIPCION: " . $unidad['descripcion'] . "\n";
-            $datosCurso .= "RECURSO: " . $unidad['recurso'] . "\n";
-        }
-        $datosCurso .= "\n";
-        $datosCurso .= "---\n";
-        // Guardar curso
-        $archivoCurso = __DIR__ . "/../../cursos.txt";
-        file_put_contents($archivoCurso, $datosCurso, FILE_APPEND);
-
-        // Limpiar sesión
-        unset($_SESSION['curso'], $_SESSION['unidad_actual']);
-
-        // Redirigir
-        header("Location: /cursos");
-        exit;
-    }
-    
-    public function procesarAgregarUnidades(){
-        session_start();
-
-        // Directorio donde guardaremos los archivos subidos
-        $uploadDir = __DIR__ . '/../../public/uploads/';
-        if (!is_dir($uploadDir)) {
-            mkdir($uploadDir, 0755, true);
-        }
-
-        $recursoFinal = '';
-
-        // 1) Si subieron un archivo
-        if (isset($_FILES['recursoArchivo']) && $_FILES['recursoArchivo']['error'] === UPLOAD_ERR_OK) {
-            $archivoTemp   = $_FILES['recursoArchivo']['tmp_name'];
-            $nombreOriginal = basename($_FILES['recursoArchivo']['name']);
-            // Crear un nombre único para evitar sobreescrituras:
-            $extension = pathinfo($nombreOriginal, PATHINFO_EXTENSION);
-            $nombreUnico = uniqid('recurso_') . '.' . $extension;
-            $destino = $uploadDir . $nombreUnico;
-
-            if (move_uploaded_file($archivoTemp, $destino)) {
-                // Guardamos la URL pública (ajusta según tu .htaccess o tu base URL)
-                // Por ejemplo, si public/ es la raíz web, podrías usar "/uploads/{$nombreUnico}"
-                $recursoFinal = '/uploads/' . $nombreUnico;
-            } else {
-                // Manejo de error al mover el archivo
-                $recursoFinal = '';
-            }
-        }
-        // 2) Si en lugar de archivo, pegaron un enlace
-        elseif (!empty($_POST['recursoLink'])) {
-            // Sanitizar la URL
-            $url = filter_var($_POST['recursoLink'], FILTER_SANITIZE_URL);
-            if (filter_var($url, FILTER_VALIDATE_URL)) {
-                $recursoFinal = $url;
-            } else {
-                $recursoFinal = ''; // URL inválida
-            }
-        }
-
-        // 3) Guardamos en la sesión
-        $_SESSION['curso']['unidades'][] = [
-            'subtitulo'   => $_POST['subtitulo'],
-            'descripcion' => $_POST['descripcion'],
-            'recurso'     => $recursoFinal, 
-        ];
-
-        // Avanzar de unidad
-        $_SESSION['unidad_actual']++;
-        if ($_SESSION['unidad_actual'] > $_SESSION['curso']['cantidadUnidades']) {
-            header("Location: /agregar-evaluacion");
-        } else {
-            header("Location: /agregar-unidades");
-        }
-        exit;
-    }
-
 
     public function procesarResolverEvaluacion()
     {
-        session_start();
         $respuestas = $_POST['respuestas'] ?? [];
         $curso = $_POST['curso'] ?? '';
         $evaluacion = $this->obtenerEvaluacionPorCurso($curso);
@@ -256,7 +123,6 @@ class ControladorCursos extends Controlador{
 
     public function resultadoEvaluacion()
     {
-        session_start();
         $resultado = $_SESSION['resultado_evaluacion'] ?? null;
         $titulo = "PAD - Resultados";
         unset($_SESSION['resultado_evaluacion']);
@@ -269,196 +135,6 @@ class ControladorCursos extends Controlador{
         $text = preg_replace('/[^a-z0-9]+/', '-', $text);
         return trim($text, '-');
     }
-
-    public function parsearCursos()
-    {
-        $ruta = __DIR__ . "/../../cursos.txt";
-        $cursos = [];
-
-        if (!file_exists($ruta)) {
-            return $cursos;
-        }
-
-        $contenido = file_get_contents($ruta);
-        $bloques = preg_split('/-{3,}\R/', $contenido); // Separador: línea con al menos tres guiones
-
-        foreach ($bloques as $bloque) {
-            if (trim($bloque) === '') continue;
-
-            $lineas = explode("\n", trim($bloque));
-            $curso = [];
-            $unidades = [];
-            $unidadActual = [];
-            $enTemario = false;
-
-            foreach ($lineas as $linea) {
-                $linea = trim($linea);
-                if ($linea === '') continue;
-
-                if (str_starts_with($linea, "TITULO:")) {
-                    $curso['titulo'] = trim(substr($linea, 7));
-                    $enTemario = false;
-                } elseif (str_starts_with($linea, "DESCRIPCION:") && !isset($curso['descripcion'])) {
-                    $curso['descripcion'] = trim(substr($linea, 12));
-                    $enTemario = false;
-                } elseif (str_starts_with($linea, "TEMARIO:")) {
-                    $curso['temario'] = '';
-                    $enTemario = true;
-                } elseif (str_starts_with($linea, "CANTIDAD_UNIDADES:")) {
-                    $curso['cantidadUnidades'] = (int) trim(substr($linea, 18));
-                    $enTemario = false;
-                } elseif (str_starts_with($linea, "NIVEL:")) {
-                    $curso['nivel'] = trim(substr($linea, 6));
-                    $enTemario = false;
-                } elseif (str_starts_with($linea, "DURACION:")) {
-                    $curso['duracion'] = trim(substr($linea, 9));
-                    $enTemario = false;
-                } elseif (str_starts_with($linea, "IMAGEN:")) {
-                    $curso['imagen'] = trim(substr($linea, 7));
-                    $enTemario = false;
-                } elseif (str_starts_with($linea, "UNIDAD:")) {
-                    if (!empty($unidadActual)) {
-                        $unidades[] = $unidadActual;
-                        $unidadActual = [];
-                    }
-                    $enTemario = false;
-                } elseif (str_starts_with($linea, "SUBTITULO:")) {
-                    $unidadActual['subtitulo'] = trim(substr($linea, 10));
-                } elseif (str_starts_with($linea, "DESCRIPCION:")) {
-                    $unidadActual['descripcion'] = trim(substr($linea, 12));
-                } elseif (str_starts_with($linea, "RECURSO:")) {
-                    $unidadActual['recurso'] = trim(substr($linea, 8));
-                } elseif ($enTemario) {
-                    $curso['temario'] .= ($curso['temario'] ? "\n" : "") . $linea;
-                }
-            }
-
-            if (!empty($unidadActual)) {
-                $unidades[] = $unidadActual;
-            }
-
-            $curso['unidades'] = $unidades;
-            $cursos[] = $curso;
-        }
-
-        return $cursos;
-    }
-
-
-    public function parsearEvaluaciones()
-    {
-        $archivo = __DIR__ . "/../../evaluaciones.txt";
-        $evaluaciones = [];
-
-        if (!file_exists($archivo)) {
-            return $evaluaciones;
-        }
-
-        $contenido = file_get_contents($archivo);
-        $bloques = preg_split('/-{3,}/', $contenido);
-
-        foreach ($bloques as $bloque) {
-            $lineas = array_values(array_filter(array_map('trim', explode("\n", $bloque))));
-            if (count($lineas) === 0) continue;
-
-            $evaluacion = [
-                'curso' => '',
-                'preguntas' => []
-            ];
-
-            $i = 0;
-            while ($i < count($lineas)) {
-                $linea = $lineas[$i];
-
-                if (str_starts_with($linea, 'CURSO:')) {
-                    $evaluacion['curso'] = trim(substr($linea, strlen('CURSO:')));
-                    $i++;
-                } elseif (str_starts_with($linea, 'PREGUNTA')) {
-                    $preguntaTexto = trim(substr($linea, strpos($linea, ':') + 1));
-                    $i++;
-
-                    // Buscar "OPCIONES:"
-                    while ($i < count($lineas) && stripos($lineas[$i], 'OPCIONES') === false) {
-                        $i++;
-                    }
-                    $i++; // Saltar la línea "OPCIONES:"
-
-                    // Obtener opciones numeradas
-                    $opciones = [];
-                    while ($i < count($lineas) && preg_match('/^\d+\)/', $lineas[$i])) {
-                        $opciones[] = preg_replace('/^\d+\)\s*/', '', $lineas[$i]);
-                        $i++;
-                    }
-
-                    // Obtener respuesta correcta
-                    $respuesta_correcta = '';
-                    if ($i < count($lineas) && str_starts_with($lineas[$i], 'Respuesta correcta:')) {
-                        $respuesta_correcta = trim(substr($lineas[$i], strlen('Respuesta correcta:')));
-                        $i++;
-                    }
-
-                    $evaluacion['preguntas'][] = [
-                        'pregunta' => $preguntaTexto,
-                        'opciones' => $opciones,
-                        'respuesta_correcta' => $respuesta_correcta
-                    ];
-                } else {
-                    $i++;
-                }
-            }
-
-            if (!empty($evaluacion['curso']) && !empty($evaluacion['preguntas'])) {
-                $evaluaciones[] = $evaluacion;
-            }
-        }
-
-        return $evaluaciones;
-    }
-
-
-    public function buscarCursoPorTitulo(string $tituloBuscado): ?array
-    {
-        foreach ($this->cursos as $curso) {
-            if (strcasecmp($curso['titulo'], $tituloBuscado) === 0) { // compara sin distinguir mayúsculas/minúsculas
-                return $curso;
-            }
-        }
-        return null; // No se encontró ningún curso con ese título
-    }
-
-    function guardarImagen($inputName = 'imagen', $directorio = 'uploads/')
-    {
-        // Asegurar que el nombre sea string
-        if (!is_string($inputName)) {
-            return ''; // Previene errores
-        }
-
-        // Verificar existencia y que sea un array
-        if (!isset($_FILES[$inputName]) || !is_array($_FILES[$inputName])) {
-            return '';
-        }
-
-        // Verificar que no haya errores
-        if ($_FILES[$inputName]['error'] !== UPLOAD_ERR_OK) {
-            return '';
-        }
-
-        $ext = pathinfo($_FILES[$inputName]['name'], PATHINFO_EXTENSION);
-        $nombreImagen = uniqid('img_') . '.' . $ext;
-
-        if (!is_dir($directorio)) {
-            mkdir($directorio, 0777, true);
-        }
-
-        $rutaDestino = rtrim($directorio, '/') . '/' . $nombreImagen;
-
-        if (move_uploaded_file($_FILES[$inputName]['tmp_name'], $rutaDestino)) {
-            return $nombreImagen;
-        }
-
-        return ''; // Fallback si falla el movimiento
-    }
-
 
     public function embedRecurso(string $rutaOUrl): string
     {

@@ -53,8 +53,8 @@
 
         <fieldset class="mb-3">
             <legend>Duración</legend>
-            <label for="duracion" class="form-label">Duración estimada</label>
-            <input type="text" class="form-control" id="duracion" name="duracion" placeholder="Ej: 4 semanas">
+            <label for="duracion" class="form-label">Duración estimada (Horas)</label>
+            <input type="number" class="form-control" id="duracion" name="duracion" placeholder="Ej: 4">
         </fieldset>
     </section>
 

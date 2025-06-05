@@ -28,11 +28,11 @@ class ColeccionCursos extends Modelo
     }
 
     public function crear($datos){
-        return $this->queryBuilder->insert($this->table, $datos);
+        return $this->queryBuilder->insertConReturnId($this->table, $datos);
     }
 
-    public function guardarTemas(array $temas){
-        
+    public function guardarTema($tema){
+        return $this->queryBuilder->insert("temas", $tema);
     }
 
     public function guardarModulos(array $datos){

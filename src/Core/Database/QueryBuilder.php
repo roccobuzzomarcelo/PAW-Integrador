@@ -56,6 +56,26 @@ class QueryBuilder
         return $stmt->execute();
     }
 
+    public function insertConReturnId($tabla, $valores){
+        $campos = array_keys($valores);
+        $placeholders = array_map(function($campo) {
+            return ":$campo";
+        }, $campos);
+
+        $query = "INSERT INTO {$tabla} (" . implode(", ", $campos) . ") VALUES (" . implode(", ", $placeholders) . ")";
+        $stmt = $this->pdo->prepare($query);
+
+        foreach ($valores as $campo => $valor) {
+            $tipo = is_int($valor) ? PDO::PARAM_INT : PDO::PARAM_STR;
+            $stmt->bindValue(":$campo", $valor, $tipo);
+        }
+        if ($stmt->execute()) {
+            return $this->pdo->lastInsertId(); // 👈 Esta línea te devuelve el ID insertado
+        } else {
+            return false;
+        }
+    }
+
     public function update($tabla, $valores, $id){
         $campos = array_keys($valores);
         $set = [];
