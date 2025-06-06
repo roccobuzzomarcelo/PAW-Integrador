@@ -10,9 +10,8 @@
         <?php endif; ?>
 
         <p><strong>Recurso:</strong></p>
-        <iframe width="560" height="315" src="<?= $modulo["url"] ?>" frameborder="0" allowfullscreen
-            title="Video de Youtube"></iframe>
-
+        <p><strong>Recurso:</strong></p>
+        <?= $contenido ?>
         <a href="/curso?id=<?= urlencode($cursoId) ?>">← Volver al curso</a>
     </main>
     <?php include "parts/footer.php"; ?>

@@ -62,9 +62,8 @@ class ControladorCursos extends Controlador{
         $modulo = $this->modeloInstancia->getModulo($moduloId);
         $cursoId = $modulo["curso_id"];
         $usuarioId = $_SESSION["usuario"]["id"];
-
+        $contenido = $this->embedRecurso($modulo["tipo"], $modulo["url"]);
         $this->modeloInstancia->marcarCompletado($moduloId, $cursoId, $usuarioId);
-        $recursoHtml = $this->embedRecurso($unidad['recurso'] ?? '');
         require $this->viewsDir . 'ver-unidad.view.php';
     }
 
@@ -84,7 +83,18 @@ class ControladorCursos extends Controlador{
         $creado_por = $_SESSION["usuario"]["id"];
         $nivel = $request->get("nivel");
         $duracion =(int) $request->get("duracion");
-        $imagen = $request->get("imagen");
+
+        // Imagen del curso
+        $imagenCurso = $_FILES['imagen']['name'] ?? null;
+        $rutaImagenCurso = null;
+        $carpetaImagenes = __DIR__ . '/../../../public/uploads/';
+
+        if ($imagenCurso && $_FILES['imagen']['error'] === 0) {
+            $destinoImagen = $carpetaImagenes . basename($_FILES['imagen']['name']);
+            if (move_uploaded_file($_FILES['imagen']['tmp_name'], $destinoImagen)) {
+                $rutaImagenCurso = '/uploads/' . basename($_FILES['imagen']['name']);
+            }
+        }
 
         $datosCurso = [
             'titulo' => $tituloCurso,
@@ -92,7 +102,7 @@ class ControladorCursos extends Controlador{
             'creado_por' => $creado_por,
             'nivel' => $nivel,
             'duracion' => $duracion,
-            'imagen' => $imagen
+            'imagen' => $rutaImagenCurso
         ];
 
         $cursoId = $this->modeloInstancia->crear($datosCurso);
@@ -115,21 +125,47 @@ class ControladorCursos extends Controlador{
         }
 
         $modulos = $request->get("modulos");
-        $cont = 1;
-        foreach($modulos as $modulo){
+        $archivosModulo = $_FILES['modulos'] ?? [];
+
+        $i = 0;
+        foreach ($modulos as $indice => $modulo) {
+            $contenidoTipo = null;
+            $contenidoUrl = null;
+
+            // Verificar si es un link
+            if (!empty($modulo['link'])) {
+                $contenidoTipo = 'link';
+                $contenidoUrl = $modulo['link'];
+            }
+            // Si no es link, verificar si se subió un archivo
+            elseif (!empty($archivosModulo['name'][$indice]['archivo']) &&
+                    $archivosModulo['error'][$indice]['archivo'] === 0) {
+
+                $nombreArchivo = basename($archivosModulo['name'][$indice]['archivo']);
+                $tmpArchivo = $archivosModulo['tmp_name'][$indice]['archivo'];
+                $rutaDestino = $carpetaImagenes . $nombreArchivo;
+
+                if (move_uploaded_file($tmpArchivo, $rutaDestino)) {
+                    $contenidoTipo = 'archivo';
+                    $contenidoUrl = '/uploads/' . $nombreArchivo;
+                }
+            }
+
             $datosModulo = [
                 "curso_id" => $cursoId,
                 "titulo" => $modulo["titulo"],
                 "descripcion" => $modulo["descripcion"],
-                "tipo" => $modulo["contenido_tipo"],
-                "url" => $modulo["contenido_url"],
-                "orden" => $cont
+                "tipo" => $this->detectarTipoRecurso($contenidoUrl),
+                "url" => $contenidoUrl,
+                "orden" => $i + 1
             ];
-            $cont++;
+
             if (!$this->modeloInstancia->guardarModulos($datosModulo)) {
-                echo "<script>alert('⚠️ Error al guardar un tema'); window.history.back();</script>";
+                echo "<script>alert('⚠️ Error al guardar un módulo'); window.history.back();</script>";
                 return;
             }
+
+            $i++;
         }
         echo "<script>
             alert('✅ Curso guardado exitosamente');
@@ -186,72 +222,71 @@ class ControladorCursos extends Controlador{
         require $this->viewsDir . 'resultados.view.php';
     }
 
-    function slugify($text)
-    {
-        $text = strtolower(trim($text));
-        $text = preg_replace('/[^a-z0-9]+/', '-', $text);
-        return trim($text, '-');
-    }
-
-    public function embedRecurso(string $rutaOUrl): string
+    public function detectarTipoRecurso(string $rutaOUrl): string
     {
         if (empty($rutaOUrl)) {
+            return 'vacio';
+        }
+
+        // 1) YouTube
+        if (strpos($rutaOUrl, 'youtube.com/watch?v=') !== false || strpos($rutaOUrl, 'youtu.be/') !== false) {
+            return 'youtube';
+        }
+
+        // 2) URL externa
+        if (filter_var($rutaOUrl, FILTER_VALIDATE_URL)) {
+            $ext = strtolower(pathinfo(parse_url($rutaOUrl, PHP_URL_PATH), PATHINFO_EXTENSION));
+
+            if ($ext === 'pdf') return 'pdf';
+            if (in_array($ext, ['mp3', 'wav', 'ogg'])) return 'audio';
+            if (in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp'])) return 'imagen';
+
+            return 'url'; // URL externa genérica
+        }
+
+        // 3) Ruta interna (archivo subido al servidor)
+        $ext = strtolower(pathinfo($rutaOUrl, PATHINFO_EXTENSION));
+
+        if ($ext === 'pdf') return 'pdf';
+        if (in_array($ext, ['mp3', 'wav', 'ogg'])) return 'audio';
+        if (in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp'])) return 'imagen';
+
+        return 'archivo'; // Otro tipo de archivo (ej: zip, docx...)
+    }
+
+    public function embedRecurso(string $tipo, string $rutaOUrl): string
+    {
+        if ($tipo === 'vacio') {
             return '<p>No hay recurso para esta unidad.</p>';
         }
 
-        // 1) Detectar YouTube
-        if (strpos($rutaOUrl, 'youtube.com/watch?v=') !== false) {
-            parse_str(parse_url($rutaOUrl, PHP_URL_QUERY), $params);
-            if (isset($params['v'])) {
-                $videoId = htmlspecialchars($params['v']);
+        switch ($tipo) {
+            case 'youtube':
+                // Soporte para ambos formatos
+                if (strpos($rutaOUrl, 'youtube.com/watch?v=') !== false) {
+                    parse_str(parse_url($rutaOUrl, PHP_URL_QUERY), $params);
+                    $videoId = htmlspecialchars($params['v'] ?? '');
+                } else {
+                    $videoId = htmlspecialchars(basename(parse_url($rutaOUrl, PHP_URL_PATH)));
+                }
                 return "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/{$videoId}\" frameborder=\"0\" allowfullscreen></iframe>";
-            }
-        }
-        if (strpos($rutaOUrl, 'youtu.be/') !== false) {
-            $videoId = basename(parse_url($rutaOUrl, PHP_URL_PATH));
-            $videoId = htmlspecialchars($videoId);
-            return "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/{$videoId}\" frameborder=\"0\" allowfullscreen></iframe>";
-        }
 
-        // 2) Si es URL externa cualquiera (que no sea YouTube), devolvemos link
-        if (filter_var($rutaOUrl, FILTER_VALIDATE_URL)) {
-            // Si la URL termina en .pdf -> embebemos
-            $ext = strtolower(pathinfo(parse_url($rutaOUrl, PHP_URL_PATH), PATHINFO_EXTENSION));
-            if ($ext === 'pdf') {
-                return "<embed src=\"{$rutaOUrl}\" type=\"application/pdf\" width=\"100%\" height=\"600px\" />";
-            }
-            // Para audio externos
-            if (in_array($ext, ['mp3','wav','ogg'])) {
-                return "<audio controls src=\"{$rutaOUrl}\">Tu navegador no soporta audio.</audio>";
-            }
-            // Para imágenes externas
-            if (in_array($ext, ['jpg','jpeg','png','gif','webp'])) {
-                return "<img src=\"{$rutaOUrl}\" alt=\"Recurso imagen\" style=\"max-width:100%;\" />";
-            }
-            // Cualquier otro link externo
-            return "<p><a href=\"{$rutaOUrl}\" target=\"_blank\" rel=\"noopener\">Ver recurso</a></p>";
-        }
-
-        // 3) Si no es URL válida, asumimos que es ruta interna hacia /uploads/ (archivo subido)
-        // Verificamos la extensión para decidir cómo mostrarlo.
-        $rutaAbsoluta = $_SERVER['DOCUMENT_ROOT'] . $rutaOUrl;
-        $ext = strtolower(pathinfo($rutaOUrl, PATHINFO_EXTENSION));
-
-        switch ($ext) {
             case 'pdf':
                 return "<embed src=\"{$rutaOUrl}\" type=\"application/pdf\" width=\"100%\" height=\"600px\" />";
-            case 'mp3':
-            case 'wav':
-            case 'ogg':
+
+            case 'audio':
                 return "<audio controls src=\"{$rutaOUrl}\">Tu navegador no soporta audio.</audio>";
-            case 'jpg':
-            case 'jpeg':
-            case 'png':
-            case 'gif':
-            case 'webp':
+
+            case 'imagen':
                 return "<img src=\"{$rutaOUrl}\" alt=\"Recurso imagen\" style=\"max-width:100%;\" />";
+
+            case 'url':
+                return "<p><a href=\"{$rutaOUrl}\" target=\"_blank\" rel=\"noopener\">Ver recurso</a></p>";
+
+            case 'archivo':
+                return "<p><a href=\"{$rutaOUrl}\" download>Descargar recurso</a></p>";
+
             default:
-                // Para cualquier otro tipo (ZIP, DOCX, XLSX, etc.), devolvemos enlace de descarga
                 return "<p><a href=\"{$rutaOUrl}\" download>Descargar recurso</a></p>";
         }
     }

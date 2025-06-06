@@ -5,7 +5,7 @@
     <main class="curso-detalle">
         <h2><?= htmlspecialchars($curso->campos['titulo']) ?></h2>
         <?php if (!empty($curso->campos['imagen'])): ?>
-            <img src="/uploads/<?= htmlspecialchars($curso->campos['imagen']) ?>" alt="Imagen del curso">
+            <img src="<?= htmlspecialchars($curso->campos['imagen']) ?>" alt="Imagen del curso">
         <?php endif; ?>
         <section class="curso-box">
             <p><strong>Descripción:</strong> <?= nl2br(htmlspecialchars($curso->campos['descripcion'])) ?></p>

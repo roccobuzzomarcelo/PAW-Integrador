@@ -81,17 +81,15 @@ function agregarModulo() {
         <div class="contenido-unico-container mb-3">
             <h4>Contenido del módulo</h4>
 
-            <label>Tipo</label>
-            <select name="modulos[${moduloIndex}][contenido_tipo]" required class="form-select">
-                <option value="texto">Texto</option>
-                <option value="youtube">YouTube</option>
-                <option value="pdf">PDF</option>
-                <option value="archivo">Archivo</option>
-                <option value="link">Link</option>
-            </select>
+            <div class="mb-2">
+                <label for="contenido-link-${moduloIndex}" class="form-label">Link al contenido (opcional)</label>
+                <input type="url" class="form-control" id="contenido-link-${moduloIndex}" name="modulos[${moduloIndex}][link]" oninput="handleLinkInput(${moduloIndex})">
+            </div>
 
-            <label>URL / Ruta del contenido</label>
-            <input type="text" name="modulos[${moduloIndex}][contenido_url]" required class="form-control">
+            <div class="mb-2">
+                <label for="contenido-archivo-${moduloIndex}" class="form-label">Subir archivo (opcional)</label>
+                <input type="file" class="form-control" id="contenido-archivo-${moduloIndex}" name="modulos[${moduloIndex}][archivo]" onchange="handleArchivoInput(${moduloIndex})">
+            </div>
         </div>
 
         <br>
@@ -143,6 +141,29 @@ function eliminarContenido(boton) {
     const cont = boton.closest('.contenido-item');
     cont.remove();
 }
+
+function handleLinkInput(index) {
+    const linkInput = document.getElementById(`contenido-link-${index}`);
+    const fileInput = document.getElementById(`contenido-archivo-${index}`);
+
+    if (linkInput.value.trim() !== "") {
+        fileInput.disabled = true;
+    } else {
+        fileInput.disabled = false;
+    }
+}
+
+function handleArchivoInput(index) {
+    const linkInput = document.getElementById(`contenido-link-${index}`);
+    const fileInput = document.getElementById(`contenido-archivo-${index}`);
+
+    if (fileInput.files.length > 0) {
+        linkInput.disabled = true;
+    } else {
+        linkInput.disabled = false;
+    }
+}
+
 
 </script>
 
