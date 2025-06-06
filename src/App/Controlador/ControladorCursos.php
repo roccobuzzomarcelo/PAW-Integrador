@@ -11,6 +11,7 @@ class ControladorCursos extends Controlador{
     {
         $titulo = "PAD - Cursos";
         $cursos = $this->modeloInstancia->getAll();
+        $permiso = $this->validarAdmin();
         require $this->viewsDir . 'cursos.view.php';
     }
 
@@ -21,14 +22,16 @@ class ControladorCursos extends Controlador{
         }
     }
 
-    public function validarAdmin(){
-
-        //modificar
-        if(!isset($_SESSION['usuario'])){
-            echo "<script>alert('⚠️ Debes iniciar sesion para ver un curso'); window.location.href = '/login'</script>";
-            return;
+    public function validarAdmin(): bool {
+        if (!isset($_SESSION['usuario'])) {
+            return false;
         }
+
+        $rol = $_SESSION['usuario']['rol'] ?? null;
+
+        return $rol === 'admin';
     }
+
 
     public function curso()
     {
