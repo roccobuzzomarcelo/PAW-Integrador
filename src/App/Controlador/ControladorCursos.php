@@ -27,9 +27,9 @@ class ControladorCursos extends Controlador{
             return false;
         }
 
-        $rol = $_SESSION['usuario']['rol'] ?? null;
+        $tipo_usuario = $_SESSION['usuario']['tipo_usuario'] ?? null;
 
-        return $rol === 'admin';
+        return $tipo_usuario === 'admin';
     }
 
 
