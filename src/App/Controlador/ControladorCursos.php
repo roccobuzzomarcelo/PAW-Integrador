@@ -14,39 +14,70 @@ class ControladorCursos extends Controlador{
         require $this->viewsDir . 'cursos.view.php';
     }
 
-    public function curso()
-    {
+    public function validarSesion(){
         if(!isset($_SESSION['usuario'])){
             echo "<script>alert('⚠️ Debes iniciar sesion para ver un curso'); window.location.href = '/login'</script>";
             return;
         }
+    }
+
+    public function validarAdmin(){
+
+        //modificar
+        if(!isset($_SESSION['usuario'])){
+            echo "<script>alert('⚠️ Debes iniciar sesion para ver un curso'); window.location.href = '/login'</script>";
+            return;
+        }
+    }
+
+    public function curso()
+    {
+        $this->validarSesion();
         global $request;
         $cursoId = $request->get('id');
         $curso = $this->modeloInstancia->get($cursoId);
         $temas = $this->modeloInstancia->getTemasCurso($cursoId);
         $modulos = $this->modeloInstancia->getModulosCurso($cursoId);
+        $usuarioId = $_SESSION["usuario"]["id"];
+
+        foreach ($modulos as &$modulo) {
+            $existe = $this->modeloInstancia->existeProgreso($usuarioId, $cursoId, $modulo['id']);
+            if (!$existe) {
+                $this->modeloInstancia->crearProgreso($usuarioId, $cursoId, $modulo['id']);
+                $modulo["completado"] = false;
+            }else{
+                $modulo["completado"] = $this->modeloInstancia->estaCompletado($usuarioId, $cursoId, $modulo["id"]);
+            }
+        }
+        unset($modulo);
         $titulo = htmlspecialchars($curso->campos['titulo'] ?? 'Curso no encontrado');
         require $this->viewsDir . 'curso.view.php';
     }
 
     public function verUnidad()
     {
+        $this->validarSesion();
         global $request;
         $moduloId = $request->get("modulo");
         $modulo = $this->modeloInstancia->getModulo($moduloId);
         $cursoId = $modulo["curso_id"];
+        $usuarioId = $_SESSION["usuario"]["id"];
+
+        $this->modeloInstancia->marcarCompletado($moduloId, $cursoId, $usuarioId);
         $recursoHtml = $this->embedRecurso($unidad['recurso'] ?? '');
         require $this->viewsDir . 'ver-unidad.view.php';
     }
 
     public function agregarCurso()
     {
+        $this->validarAdmin();
         $titulo = "PAD - Agregar Curso";
         require $this->viewsDir . 'agregar-curso.view.php';
     }
 
     public function procesarAgregarCurso()
     {
+        $this->validarAdmin();
         global $request;
         $tituloCurso = $request->get("titulo");
         $descripcionCurso = $request->get("descripcion");
@@ -108,6 +139,7 @@ class ControladorCursos extends Controlador{
 
     public function resolverEvaluacion()
     {
+        $this->validarSesion();
         $curso = $this->buscarCursoPorTitulo($_GET['curso'] ?? '');
         $evaluacion = $this->obtenerEvaluacionPorCurso($curso['titulo'] ?? '');
         $titulo = "PAD - Resolver Evaluación";
@@ -116,6 +148,7 @@ class ControladorCursos extends Controlador{
 
     public function procesarResolverEvaluacion()
     {
+        $this->validarSesion();
         $respuestas = $_POST['respuestas'] ?? [];
         $curso = $_POST['curso'] ?? '';
         $evaluacion = $this->obtenerEvaluacionPorCurso($curso);
@@ -146,6 +179,7 @@ class ControladorCursos extends Controlador{
 
     public function resultadoEvaluacion()
     {
+        $this->validarSesion();
         $resultado = $_SESSION['resultado_evaluacion'] ?? null;
         $titulo = "PAD - Resultados";
         unset($_SESSION['resultado_evaluacion']);
@@ -220,16 +254,5 @@ class ControladorCursos extends Controlador{
                 // Para cualquier otro tipo (ZIP, DOCX, XLSX, etc.), devolvemos enlace de descarga
                 return "<p><a href=\"{$rutaOUrl}\" download>Descargar recurso</a></p>";
         }
-    }
-
-    public function obtenerEvaluacionPorCurso(string $nombreCurso)
-    {
-        foreach ($this->evaluaciones as $evaluacion) {
-            if (isset($evaluacion['curso']) && $evaluacion['curso'] === $nombreCurso) {
-                return $evaluacion;
-            }
-        }
-
-        return null; // No se encontró evaluación para ese curso
     }
 }

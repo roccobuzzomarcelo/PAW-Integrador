@@ -26,10 +26,18 @@
                         <a href="/ver-modulo?modulo=<?= urlencode($modulo['id']) ?>">
                             <?= htmlspecialchars($modulo['titulo']) ?>
                         </a>
+
                         <p><?= htmlspecialchars($modulo['descripcion']) ?></p>
+
+                        <?php if (!empty($modulo['completado'])): ?>
+                            <p class="estado-modulo completado">✅ Completado</p>
+                        <?php else: ?>
+                            <p class="estado-modulo incompleto">❌ No completado</p>
+                        <?php endif; ?>
                     </li>
                 <?php endforeach; ?>
             </ul>
+
         </section>
         <section>
             <h3 class="curso-subt">Evaluación final</h3>

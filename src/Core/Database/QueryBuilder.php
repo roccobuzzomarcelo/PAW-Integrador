@@ -50,7 +50,16 @@ class QueryBuilder
         $stmt = $this->pdo->prepare($query);
 
         foreach ($valores as $campo => $valor) {
-            $tipo = is_int($valor) ? PDO::PARAM_INT : PDO::PARAM_STR;
+            if (is_int($valor)) {
+                $tipo = PDO::PARAM_INT;
+            } elseif (is_bool($valor)) {
+                $tipo = PDO::PARAM_BOOL;
+            } elseif (is_null($valor)) {
+                $tipo = PDO::PARAM_NULL;
+            } else {
+                $tipo = PDO::PARAM_STR;
+            }
+
             $stmt->bindValue(":$campo", $valor, $tipo);
         }
         return $stmt->execute();
@@ -76,25 +85,37 @@ class QueryBuilder
         }
     }
 
-    public function update($tabla, $valores, $id){
-        $campos = array_keys($valores);
+    public function update($tabla, $valores, $condiciones){
         $set = [];
-        foreach ($campos as $campo) {
+        foreach (array_keys($valores) as $campo) {
             $set[] = "$campo = :$campo";
         }
 
-        $query = "UPDATE {$tabla} SET " . implode(", ", $set) . " WHERE id = :id";
+        $where = [];
+        foreach (array_keys($condiciones) as $cond) {
+            $where[] = "$cond = :cond_$cond";
+        }
+
+        $query = "UPDATE {$tabla} SET " . implode(", ", $set) . " WHERE " . implode(" AND ", $where);
         $stmt = $this->pdo->prepare($query);
 
+        // Bind de valores
         foreach ($valores as $campo => $valor) {
-            $tipo = is_int($valor) ? PDO::PARAM_INT : PDO::PARAM_STR;
+            $tipo = is_int($valor) ? PDO::PARAM_INT :
+                    (is_bool($valor) ? PDO::PARAM_BOOL :
+                    (is_null($valor) ? PDO::PARAM_NULL : PDO::PARAM_STR));
             $stmt->bindValue(":$campo", $valor, $tipo);
         }
-        $stmt->bindValue(":id", (int)$id, PDO::PARAM_INT);
+
+        // Bind de condiciones
+        foreach ($condiciones as $campo => $valor) {
+            $tipo = is_int($valor) ? PDO::PARAM_INT :
+                    (is_bool($valor) ? PDO::PARAM_BOOL :
+                    (is_null($valor) ? PDO::PARAM_NULL : PDO::PARAM_STR));
+            $stmt->bindValue(":cond_$campo", $valor, $tipo);
+        }
 
         return $stmt->execute();
-        
-
     }
 
     public function delete(){

@@ -54,4 +54,32 @@ class ColeccionCursos extends Modelo
     public function getEvaluacion($idCurso){
         return $this->queryBuilder->select("evaluaciones", ["curso_id" => $idCurso]);
     }
+
+    public function marcarCompletado($moduloId, $cursoId, $usuarioId){
+        $datosProgreso = [
+            "completado" => true,
+            "fecha_completado" => date("Y-m-d H:i:s")
+        ];
+        return $this->queryBuilder->update("progresos", $datosProgreso, ["modulo_id" => $moduloId, "curso_id" => $cursoId, "usuario_id" => $usuarioId]);
+    }
+
+    public function existeProgreso($usuarioId, $cursoId, $moduloId){
+        $datos = $this->queryBuilder->select("progresos", ["curso_id" => $cursoId, "usuario_id" => $usuarioId, "modulo_id" => $moduloId]);
+        return !empty($datos);
+    }
+
+    public function estaCompletado($usuarioId, $cursoId, $moduloId){
+        $datos = current($this->queryBuilder->select("progresos", ["curso_id" => $cursoId, "usuario_id" => $usuarioId, "modulo_id" => $moduloId]));
+        return $datos["completado"];
+    }
+
+    public function crearProgreso($usuarioId, $cursoId, $moduloId){
+        $datosProgreso = [
+            "usuario_id" => $usuarioId,
+            "curso_id" => $cursoId,
+            "modulo_id" => $moduloId,
+            "completado" => false
+        ];
+        $this->queryBuilder->insert("progresos", $datosProgreso);
+    }
 }
