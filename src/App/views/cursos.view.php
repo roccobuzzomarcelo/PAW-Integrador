@@ -37,13 +37,13 @@
                 <!-- Aca deberia ir la logica que se encargue de mostrar cuales son los cursos activos del usuario 
                 y en caso de que no tenga deberia avisar -->
             </section>
-
-            <!-- Botón para agregar un curso -->
-            <!-- AVISO: esto no deberia tener acceso cualquier usuario, solo los administradores -->
+        
             <section>
-                <a href="/agregar-curso" class="curso-card">
-                    <h4>Agregar un nuevo curso</h4>
-                </a>
+                <?php if ($permiso): ?>
+                    <a href="/agregar-curso" class="curso-card">
+                        <h4>Agregar un nuevo curso</h4>
+                    </a>
+                <?php endif; ?>
                 <!--
                 Despues tenemos que implementar el boton para dar de baja un curso
                 <a href="/eliminar-curso" class="curso-card">
