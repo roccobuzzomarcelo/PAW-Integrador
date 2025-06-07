@@ -13,7 +13,7 @@ class ControladorUsuarios extends Controlador
     {
         global $request;
         $datos = $_SESSION["usuario"] ?? null;
-        if(!is_null($datos)) {
+        if (!is_null($datos)) {
             $this->userProfile();
             return;
         }
@@ -22,14 +22,16 @@ class ControladorUsuarios extends Controlador
         require $this->viewsDir . 'login.view.php';
     }
 
-    public function userProfile(){
+    public function userProfile()
+    {
         $datos = $_SESSION['usuario'];
         $titulo = 'PAD - Mi cuenta';
         $htmlClass = "mi-cuenta-pages";
         require $this->viewsDir . 'user-profile.view.php';
     }
 
-    public function logout(){
+    public function logout()
+    {
         session_unset();           // Limpiamos todas las variables de sesión
         session_destroy();         // Destruimos la sesión
         echo "<script>
@@ -54,7 +56,7 @@ class ControladorUsuarios extends Controlador
             echo "<script>alert('⚠️ La contraseña no puede estar vacia'); window.history.back();</script>";
             return;
         }
-        if(strlen($password) < 8){
+        if (strlen($password) < 8) {
             echo "<script>alert('⚠️ La contraseña debe tener al menos 8 caracteres'); window.history.back();</script>";
             return;
         }
@@ -113,7 +115,7 @@ class ControladorUsuarios extends Controlador
             return;
         }
 
-        if(strlen($password) < 8){
+        if (strlen($password) < 8) {
             echo "<script>alert('⚠️ La contraseña debe tener al menos 8 caracteres'); window.history.back();</script>";
             return;
         }
@@ -123,13 +125,13 @@ class ControladorUsuarios extends Controlador
             return;
         }
 
-        if($this->modeloInstancia->existeEmail($email)){
+        if ($this->modeloInstancia->existeEmail($email)) {
             echo "<script>alert('⚠️ El Email ya esta registrado'); window.history.back();</script>";
             return;
         }
 
         // Crear un nuevo usuario
-        if(!$this->modeloInstancia->crear($datos)){
+        if (!$this->modeloInstancia->crear($datos)) {
             echo "<script>alert('⚠️ Error al crear el usuario'); window.history.back();</script>";
             return;
         }
@@ -140,7 +142,8 @@ class ControladorUsuarios extends Controlador
         </script>";
     }
 
-    public function editarUsuario(){
+    public function editarUsuario()
+    {
         $datos = $_SESSION['usuario'];
         $titulo = 'PAWPrints - Editar usuario';
         $htmlClass = "mi-cuenta-pages";
@@ -159,11 +162,11 @@ class ControladorUsuarios extends Controlador
         }
 
         $nombre = $request->get('inputNombre');
-        if(empty($nombre)){
+        if (empty($nombre)) {
             $nombre = $_SESSION['usuario']['nombre'];
         }
         $email = $request->get('inputEmail');
-        if(empty($email)){
+        if (empty($email)) {
             $email = $_SESSION['usuario']['email'];
         }
         $password = $request->get('password');
@@ -184,7 +187,7 @@ class ControladorUsuarios extends Controlador
             return;
         }
 
-        if(strlen($password) < 8){
+        if (strlen($password) < 8) {
             echo "<script>alert('⚠️ La contraseña debe tener al menos 8 caracteres'); window.history.back();</script>";
             return;
         }
@@ -195,7 +198,7 @@ class ControladorUsuarios extends Controlador
         }
 
         // Actualizar el usuario
-        if(!$this->modeloInstancia->actualizar($_SESSION['usuario']['id'], $datos)){
+        if (!$this->modeloInstancia->actualizar($_SESSION['usuario']['id'], $datos)) {
             echo "<script>alert('⚠️ Error al actualizar el usuario'); window.history.back();</script>";
             return;
         }

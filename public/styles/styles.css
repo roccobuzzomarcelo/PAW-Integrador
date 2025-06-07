@@ -448,7 +448,7 @@ a:hover {
 }
 
 #preview {
-    margin-top: 10px; 
+    margin-top: 10px;
     font-style: italic;
 }
 
@@ -471,10 +471,11 @@ a:hover {
 }
 
 #zonaEnlace {
-    display: none; 
+    display: none;
     margin-top: 10px;
 
 }
+
 /* -- Página de Evaluación -- */
 
 .form-evalucion {
@@ -608,7 +609,7 @@ a:hover {
     padding-bottom: 0.5em;
 }
 
-.fs-add-evaluacion{
+.fs-add-evaluacion {
     border: 1px solid var(--color-border);
     border-radius: 0.5em;
     margin-bottom: 1.5em;
@@ -875,10 +876,36 @@ h3 {
     font-weight: bold;
 }
 
+.sec-cursos {
+    display: grid;
+    align-items: center;
+    justify-content: center;
+}
+
+.mb-3 {
+    display: grid;
+    align-items: center;
+    justify-content: center;
+}
+
 .boton-agregar-curso:hover {
     background-color: #45a049;
 }
 
+.mb-3 legend {
+    display: none;
+}
+
+.btnCursoAdd {
+    margin: 1.5em 0 1.5em 0;
+    padding: 0.5em;
+    width: 300px;
+    background-color: #01595B;
+    color: white;
+    border: none;
+    border-radius: 0.8em;
+    font-weight: bold;
+}
 
 /* MEDIA QUERIES */
 @media (max-width: 536px) {
@@ -924,5 +951,25 @@ h3 {
 
     .form-box {
         width: 20em;
+    }
+
+    .boton-agregarCurso {
+        width: 340px;
+        justify-content: center;
+    }
+
+    .contenedor-agregarCurso {
+        margin-bottom: 40em;
+    }
+
+    .form-cargarCurso {
+        display: grid;
+        justify-items: center;
+    }
+
+    .mb-3 {
+        display: grid;
+        align-items: center;
+        justify-content: center;
     }
 }

@@ -1,11 +1,12 @@
 <form class="form-cargarCurso" action="/agregar-curso" method="POST" enctype="multipart/form-data">
-    <section aria-labelledby="datos-curso">
+    <section class="sec-cursos" aria-labelledby="datos-curso">
         <h2 id="datos-curso">Datos del curso</h2>
 
         <fieldset class="mb-3">
             <legend>Título</legend>
             <label for="titulo" class="form-label">Título del curso</label>
-            <input type="text" class="form-control" id="titulo" name="titulo" placeholder="Ej: Introducción a la programación" required>
+            <input type="text" class="form-control" id="titulo" name="titulo"
+                placeholder="Ej: Introducción a la programación" required>
         </fieldset>
 
         <fieldset class="mb-3">
@@ -18,21 +19,19 @@
             <legend>Temario</legend>
             <label for="tema-0" class="form-label">Tema 1</label>
             <input type="text" class="form-control mb-2" id="tema-0" name="temario[]" required>
-            <button type="button" onclick="agregarTema()">Agregar otro tema</button>
+            <button class="btnCursoAdd" type="button" onclick="agregarTema()">Agregar otro tema</button>
         </fieldset>
     </section>
 
-    <section aria-labelledby="modulos-curso">
+    <section class="sec-cursos" aria-labelledby="modulos-curso">
         <h2 id="modulos-curso">Módulos</h2>
-
         <article id="modulos-container" class="modulo" aria-label="Modulo 1">
-            
-        </article>
 
-        <button type="button" onclick="agregarModulo()">Agregar otro módulo</button>
+        </article>
+        <button class="btnCursoAdd" type="button" onclick="agregarModulo()">Agregar otro módulo</button>
     </section>
 
-    <section aria-labelledby="extras">
+    <section class="sec-cursos" aria-labelledby="extras">
         <h2 id="extras">Datos adicionales</h2>
 
         <fieldset class="mb-3">
@@ -62,15 +61,15 @@
 </form>
 
 <script>
-let moduloIndex = 1;
-let temaIndex = 1;
+    let moduloIndex = 1;
+    let temaIndex = 1;
 
-function agregarModulo() {
-    const container = document.getElementById('modulos-container');
-    const art = document.createElement('article');
-    art.classList.add('modulo');
-    art.setAttribute('aria-label', `Módulo ${moduloIndex + 1}`);
-    art.innerHTML = `
+    function agregarModulo() {
+        const container = document.getElementById('modulos-container');
+        const art = document.createElement('article');
+        art.classList.add('modulo');
+        art.setAttribute('aria-label', `Módulo ${moduloIndex + 1}`);
+        art.innerHTML = `
         <hr>
         <label for="modulo-titulo-${moduloIndex}">Título del módulo</label>
         <input type="text" id="modulo-titulo-${moduloIndex}" name="modulos[${moduloIndex}][titulo]" required><br>
@@ -93,77 +92,76 @@ function agregarModulo() {
         </div>
 
         <br>
-        <button type="button" onclick="eliminarModulo(this)">Eliminar módulo</button>
+        <button class="btnCursoAdd" type="button" onclick="eliminarModulo(this)">Eliminar módulo</button>
     `;
-    container.appendChild(art);
-    moduloIndex++;
-}
+        container.appendChild(art);
+        moduloIndex++;
+    }
 
 
 
-function eliminarModulo(boton) {
-    const modulo = boton.closest('.modulo');
-    modulo.remove();
-    moduloIndex--;
-}
+    function eliminarModulo(boton) {
+        const modulo = boton.closest('.modulo');
+        modulo.remove();
+        moduloIndex--;
+    }
 
-// TEMARIO
-function agregarTema() {
-    const container = document.getElementById('temario-container');
-    const nuevoInput = document.createElement('div');
-    nuevoInput.classList.add('tema-item');
-    nuevoInput.innerHTML = `
+    // TEMARIO
+    function agregarTema() {
+        const container = document.getElementById('temario-container');
+        const nuevoInput = document.createElement('div');
+        nuevoInput.classList.add('tema-item');
+        nuevoInput.innerHTML = `
         <label for="tema-${temaIndex}" class="form-label">Tema ${temaIndex + 1}</label>
         <input type="text" class="form-control mb-2" id="tema-${temaIndex}" name="temario[]" required>
-        <button type="button" onclick="eliminarTema(this)">Eliminar tema</button>
+        <button class="btnCursoAdd" type="button" onclick="eliminarTema(this)">Eliminar tema</button>
     `;
-    container.appendChild(nuevoInput);
-    temaIndex++;
-}
-
-function eliminarTema(boton) {
-    const tema = boton.closest('.tema-item');
-    tema.remove();
-    temaIndex--;
-}
-
-function agregarContenido(modIndex) {
-    if (!contenidoIndex[modIndex]) contenidoIndex[modIndex] = 1;
-    else contenidoIndex[modIndex]++;
-
-    const contContainer = document.getElementById(`contenidos-container-${modIndex}`);
-    const nuevoContenido = document.createElement('div');
-    nuevoContenido.innerHTML = crearContenidoHTML(modIndex, contenidoIndex[modIndex]);
-    contContainer.appendChild(nuevoContenido);
-}
-
-function eliminarContenido(boton) {
-    const cont = boton.closest('.contenido-item');
-    cont.remove();
-}
-
-function handleLinkInput(index) {
-    const linkInput = document.getElementById(`contenido-link-${index}`);
-    const fileInput = document.getElementById(`contenido-archivo-${index}`);
-
-    if (linkInput.value.trim() !== "") {
-        fileInput.disabled = true;
-    } else {
-        fileInput.disabled = false;
+        container.appendChild(nuevoInput);
+        temaIndex++;
     }
-}
 
-function handleArchivoInput(index) {
-    const linkInput = document.getElementById(`contenido-link-${index}`);
-    const fileInput = document.getElementById(`contenido-archivo-${index}`);
-
-    if (fileInput.files.length > 0) {
-        linkInput.disabled = true;
-    } else {
-        linkInput.disabled = false;
+    function eliminarTema(boton) {
+        const tema = boton.closest('.tema-item');
+        tema.remove();
+        temaIndex--;
     }
-}
+
+    function agregarContenido(modIndex) {
+        if (!contenidoIndex[modIndex]) contenidoIndex[modIndex] = 1;
+        else contenidoIndex[modIndex]++;
+
+        const contContainer = document.getElementById(`contenidos-container-${modIndex}`);
+        const nuevoContenido = document.createElement('div');
+        nuevoContenido.innerHTML = crearContenidoHTML(modIndex, contenidoIndex[modIndex]);
+        contContainer.appendChild(nuevoContenido);
+    }
+
+    function eliminarContenido(boton) {
+        const cont = boton.closest('.contenido-item');
+        cont.remove();
+    }
+
+    function handleLinkInput(index) {
+        const linkInput = document.getElementById(`contenido-link-${index}`);
+        const fileInput = document.getElementById(`contenido-archivo-${index}`);
+
+        if (linkInput.value.trim() !== "") {
+            fileInput.disabled = true;
+        } else {
+            fileInput.disabled = false;
+        }
+    }
+
+    function handleArchivoInput(index) {
+        const linkInput = document.getElementById(`contenido-link-${index}`);
+        const fileInput = document.getElementById(`contenido-archivo-${index}`);
+
+        if (fileInput.files.length > 0) {
+            linkInput.disabled = true;
+        } else {
+            linkInput.disabled = false;
+        }
+    }
 
 
 </script>
-

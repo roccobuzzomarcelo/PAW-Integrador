@@ -4,7 +4,8 @@ namespace PAW\src\App\Controlador;
 use PAW\src\Core\Controlador;
 use PAW\src\App\Modelos\ColeccionCursos;
 
-class ControladorCursos extends Controlador{
+class ControladorCursos extends Controlador
+{
     public ?string $modelo = ColeccionCursos::class;
 
     public function cursos()
@@ -15,14 +16,16 @@ class ControladorCursos extends Controlador{
         require $this->viewsDir . 'cursos.view.php';
     }
 
-    public function validarSesion(){
-        if(!isset($_SESSION['usuario'])){
+    public function validarSesion()
+    {
+        if (!isset($_SESSION['usuario'])) {
             echo "<script>alert('⚠️ Debes iniciar sesion para ver un curso'); window.location.href = '/login'</script>";
             return;
         }
     }
 
-    public function validarAdmin(): bool {
+    public function validarAdmin(): bool
+    {
         if (!isset($_SESSION['usuario'])) {
             return false;
         }
@@ -48,7 +51,7 @@ class ControladorCursos extends Controlador{
             if (!$existe) {
                 $this->modeloInstancia->crearProgreso($usuarioId, $cursoId, $modulo['id']);
                 $modulo["completado"] = false;
-            }else{
+            } else {
                 $modulo["completado"] = $this->modeloInstancia->estaCompletado($usuarioId, $cursoId, $modulo["id"]);
             }
         }
@@ -76,7 +79,6 @@ class ControladorCursos extends Controlador{
         $titulo = "PAD - Agregar Curso";
         require $this->viewsDir . 'agregar-curso.view.php';
     }
-
     public function procesarAgregarCurso()
     {
         $this->validarAdmin();
@@ -85,7 +87,7 @@ class ControladorCursos extends Controlador{
         $descripcionCurso = $request->get("descripcion");
         $creado_por = $_SESSION["usuario"]["id"];
         $nivel = $request->get("nivel");
-        $duracion =(int) $request->get("duracion");
+        $duracion = (int) $request->get("duracion");
 
         // Imagen del curso
         $imagenCurso = $_FILES['imagen']['name'] ?? null;
@@ -110,7 +112,7 @@ class ControladorCursos extends Controlador{
 
         $cursoId = $this->modeloInstancia->crear($datosCurso);
 
-        if(!$cursoId){
+        if (!$cursoId) {
             echo "<script>alert('⚠️ Error al crear el curso'); window.history.back();</script>";
             return;
         }
@@ -141,8 +143,10 @@ class ControladorCursos extends Controlador{
                 $contenidoUrl = $modulo['link'];
             }
             // Si no es link, verificar si se subió un archivo
-            elseif (!empty($archivosModulo['name'][$indice]['archivo']) &&
-                    $archivosModulo['error'][$indice]['archivo'] === 0) {
+            elseif (
+                !empty($archivosModulo['name'][$indice]['archivo']) &&
+                $archivosModulo['error'][$indice]['archivo'] === 0
+            ) {
 
                 $nombreArchivo = basename($archivosModulo['name'][$indice]['archivo']);
                 $tmpArchivo = $archivosModulo['tmp_name'][$indice]['archivo'];
@@ -176,55 +180,6 @@ class ControladorCursos extends Controlador{
         </script>";
     }
 
-    public function resolverEvaluacion()
-    {
-        $this->validarSesion();
-        $curso = $this->buscarCursoPorTitulo($_GET['curso'] ?? '');
-        $evaluacion = $this->obtenerEvaluacionPorCurso($curso['titulo'] ?? '');
-        $titulo = "PAD - Resolver Evaluación";
-        require $this->viewsDir . 'resolver-evaluacion.view.php';
-    }
-
-    public function procesarResolverEvaluacion()
-    {
-        $this->validarSesion();
-        $respuestas = $_POST['respuestas'] ?? [];
-        $curso = $_POST['curso'] ?? '';
-        $evaluacion = $this->obtenerEvaluacionPorCurso($curso);
-
-        $correctas = 0;
-        $totalPreguntas = count($evaluacion['preguntas']);
-
-        foreach ($evaluacion['preguntas'] as $index => $pregunta) {
-            if (isset($respuestas[$index]) && $respuestas[$index] === $pregunta['respuesta_correcta']) {
-                $correctas++;
-            }
-        }
-
-        // Calcular puntuación del 1 al 10
-        $puntuacion = round(($correctas / $totalPreguntas) * 10);
-
-        // Guardar resultado en sesión
-        $_SESSION['resultado_evaluacion'] = [
-            'curso' => $curso,
-            'correctas' => $correctas,
-            'total' => $totalPreguntas,
-            'puntuacion' => $puntuacion
-        ];
-
-        header("Location: /resultado-evaluacion");
-        exit;
-    }
-
-    public function resultadoEvaluacion()
-    {
-        $this->validarSesion();
-        $resultado = $_SESSION['resultado_evaluacion'] ?? null;
-        $titulo = "PAD - Resultados";
-        unset($_SESSION['resultado_evaluacion']);
-        require $this->viewsDir . 'resultados.view.php';
-    }
-
     public function detectarTipoRecurso(string $rutaOUrl): string
     {
         if (empty($rutaOUrl)) {
@@ -240,9 +195,12 @@ class ControladorCursos extends Controlador{
         if (filter_var($rutaOUrl, FILTER_VALIDATE_URL)) {
             $ext = strtolower(pathinfo(parse_url($rutaOUrl, PHP_URL_PATH), PATHINFO_EXTENSION));
 
-            if ($ext === 'pdf') return 'pdf';
-            if (in_array($ext, ['mp3', 'wav', 'ogg'])) return 'audio';
-            if (in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp'])) return 'imagen';
+            if ($ext === 'pdf')
+                return 'pdf';
+            if (in_array($ext, ['mp3', 'wav', 'ogg']))
+                return 'audio';
+            if (in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp']))
+                return 'imagen';
 
             return 'url'; // URL externa genérica
         }
@@ -250,9 +208,12 @@ class ControladorCursos extends Controlador{
         // 3) Ruta interna (archivo subido al servidor)
         $ext = strtolower(pathinfo($rutaOUrl, PATHINFO_EXTENSION));
 
-        if ($ext === 'pdf') return 'pdf';
-        if (in_array($ext, ['mp3', 'wav', 'ogg'])) return 'audio';
-        if (in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp'])) return 'imagen';
+        if ($ext === 'pdf')
+            return 'pdf';
+        if (in_array($ext, ['mp3', 'wav', 'ogg']))
+            return 'audio';
+        if (in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp']))
+            return 'imagen';
 
         return 'archivo'; // Otro tipo de archivo (ej: zip, docx...)
     }
