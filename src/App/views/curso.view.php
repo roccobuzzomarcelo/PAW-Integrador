@@ -46,21 +46,23 @@
                 <a class="btn-resolver" href="/cantidad-inscriptos?curso=<?= urlencode($curso->campos['id']) ?>">Inscriptos</a>
             </section>
             <section class="sugerencias-box">
-                <form class="form-sug-box" id="form-sugerencias" method="POST" action="/sugerencias/guardar">
-                    <h3>Recomendaciones para complementar el módulo</h3>
+                <h3>Recomendaciones complementarias sugeridas por IA</h3>
 
-                    <label for="libros">📚 Libros:</label>
-                    <textarea class="ta-sugerencias" name="libros" id="libros" rows="3"></textarea>
-
-                    <label for="videos">🎥 Videos:</label>
-                    <textarea class="ta-sugerencias" name="videos" id="videos" rows="3"></textarea>
-
-                    <label for="articulos">📰 Artículos:</label>
-                    <textarea class="ta-sugerencias" name="articulos" id="articulos" rows="3"></textarea>
-
-                    <button class="btn-consultar-ia" type="button" id="consultar-ia">Consultar IA</button>
-                    <button type="submit">Guardar sugerencias</button>
-                </form>
+                <?php if (!empty($recomendaciones)): ?>
+                    <ul class="lista-recomendaciones">
+                        <?php foreach ($recomendaciones as $rec): ?>
+                            <li class="recomendacion-item">
+                                <strong><?= ucfirst(htmlspecialchars($rec['tipo'])) ?>:</strong>
+                                <em><?= htmlspecialchars($rec['titulo']) ?></em>
+                                <?php if (!empty($rec['descripcion'])): ?>
+                                    <br><small><?= htmlspecialchars($rec['descripcion']) ?></small>
+                                <?php endif; ?>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                <?php else: ?>
+                    <p class="text-muted">No hay recomendaciones disponibles para este curso.</p>
+                <?php endif; ?>
             </section>
         <?php else: ?>
             <p>No se encontró información del curso.</p>

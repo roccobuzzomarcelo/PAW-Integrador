@@ -50,3 +50,5 @@ $router->get("/user-profile", "ControladorUsuarios@userProfile");
 $router->get("/logout", "ControladorUsuario@logout");
 $router->get('/cantidad-inscriptos', 'ControladorInscripcion@cantidadInscriptos');
 $router->get('/listar-inscriptos', 'ControladorInscripcion@listarInscriptos');
+$router->get("/logout", "ControladorUsuarios@logout");
+$router->post("/modelo-ia", "ControladorCursos@modeloIA");

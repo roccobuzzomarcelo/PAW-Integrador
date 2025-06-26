@@ -45,6 +45,7 @@ class ControladorCursos extends Controlador
         $temas = $this->modeloInstancia->getTemasCurso($cursoId);
         $modulos = $this->modeloInstancia->getModulosCurso($cursoId);
         $usuarioId = $_SESSION["usuario"]["id"];
+        $recomendaciones = $curso->campos['recomendaciones'] ?? [];
 
         foreach ($modulos as &$modulo) {
             $existe = $this->modeloInstancia->existeProgreso($usuarioId, $cursoId, $modulo['id']);
@@ -85,6 +86,7 @@ class ControladorCursos extends Controlador
         global $request;
         $tituloCurso = $request->get("titulo");
         $descripcionCurso = $request->get("descripcion");
+        $recomendaciones = $request->get("recomendaciones_json") ?? null;
         $creado_por = $_SESSION["usuario"]["id"];
         $nivel = $request->get("nivel");
         $duracion = (int) $request->get("duracion");
@@ -104,6 +106,7 @@ class ControladorCursos extends Controlador
         $datosCurso = [
             'titulo' => $tituloCurso,
             'descripcion' => $descripcionCurso,
+            'recomendaciones' => $recomendaciones,
             'creado_por' => $creado_por,
             'nivel' => $nivel,
             'duracion' => $duracion,
@@ -157,6 +160,9 @@ class ControladorCursos extends Controlador
                     $contenidoUrl = '/uploads/' . $nombreArchivo;
                 }
             }
+            if(is_null($contenidoUrl)){
+                $contenidoUrl = "";
+            }
 
             $datosModulo = [
                 "curso_id" => $cursoId,
@@ -179,6 +185,123 @@ class ControladorCursos extends Controlador
             window.location.href = '/cursos';
         </script>";
     }
+
+    public function modeloIA()
+    {
+        header("Content-Type: application/json");
+
+        $input = json_decode(file_get_contents("php://input"), true);
+
+        $titulo = trim($input["titulo"] ?? "");
+        $descripcion = trim($input["descripcion"] ?? "");
+        $temario = $input["temario"] ?? [];
+
+        if (!$titulo || !$descripcion || empty($temario)) {
+            echo json_encode(["error" => "Faltan datos para procesar."]);
+            return;
+        }
+
+        global $config;
+
+        $prompt = "Actuá como un asistente pedagógico especializado en diseño de cursos.
+
+        Tu tarea es analizar la siguiente información sobre un curso y sugerir contenidos complementarios que puedan enriquecerlo. Las recomendaciones deben ser recursos concretos como libros, artículos, videos, podcasts, sitios web, etc.
+
+        Cada recomendación debe tener:
+        - un campo \"tipo\" (por ejemplo: \"libro\", \"video\", etc),
+        - un campo \"titulo\" (obligatorio),
+        - y un campo \"descripcion\" (opcional).
+
+        Es importante que el título esté claramente separado para facilitar el procesamiento posterior.
+
+        ⚠️ Respondé **únicamente con JSON válido**, sin ningún texto antes o después.
+
+        Formato exacto:
+        {
+            \"recomendaciones\": [
+                {
+                \"tipo\": \"libro\" | \"video\" | \"artículo\" | \"podcast\" | \"sitio web\",
+                \"titulo\": \"Título del recurso\",
+                \"descripcion\": \"(opcional) Breve descripción del recurso\"
+                },
+                ...
+            ]
+        }
+
+        Datos del curso:
+        Título: \"$titulo\"
+        Descripción: \"$descripcion\"
+        Temario: " . implode(", ", $temario);
+
+        $apiKey = $config->get('IA_KEY') ?? null;
+
+        $url = "https://openrouter.ai/api/v1/chat/completions";
+
+        $data = [
+            "model" => "meta-llama/llama-3-8b-instruct",
+            "messages" => [
+                [
+                    "role" => "system",
+                    "content" => "Sos un asistente que sugiere contenidos complementarios útiles para cursos educativos."
+                ],
+                [
+                    "role" => "user",
+                    "content" => $prompt
+                ]
+            ]
+        ];
+
+        $headers = [
+            "Authorization: Bearer $apiKey",
+            "Content-Type: application/json",
+            "HTTP-Referer: http://tusitio.com", // reemplazar con tu dominio real
+            "X-Title: RecomendacionesCurso"
+        ];
+
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+
+        $response = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        if ($httpCode !== 200 || !$response) {
+            echo json_encode(["error" => "Error al consultar IA (código $httpCode)"]);
+            return;
+        }
+
+        $json = json_decode($response, true);
+        $content = $json["choices"][0]["message"]["content"] ?? null;
+
+        if (!$content) {
+            echo json_encode(["error" => "Respuesta de IA no válida."]);
+            return;
+        }
+
+        // Intentar decodificar el JSON que devuelve el modelo
+        $parsed = json_decode($content, true);
+
+        file_put_contents("respuesta_ia.txt", $content);
+
+
+        if (!is_array($parsed) || !isset($parsed["recomendaciones"])) {
+            echo json_encode(["error" => "La IA no devolvió un JSON válido o no contiene recomendaciones."]);
+            return;
+        }
+
+        // Opcional: validamos que cada ítem tenga al menos tipo y titulo
+        $recomendaciones = array_filter($parsed["recomendaciones"], function($rec) {
+            return isset($rec["tipo"]) && isset($rec["titulo"]);
+        });
+
+        echo json_encode(["recomendaciones" => array_values($recomendaciones)]);
+    }
+
+
 
     public function detectarTipoRecurso(string $rutaOUrl): string
     {

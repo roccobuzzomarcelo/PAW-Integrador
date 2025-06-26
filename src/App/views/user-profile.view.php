@@ -50,6 +50,11 @@
                 </div>
 
             </section>
+
+        <!-- Logout -->
+        <section>
+            <h3>Salir</h3>
+            <a href="/logout" class="btn btn-logout">Cerrar sesión</a>
         </section>
     </main>
     <?php include "parts/footer.php" ?>

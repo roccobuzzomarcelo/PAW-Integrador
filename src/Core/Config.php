@@ -26,6 +26,7 @@ class Config{
         $this->configs["DB_USERNAME"] = getenv("DB_USERNAME") ?? "admin";
         $this->configs["DB_PASSWORD"] = getenv("DB_PASSWORD") ?? "";
         $this->configs["DB_CHARSET"] = getenv("DB_CHARSET") ?? "utf8";
+        $this->configs["IA_KEY"] = getenv("IA_KEY") ?? "your-ia-key";
     }
 
     public function get(string $key): mixed

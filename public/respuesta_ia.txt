@@ -1,0 +1,37 @@
+{
+    "recomendaciones": [
+        {
+            "tipo": "video",
+            "titulo": "Introduction to HTML and CSS by FreeCodeCamp"
+        },
+        {
+            "tipo": "libro",
+            "titulo": "HTML and CSS: Design and Build Websites"
+        },
+        {
+            "tipo": "video",
+            "titulo": "DOM Manipulation with JavaScript by Traversy Media"
+        },
+        {
+            "tipo": "sitio web",
+            "titulo": "W3Schools"
+        },
+        {
+            "tipo": "podcast",
+            "titulo": "The DevDesk Podcast",
+            "descripcion": "Un podcast que cubre temas de desarrollo web y tecnología"
+        },
+        {
+            "tipo": "artículo",
+            "titulo": "A Beginner's Guide to Building a Website with HTML, CSS, and JavaScript"
+        },
+        {
+            "tipo": "video",
+            "titulo": "Introduction to JavaScript by YouTube"
+        },
+        {
+            "tipo": "sitio web",
+            "titulo": "MDN Web Docs"
+        }
+    ]
+}
