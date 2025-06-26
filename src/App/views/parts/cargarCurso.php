@@ -23,6 +23,8 @@
         </fieldset>
 
         <fieldset class="mb-3">
+            <input type="hidden" id="recomendaciones_json" name="recomendaciones_json">
+
             <legend>Recomendaciones IA</legend>
             <button type="button" class="btn btn-primary mb-2" onclick="consultarIA()">Obtener recomendaciones</button>
 
@@ -220,6 +222,8 @@
                 contenedor.classList.add("alert-danger");
             } else {
                 const recomendaciones = data.recomendaciones;
+                document.getElementById("recomendaciones_json").value = JSON.stringify(recomendaciones);
+
                 if (!Array.isArray(recomendaciones) || recomendaciones.length === 0) {
                     contenedor.innerHTML = "No se encontraron recomendaciones.";
                     return;

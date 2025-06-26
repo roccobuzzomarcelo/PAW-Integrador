@@ -45,6 +45,7 @@ class ControladorCursos extends Controlador
         $temas = $this->modeloInstancia->getTemasCurso($cursoId);
         $modulos = $this->modeloInstancia->getModulosCurso($cursoId);
         $usuarioId = $_SESSION["usuario"]["id"];
+        $recomendaciones = $curso->campos['recomendaciones'] ?? [];
 
         foreach ($modulos as &$modulo) {
             $existe = $this->modeloInstancia->existeProgreso($usuarioId, $cursoId, $modulo['id']);
@@ -85,6 +86,7 @@ class ControladorCursos extends Controlador
         global $request;
         $tituloCurso = $request->get("titulo");
         $descripcionCurso = $request->get("descripcion");
+        $recomendaciones = $request->get("recomendaciones_json") ?? null;
         $creado_por = $_SESSION["usuario"]["id"];
         $nivel = $request->get("nivel");
         $duracion = (int) $request->get("duracion");
@@ -104,6 +106,7 @@ class ControladorCursos extends Controlador
         $datosCurso = [
             'titulo' => $tituloCurso,
             'descripcion' => $descripcionCurso,
+            'recomendaciones' => $recomendaciones,
             'creado_por' => $creado_por,
             'nivel' => $nivel,
             'duracion' => $duracion,
@@ -156,6 +159,9 @@ class ControladorCursos extends Controlador
                     $contenidoTipo = 'archivo';
                     $contenidoUrl = '/uploads/' . $nombreArchivo;
                 }
+            }
+            if(is_null($contenidoUrl)){
+                $contenidoUrl = "";
             }
 
             $datosModulo = [

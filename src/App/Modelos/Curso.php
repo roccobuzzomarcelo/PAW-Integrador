@@ -13,6 +13,7 @@ class Curso extends Modelo
         "id" => null,
         "titulo" => null,
         "descripcion" => null,
+        "recomendaciones" => null,
         "creado_por" => null,
         "fecha_creacion" => null,
         "activo" => null,
@@ -48,6 +49,29 @@ class Curso extends Modelo
             throw new InvalidValueFormatException("La descripción no puede estar vacía.");
         }
         $this->campos['descripcion'] = $descripcion;
+    }
+
+    public function setRecomendaciones(string $recomendaciones)
+    {
+        if (empty($recomendaciones)) {
+            throw new InvalidValueFormatException("Las recomendaciones no pueden estar vacías.");
+        }
+
+        // Intentamos decodificar el string JSON a array asociativo
+        $recs = json_decode($recomendaciones, true);
+
+        // Verificamos que sea un array válido
+        if (!is_array($recs)) {
+            throw new InvalidValueFormatException("El formato de las recomendaciones no es un JSON válido.");
+        }
+
+        foreach ($recs as $rec) {
+            if (!is_array($rec) || !isset($rec['tipo']) || !isset($rec['titulo'])) {
+                throw new InvalidValueFormatException("Cada recomendación debe tener al menos 'tipo' y 'titulo'.");
+            }
+        }
+
+        $this->campos['recomendaciones'] = $recs;
     }
 
     public function setCreado_por(int $creado_por)

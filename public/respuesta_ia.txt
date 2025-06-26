@@ -1,29 +1,37 @@
 {
     "recomendaciones": [
         {
-            "tipo": "artículo",
-            "titulo": "La importancia de la creatividad en el diseño educativo",
-            "descripcion": "Un artículo que explora el papel de la creatividad en el diseño de materiales educativos y ofrece consejos prácticos para implementarla en el aula."
-        },
-        {
             "tipo": "video",
-            "titulo": "La filosofía de la construcción de conocimiento",
-            "descripcion": "Un video que explora la idea de que los estudiantes son constructores de conocimiento y ofrece estrategias para fomentar la construcción de conocimientoactivo."
-        },
-        {
-            "tipo": "sitio web",
-            "titulo": "IrishCentre for Education and Transformation",
-            "descripcion": "Un sitio web que ofrece recursos y materiales educativos para el diseño de materiales y la evaluación de programas educativos."
+            "titulo": "Introduction to HTML and CSS by FreeCodeCamp"
         },
         {
             "tipo": "libro",
-            "titulo": "Diseño de materiales educativos: principios y prácticas",
-            "descripcion": "Un libro que ofrece una guía práctica para el diseño de materiales educativos y ofrece consejos para crear materiales efectivos."
+            "titulo": "HTML and CSS: Design and Build Websites"
+        },
+        {
+            "tipo": "video",
+            "titulo": "DOM Manipulation with JavaScript by Traversy Media"
+        },
+        {
+            "tipo": "sitio web",
+            "titulo": "W3Schools"
         },
         {
             "tipo": "podcast",
-            "titulo": "El podcast educativo",
-            "descripcion": "Un podcast que explora los últimos avances y tendencias en educación y ofrece consejos y estrategias para mejorar la educación."
+            "titulo": "The DevDesk Podcast",
+            "descripcion": "Un podcast que cubre temas de desarrollo web y tecnología"
+        },
+        {
+            "tipo": "artículo",
+            "titulo": "A Beginner's Guide to Building a Website with HTML, CSS, and JavaScript"
+        },
+        {
+            "tipo": "video",
+            "titulo": "Introduction to JavaScript by YouTube"
+        },
+        {
+            "tipo": "sitio web",
+            "titulo": "MDN Web Docs"
         }
     ]
 }
