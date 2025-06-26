@@ -17,6 +17,39 @@ class ControladorInscripcion extends Controlador
         return $_SESSION['usuario']['tipo_usuario'] === 'admin';
     }
 
+    public function inscribir()
+    {
+        if (!isset($_SESSION['usuario'])) {
+            echo "<script>alert('⚠️ Debes iniciar sesión para inscribirte'); window.location.href = '/login';</script>";
+            return;
+        }
+
+        $usuarioId = $_SESSION['usuario']['id'];
+        $cursoId = $_POST['curso_id'] ?? null;
+
+        if (!$cursoId) {
+            echo "<script>alert('⚠️ Curso no especificado'); window.history.back();</script>";
+            return;
+        }
+        
+        
+        if ($this->modeloInstancia->existeInscripcion($usuarioId, $cursoId)) {
+            echo "<script>alert('⚠️ Ya estás inscripto en este curso'); window.history.back();</script>";
+            return;
+        }
+
+        $datos = [
+            'usuario_id' => $usuarioId,
+            'curso_id' => $cursoId,
+            'fecha_inscripcion' => date('Y-m-d')
+        ];
+
+        $this->modeloInstancia->crearInscripcion($datos);
+
+        echo "<script>alert('✅ Inscripción exitosa'); window.location.href = '/curso?id={$cursoId}';</script>";
+    }
+
+
     // Muestra la cantidad total de inscriptos por curso
     public function cantidadInscriptos()
     {
@@ -51,8 +84,9 @@ class ControladorInscripcion extends Controlador
             return;
         }
 
-        $inscriptos = $this->modeloInstancia->obtenerInscriptosPorCurso($idCurso);
+        $inscriptos = $this->modeloInstancia->obtenerNombreInscriptosPorCurso($idCurso);
         $titulo = "Listado de inscriptos";
         require $this->viewsDir . 'inscriptos-lista.view.php';
     }
 }
+

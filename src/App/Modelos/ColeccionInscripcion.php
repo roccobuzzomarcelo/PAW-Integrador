@@ -32,4 +32,36 @@ class ColeccionInscripcion extends Modelo
             'curso_id' => $cursoId
         ]);
     }
+
+    public function existeInscripcion($usuarioId, $cursoId): bool
+    {
+        $resultados = $this->queryBuilder->select('inscripciones', [
+            'usuario_id' => $usuarioId,
+            'curso_id' => $cursoId
+        ]);
+
+        return !empty($resultados);
+    }
+
+    public function crearInscripcion(array $datos): bool
+    {
+        return $this->queryBuilder->insert('inscripciones', $datos);
+    }
+
+    public function obtenerNombreInscriptosPorCurso($cursoId): array
+    {
+        $sql = "
+            SELECT i.*, u.nombre 
+            FROM inscripciones i
+            JOIN usuarios u ON i.usuario_id = u.id
+            WHERE i.curso_id = :curso_id
+        ";
+
+        $parametros = [ 'curso_id' => $cursoId ];
+
+        return $this->queryBuilder->selectRaw($sql, $parametros);
+    }
+
+
+
 }

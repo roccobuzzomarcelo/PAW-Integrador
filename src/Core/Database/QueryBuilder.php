@@ -39,6 +39,21 @@ class QueryBuilder
         return $stmt->fetchAll();
     }
 
+    public function selectRaw(string $sql, array $parametros = []): array
+    {
+        $stmt = $this->pdo->prepare($sql);
+
+        foreach ($parametros as $clave => $valor) {
+            $tipo = is_int($valor) ? \PDO::PARAM_INT : \PDO::PARAM_STR;
+            $stmt->bindValue(":{$clave}", $valor, $tipo);
+        }
+
+        $stmt->setFetchMode(\PDO::FETCH_ASSOC);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
+
 
     public function insert($tabla, $valores){
         $campos = array_keys($valores);

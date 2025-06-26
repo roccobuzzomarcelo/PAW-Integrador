@@ -8,7 +8,7 @@
         <?php else: ?>
             <ul>
                 <?php foreach ($inscriptos as $ins): ?>
-                    <li>Usuario ID: <?= htmlspecialchars($ins['usuario_id']) ?> - Fecha: <?= htmlspecialchars($ins['fecha_inscripcion']) ?></li>
+                    <li>Usuario ID: <?= htmlspecialchars($ins['usuario_id']) ?> - Nombre: <?=htmlspecialchars($ins['nombre']) ?> - Fecha: <?= htmlspecialchars($ins['fecha_inscripcion']) ?></li>
                 <?php endforeach; ?>
             </ul>
         <?php endif; ?>

@@ -50,5 +50,6 @@ class Controlador{
     }
     public function setModelo(Modelo $modelo){
         $this->modeloInstancia = $modelo;
+        
     }
 }

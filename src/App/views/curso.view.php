@@ -19,6 +19,10 @@
                 <p><strong>Nivel:</strong> <?= htmlspecialchars($curso->campos['nivel']) ?></p>
                 <p><strong>Duración:</strong> <?= htmlspecialchars($curso->campos['duracion']) ?></p>
             </section>
+            <form action="/inscribirse" method="POST">
+                <input type="hidden" name="curso_id" value="<?= htmlspecialchars($curso->campos['id']) ?>">
+                <button type="submit">Inscribirse</button>
+            </form>
             <section class="unidades-box">
                 <h3 class="curso-subt">Unidades</h3>
                 <ul>
