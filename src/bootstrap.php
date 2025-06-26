@@ -48,3 +48,5 @@ $router->get("/register", "ControladorUsuarios@register");
 $router->post("/register", "ControladorUsuarios@procesarRegistro");
 $router->get("/user-profile", "ControladorUsuarios@userProfile");
 $router->get("/logout", "ControladorUsuario@logout");
+$router->get('/cantidad-inscriptos', 'ControladorInscripcion@cantidadInscriptos');
+$router->get('/listar-inscriptos', 'ControladorInscripcion@listarInscriptos');

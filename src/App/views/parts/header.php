@@ -10,6 +10,9 @@
                 <a href="/cursos">Cursos</a>
             </li>
             <li>
+                <a href="/login">Mi perfil</a>
+            </li>
+            <li>
                 <a href="/login">Acceder</a>
             </li>
         </ul>

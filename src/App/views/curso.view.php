@@ -43,6 +43,7 @@
                     Evaluación</a>
                 <a class="btn-resolver" href="/agregar-evaluacion?curso=<?= urlencode($curso->campos['id']) ?>">Agregar
                     Evaluación</a>
+                <a class="btn-resolver" href="/cantidad-inscriptos?curso=<?= urlencode($curso->campos['id']) ?>">Inscriptos</a>
             </section>
             <section class="sugerencias-box">
                 <form class="form-sug-box" id="form-sugerencias" method="POST" action="/sugerencias/guardar">
