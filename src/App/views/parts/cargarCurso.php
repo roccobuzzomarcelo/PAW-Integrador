@@ -21,6 +21,18 @@
             <input type="text" class="form-control mb-2" id="tema-0" name="temario[]" required>
             <button class="btnCursoAdd" type="button" onclick="agregarTema()">Agregar otro tema</button>
         </fieldset>
+
+        <fieldset class="mb-3">
+            <legend>Recomendaciones IA</legend>
+            <button type="button" class="btn btn-primary mb-2" onclick="consultarIA()">Obtener recomendaciones</button>
+
+            <div id="cargandoIA" class="alert alert-secondary mt-2" style="display:none;">
+                <strong>Consultando IA...</strong> Por favor, espere.
+            </div>
+
+            <section id="recomendaciones" class="alert alert-info mt-2" style="display:none;"></section>
+        </fieldset>
+
     </section>
 
     <section class="sec-cursos" aria-labelledby="modulos-curso">
@@ -162,6 +174,77 @@
             linkInput.disabled = false;
         }
     }
+
+    function consultarIA() {
+        const titulo = document.getElementById("titulo").value;
+        const descripcion = document.getElementById("descripcion").value;
+        const contenedor = document.getElementById("recomendaciones");
+        const cargando = document.getElementById("cargandoIA");
+
+        const temas = [];
+        document.querySelectorAll('input[name="temario[]"]').forEach(input => {
+            if (input.value.trim() !== "") temas.push(input.value.trim());
+        });
+
+        if (!titulo || !descripcion || temas.length === 0) {
+            alert("Completá título, descripción y al menos un tema para obtener recomendaciones.");
+            return;
+        }
+
+        // Mostrar mensaje de carga
+        cargando.style.display = "block";
+        contenedor.style.display = "none";
+
+        fetch("modelo-ia", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                titulo,
+                descripcion,
+                temario: temas
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            cargando.style.display = "none"; // Ocultar carga
+            contenedor.style.display = "block";
+
+            if (data.error) {
+                contenedor.innerHTML = `<strong>Error:</strong> ${data.error}`;
+                contenedor.classList.remove("alert-info");
+                contenedor.classList.add("alert-danger");
+            } else {
+                const recomendaciones = data.recomendaciones;
+                if (!Array.isArray(recomendaciones) || recomendaciones.length === 0) {
+                    contenedor.innerHTML = "No se encontraron recomendaciones.";
+                    return;
+                }
+
+                const listaHTML = recomendaciones.map(r => `
+                    <li>
+                        <strong>${r.tipo}:</strong> <em>${r.titulo}</em>
+                        ${r.descripcion ? `<br><small>${r.descripcion}</small>` : ""}
+                    </li>
+                `).join("");
+
+                contenedor.innerHTML = "<strong>Recomendaciones IA:</strong><ul>" + listaHTML + "</ul>";
+                contenedor.classList.remove("alert-danger");
+                contenedor.classList.add("alert-info");
+            }
+        })
+        .catch(err => {
+            cargando.style.display = "none";
+            contenedor.style.display = "block";
+            contenedor.innerHTML = `<strong>Error:</strong> Hubo un problema al consultar la IA.`;
+            contenedor.classList.remove("alert-info");
+            contenedor.classList.add("alert-danger");
+            console.error(err);
+        });
+    }
+
+
 
 
 </script>

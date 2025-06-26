@@ -1,0 +1,33 @@
+{
+    "recomendaciones": [
+        {
+            "tipo": "libro",
+            "titulo": "Python Machine Learning"
+        },
+        {
+            "tipo": "video",
+            "titulo": "Introduction to AI and Machine Learning"
+        },
+        {
+            "tipo": "sitio web",
+            "titulo": "Kaggle",
+            "descripcion": "Plataforma de aprendizaje por proyectos y competencias en Machine Learning y Data Science"
+        },
+        {
+            "tipo": "artículo",
+            "titulo": "What is Artificial Intelligence? A Beginner's Guide"
+        },
+        {
+            "tipo": "video",
+            "titulo": "Machine Learning Crash Course"
+        },
+        {
+            "tipo": "podcast",
+            "titulo": "Data Science Podcast"
+        },
+        {
+            "tipo": "sitio web",
+            "titulo": "TensorFlow"
+        }
+    ]
+}
