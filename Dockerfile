@@ -3,18 +3,21 @@ FROM php:8.4-cli
 
 WORKDIR /var/www/html
 
+# Instalar dependencias del sistema
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
     zip \
-    && docker-php-ext-install pdo
+    libpq-dev \
+    pkg-config \
+    && docker-php-ext-install pdo pdo_pgsql pgsql
 
 # Copiamos el código al contenedor
 COPY . .
 
 # Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-RUN cd /var/www/html && composer install
+RUN composer install
 
 EXPOSE 8888
 

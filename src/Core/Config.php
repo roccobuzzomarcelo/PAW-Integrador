@@ -8,8 +8,13 @@ class Config{
     private array $configs;
     public function __construct()
     {
-        $dotenv = Dotenv::createUnsafeImmutable(__DIR__ . '/../../');
-        $dotenv->load();
+        $envPath = __DIR__ . '/../../.env';
+        
+        if (file_exists($envPath)) {
+            $dotenv = Dotenv::createUnsafeImmutable(__DIR__ . '/../../');
+            $dotenv->load();
+        }
+
         $this->configs["LOG_LEVEL"] = getenv("LOG_LEVEL") ?? "debug";
         $path = getenv("LOG_PATH") ?? __DIR__ . "/logs/app.log";
         $this->configs["LOG_PATH"] = $this->joinPaths('..', $path);
