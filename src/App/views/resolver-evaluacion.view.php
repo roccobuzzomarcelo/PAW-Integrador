@@ -27,11 +27,13 @@
                     <?php elseif ($preg['tipo'] === 'completar'): ?>
                         <p>
                             <?php
+                            // El enunciado de tipo completar está directamente en $preg['enunciado'], con ___ como espacio para completar
                             $oracion = htmlspecialchars($preg['enunciado']);
                             $input = '<input type="text" name="respuestas[' . $index . ']" placeholder="Tu respuesta" required>';
                             echo str_replace('___', $input, $oracion);
                             ?>
                         </p>
+
 
                     <?php elseif ($preg['tipo'] === 'ordenar'):
                         // Barajar opciones para que aparezcan en orden aleatorio

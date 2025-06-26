@@ -71,15 +71,23 @@ class ControladorEvaluacion extends Controlador
 
         // 2. Insertar preguntas y sus opciones
         foreach ($preguntas as $pregunta) {
+            // Determinar enunciado real
+            $enunciado = $pregunta['enunciado']; // por defecto
+
+            if ($pregunta['tipo'] === 'completar') {
+                // Si es completar, usar el campo correcto que viene desde el formulario
+                $enunciado = $pregunta['opciones'][0]['enunciado'] ?? '';
+            }
+
             $datosPregunta = [
                 'id_evaluacion' => $evaluacionId,
-                'enunciado' => $pregunta['enunciado'],
+                'enunciado' => $enunciado,
                 'tipo' => $pregunta['tipo'],
-                // Guardar respuesta_correcta solo para preguntas tipo completar
                 'palabra_correcta' => $pregunta['tipo'] === 'completar'
                     ? ($pregunta['opciones'][0]['respuesta_correcta'] ?? '')
                     : null,
             ];
+
 
             $preguntaId = $this->modeloInstancia->crearPregunta($datosPregunta);
 
@@ -90,15 +98,19 @@ class ControladorEvaluacion extends Controlador
 
             // 3. Insertar opciones para cada pregunta
             $yaInsertados = [];
+
             foreach ($pregunta['opciones'] as $index => $opcion) {
-                $clave = $opcion['texto'] . '-' . ($opcion['posicion'] ?? '');
+                if (!isset($opcion['texto']) && $pregunta['tipo'] !== 'completar') {
+                    continue; // evitar el error si no es completar y no hay 'texto'
+                }
+    
+                $clave = ($opcion['texto'] ?? '') . '-' . ($opcion['posicion'] ?? '');
 
                 if (in_array($clave, $yaInsertados)) {
                     continue; // evitar duplicados
                 }
 
                 $yaInsertados[] = $clave;
-
                 // tu lógica de $datosOpcion...
                 if ($pregunta['tipo'] === 'ordenar') {
                     $datosOpcion = [
@@ -114,6 +126,10 @@ class ControladorEvaluacion extends Controlador
                         'texto' => $opcion['texto'],
                         'es_correcta' => $esCorrecta,
                     ];
+                }
+                else {
+                    // Si no es un tipo que requiere opciones (como completar), salteamos
+                    continue;
                 }
 
                 if (!$this->modeloInstancia->crearOpcion($datosOpcion)) {
@@ -133,12 +149,15 @@ class ControladorEvaluacion extends Controlador
         $this->validarSesion();
 
         $idCurso = $_GET['curso'] ?? '';
+        
+
         if (!$idCurso) {
             echo "<script>alert('⚠️ ID de curso no proporcionado'); window.history.back();</script>";
             return;
         }
 
         $evaluacion = $this->modeloInstancia->obtenerEvaluacionConPreguntasPorCurso($idCurso);
+        
 
         if (!$evaluacion || empty($evaluacion['preguntas'])) {
             echo "<script>alert('⚠️ No se encontró una evaluación para este curso'); window.history.back();</script>";
@@ -162,7 +181,7 @@ class ControladorEvaluacion extends Controlador
         }
 
         $evaluacion = $this->modeloInstancia->obtenerEvaluacionConPreguntasPorCurso($idCurso);
-
+        
         if (!$evaluacion || empty($evaluacion['preguntas'])) {
             echo "<script>alert('⚠️ No se pudo obtener la evaluación'); window.history.back();</script>";
             return;

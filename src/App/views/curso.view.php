@@ -4,7 +4,7 @@
     <?php include "parts/header.php"; ?>
     <main class="curso-detalle">
         <?php if (isset($curso) && is_object($curso) && isset($curso->campos)): ?>
-            <h2><?= htmlspecialchars($curso->campos['titulo']) ?></h2>
+            <h2 class= "titulo-curso-principal"><?= htmlspecialchars($curso->campos['titulo']) ?></h2>
             <?php if (!empty($curso->campos['imagen'])): ?>
                 <img src="<?= htmlspecialchars($curso->campos['imagen']) ?>" alt="Imagen del curso">
             <?php endif; ?>

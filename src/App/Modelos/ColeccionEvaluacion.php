@@ -68,12 +68,12 @@ class ColeccionEvaluacion extends Modelo
 
     public function obtenerEvaluacionConPreguntasPorCurso(string $idCurso): ?array
     {
-        $curso = $this->buscarPorId($idCurso);
-        if (!$curso || !isset($curso['id'])) {
+        if (empty($idCurso)) {
             return null;
         }
 
-        $evaluaciones = $this->queryBuilder->select('evaluaciones', ['id_curso' => $curso['id']]);
+        // Buscar evaluación directamente por el id_curso recibido
+        $evaluaciones = $this->queryBuilder->select('evaluaciones', ['id_curso' => $idCurso]);
         $evaluacion = $evaluaciones[0] ?? null;
 
         if (!$evaluacion) {
@@ -85,9 +85,8 @@ class ColeccionEvaluacion extends Modelo
         foreach ($preguntas as &$pregunta) {
             $opciones = $this->queryBuilder->select('opciones', ['id_pregunta' => $pregunta['id']]);
 
-            // Detectar cuál es la opción correcta
             foreach ($opciones as $opcion) {
-                if ($opcion['es_correcta']) {
+                if (!empty($opcion['es_correcta'])) {
                     $pregunta['respuesta_correcta'] = $opcion['texto'];
                     break;
                 }
@@ -99,5 +98,6 @@ class ColeccionEvaluacion extends Modelo
         $evaluacion['preguntas'] = $preguntas;
         return $evaluacion;
     }
+
 
 }

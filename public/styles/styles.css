@@ -172,13 +172,21 @@ header {
 
 /* -- Página de un curso --*/
 
+.titulo-curso-principal {
+    text-align: center;
+    font-size: 2em;
+    margin-top: 1em;
+    color: var(--color-text);
+}
+
+
 .curso-detalle {
     display: grid;
     justify-content: center;
 }
 
 .curso-detalle h2 {
-    color: white;
+    color: var(--color-text);
     margin: 2em 1em .3em 1em;
     font-size: 36px;
 }
@@ -486,13 +494,26 @@ a:hover {
 }
 
 .mb-4 {
-    display: grid;
+    display: block;
     margin-bottom: .8em;
     background-color: #333;
     padding: 1em;
     border-radius: 1em;
     color: #fff;
 }
+
+.mb-4 legend {
+    padding: 0.5em 1em;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: #333;
+    border-radius: 0.5em;
+    margin-bottom: 0.5em;
+    display: block;
+}
+
+
 
 .mb-4 label {
     color: #181818;
