@@ -4,7 +4,7 @@
     <?php include "parts/header.php" ?>
     <main>
         <section class="seccion-perfil">
-            <h2>USUARIO<br><small>(nombre de usuario)</small></h2>
+            <h2>USUARIO<br><small><?= htmlspecialchars($usuario["nombre"]) ?></small></h2>
 
             <section>
                 <!-- Datos personales -->
@@ -12,22 +12,32 @@
                     <h3>Datos Personales</h3>
                     <ul>
                         <li>
-                            Nombre
+                            Nombre: <?= htmlspecialchars($usuario["nombre"]) ?>
                             <button title="Editar">✎</button>
                         </li>
                         <li>
-                            Contraseña
+                            Correo: <?= htmlspecialchars($usuario["correo"]) ?>
                             <button title="Editar">✎</button>
+                        </li>
+                        <li>
+                            Contraseña: ********
+                            <button title="Editar">✎</button>
+                        </li>
+                        <li>
+                            Fecha de creación: <?= $fecha ?>
+                        </li>
+                        <li>
+                            Rol: <?= htmlspecialchars($usuario["tipo_usuario"]) ?>
                         </li>
                     </ul>
                 </div>
 
-                <!-- Mi progreso -->
+                <!-- Mi progreso (si lo añadís en el futuro) -->
                 <div>
                     <h3>Mi progreso</h3>
                     <ul>
-                        <li>Nivel</li>
-                        <li>Progreso</li>
+                        <li>Nivel: (próximamente)</li>
+                        <li>Progreso: (próximamente)</li>
                     </ul>
                 </div>
 
@@ -35,8 +45,7 @@
                 <div>
                     <h3>Configuración</h3>
                     <ul>
-                        <li>Suscripción</li>
-                        <li>Notificaciones</li>
+                        <li>Notificaciones: (configurable)</li>
                     </ul>
                 </div>
 
@@ -44,17 +53,16 @@
                 <div>
                     <h3>Certificados</h3>
                     <ul>
-                        <li>Certificado 1</li>
-                        <li>Certificado 2</li>
+                        <li>No hay certificados todavía.</li>
                     </ul>
                 </div>
-
             </section>
 
-        <!-- Logout -->
-        <section>
-            <h3>Salir</h3>
-            <a href="/logout" class="btn btn-logout">Cerrar sesión</a>
+            <!-- Logout -->
+            <section>
+                <h3>Salir</h3>
+                <a href="/logout" class="btn btn-logout">Cerrar sesión</a>
+            </section>
         </section>
     </main>
     <?php include "parts/footer.php" ?>

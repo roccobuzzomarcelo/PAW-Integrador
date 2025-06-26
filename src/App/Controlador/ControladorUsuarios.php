@@ -24,7 +24,8 @@ class ControladorUsuarios extends Controlador
 
     public function userProfile()
     {
-        $datos = $_SESSION['usuario'];
+        $usuario = $_SESSION['usuario'];
+        $fecha = date("d/m/Y", strtotime($usuario["fecha_creacion"]));
         $titulo = 'PAD - Mi cuenta';
         $htmlClass = "mi-cuenta-pages";
         require $this->viewsDir . 'user-profile.view.php';
