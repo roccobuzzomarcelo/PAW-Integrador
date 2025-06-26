@@ -1,37 +1,32 @@
 {
     "recomendaciones": [
         {
-            "tipo": "video",
-            "titulo": "Introduction to HTML and CSS by FreeCodeCamp"
-        },
-        {
             "tipo": "libro",
-            "titulo": "HTML and CSS: Design and Build Websites"
+            "titulo": "Pruebas y Algoritmos de Pruebas"
         },
         {
             "tipo": "video",
-            "titulo": "DOM Manipulation with JavaScript by Traversy Media"
-        },
-        {
-            "tipo": "sitio web",
-            "titulo": "W3Schools"
-        },
-        {
-            "tipo": "podcast",
-            "titulo": "The DevDesk Podcast",
-            "descripcion": "Un podcast que cubre temas de desarrollo web y tecnología"
+            "titulo": "Unit Testing with JUnit - Java Tutorial",
+            "descripcion": "Video tutorial sobre pruebas unitarias con JUnit"
         },
         {
             "tipo": "artículo",
-            "titulo": "A Beginner's Guide to Building a Website with HTML, CSS, and JavaScript"
+            "titulo": "A Guide to Testing in Software Development"
         },
         {
-            "tipo": "video",
-            "titulo": "Introduction to JavaScript by YouTube"
+            "tipo": "podcast",
+            "titulo": "Testing Podcast - Episode 1: Introduction to Testing",
+            "descripcion": "Episodio inaugural del podcast sobre pruebas que introduce los conceptos básicos"
         },
         {
             "tipo": "sitio web",
-            "titulo": "MDN Web Docs"
+            "titulo": "Jest Documentation",
+            "descripcion": "Dócipio oficial de Jest, un popular framework para pruebas unitarias en JavaScript"
+        },
+        {
+            "tipo": "sitio web",
+            "titulo": "Test-Driven Development by Kent Beck",
+            "descripcion": "Libro electrónico gratuito sobre desarrollo dirigido por pruebas por Kent Beck"
         }
     ]
 }

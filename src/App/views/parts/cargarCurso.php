@@ -213,7 +213,7 @@
         })
         .then(res => res.json())
         .then(data => {
-            cargando.style.display = "none"; // Ocultar carga
+            cargando.style.display = "none";
             contenedor.style.display = "block";
 
             if (data.error) {
@@ -222,36 +222,113 @@
                 contenedor.classList.add("alert-danger");
             } else {
                 const recomendaciones = data.recomendaciones;
-                document.getElementById("recomendaciones_json").value = JSON.stringify(recomendaciones);
-
                 if (!Array.isArray(recomendaciones) || recomendaciones.length === 0) {
                     contenedor.innerHTML = "No se encontraron recomendaciones.";
                     return;
                 }
 
-                const listaHTML = recomendaciones.map(r => `
-                    <li>
-                        <strong>${r.tipo}:</strong> <em>${r.titulo}</em>
-                        ${r.descripcion ? `<br><small>${r.descripcion}</small>` : ""}
-                    </li>
-                `).join("");
+                // Guardamos en global
+                window.recomendacionesGlobal = recomendaciones;
 
-                contenedor.innerHTML = "<strong>Recomendaciones IA:</strong><ul>" + listaHTML + "</ul>";
+                // Render UI
                 contenedor.classList.remove("alert-danger");
                 contenedor.classList.add("alert-info");
+
+                contenedor.innerHTML = `
+                    <strong>Recomendaciones IA:</strong>
+                    <div id="recomendaciones-lista" class="mt-2 mb-3"></div>
+                    <button type="button" class="btn btn-sm btn-secondary" onclick="agregarRecomendacionManual()">Agregar recomendación</button>
+                `;
+
+                renderizarRecomendaciones();
             }
-        })
-        .catch(err => {
-            cargando.style.display = "none";
-            contenedor.style.display = "block";
-            contenedor.innerHTML = `<strong>Error:</strong> Hubo un problema al consultar la IA.`;
-            contenedor.classList.remove("alert-info");
-            contenedor.classList.add("alert-danger");
-            console.error(err);
         });
+
+    }
+
+    function renderizarRecomendaciones() {
+        const listaContenedor = document.getElementById("recomendaciones-lista");
+        listaContenedor.innerHTML = "";
+
+        window.recomendacionesGlobal.forEach((rec, index) => {
+            const item = document.createElement("fieldset");
+            item.className = "mb-3 p-3 border rounded";
+
+            item.innerHTML = `
+                <legend class="h6">Recomendación ${index + 1}</legend>
+
+                <div class="form-check form-switch mb-3">
+                    <input class="form-check-input" type="checkbox" id="rec-check-${index}" checked data-index="${index}" data-field="activo">
+                    <label class="form-check-label" for="rec-check-${index}">Incluir esta recomendación</label>
+                </div>
+
+                <div class="mb-3">
+                    <label for="rec-titulo-${index}" class="form-label">Título</label>
+                    <input type="text" class="form-control form-control-sm" id="rec-titulo-${index}" data-index="${index}" data-field="titulo" placeholder="Título" value="${rec.titulo}">
+                </div>
+
+                <div class="mb-3">
+                    <label for="rec-desc-${index}" class="form-label">Descripción</label>
+                    <textarea class="form-control form-control-sm" id="rec-desc-${index}" data-index="${index}" data-field="descripcion" rows="2" placeholder="Descripción (opcional)">${rec.descripcion || ""}</textarea>
+                </div>
+
+                <button type="button" class="btn btn-sm btn-outline-danger" onclick="eliminarRecomendacion(${index})">Eliminar</button>
+            `;
+
+            listaContenedor.appendChild(item);
+        });
+
+        actualizarRecomendacionesJSON();
     }
 
 
+    function actualizarRecomendacionesJSON() {
+        const lista = [];
 
+        const inputs = document.querySelectorAll('[data-field="titulo"]');
+        inputs.forEach(input => {
+            const index = input.dataset.index;
+            const check = document.querySelector(`[data-index="${index}"][data-field="activo"]`);
+            if (check && !check.checked) return;
+
+            const titulo = input.value.trim();
+            const descripcion = document.querySelector(`[data-index="${index}"][data-field="descripcion"]`)?.value.trim();
+
+            if (titulo !== "") {
+                lista.push({
+                    tipo: "Recomendación",
+                    titulo,
+                    descripcion
+                });
+            }
+        });
+
+        document.getElementById("recomendaciones_json").value = JSON.stringify(lista);
+    }
+
+    function eliminarRecomendacion(index) {
+        if (!window.recomendacionesGlobal) return;
+        window.recomendacionesGlobal.splice(index, 1);
+        renderizarRecomendaciones();
+    }
+
+    function agregarRecomendacionManual() {
+        if (!window.recomendacionesGlobal) window.recomendacionesGlobal = [];
+
+        window.recomendacionesGlobal.push({
+            tipo: "Recomendación",
+            titulo: "",
+            descripcion: ""
+        });
+
+        renderizarRecomendaciones();
+    }
+
+    // Escuchar cambios en inputs y textareas para sincronizar automáticamente
+    document.addEventListener("input", function(e) {
+        if (e.target.matches('[data-field]')) {
+            actualizarRecomendacionesJSON();
+        }
+    });
 
 </script>
