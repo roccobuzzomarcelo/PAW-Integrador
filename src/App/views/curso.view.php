@@ -44,6 +44,23 @@
                 <a class="btn-resolver" href="/agregar-evaluacion?curso=<?= urlencode($curso->campos['id']) ?>">Agregar
                     Evaluación</a>
             </section>
+            <section class="sugerencias-box">
+                <form class="form-sug-box" id="form-sugerencias" method="POST" action="/sugerencias/guardar">
+                    <h3>Recomendaciones para complementar el módulo</h3>
+
+                    <label for="libros">📚 Libros:</label>
+                    <textarea class="ta-sugerencias" name="libros" id="libros" rows="3"></textarea>
+
+                    <label for="videos">🎥 Videos:</label>
+                    <textarea class="ta-sugerencias" name="videos" id="videos" rows="3"></textarea>
+
+                    <label for="articulos">📰 Artículos:</label>
+                    <textarea class="ta-sugerencias" name="articulos" id="articulos" rows="3"></textarea>
+
+                    <button class="btn-consultar-ia" type="button" id="consultar-ia">Consultar IA</button>
+                    <button type="submit">Guardar sugerencias</button>
+                </form>
+            </section>
         <?php else: ?>
             <p>No se encontró información del curso.</p>
         <?php endif; ?>

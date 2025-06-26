@@ -907,6 +907,39 @@ h3 {
     font-weight: bold;
 }
 
+/* --- Estilos para agregar Sugerencia IA */
+.sugerencias-box {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 28em;
+    margin: 2em auto;
+}
+
+.form-sug-box {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    border-radius: 3em;
+    backdrop-filter: blur(10em);
+}
+
+.btn-consultar-ia {
+    display: block;
+    padding: 0.8em 1.5em;
+    background-color: #f7a630;
+    color: var(--color-background);
+    text-decoration: none;
+    border-radius: 0.5em;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    margin-top: 1em;
+}
+
 /* MEDIA QUERIES */
 @media (max-width: 536px) {
     .container {
