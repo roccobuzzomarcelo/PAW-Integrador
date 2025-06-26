@@ -838,6 +838,39 @@ h3 {
     line-height: 1.6;
 }
 
+/* Animación para el spinner SVG */
+@keyframes spinner-rotate {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.spinner-border {
+    animation: spinner-rotate 1s linear infinite;
+}
+
+.spinner-path {
+    stroke-dasharray: 44;
+    stroke-dashoffset: 0;
+    stroke-linejoin: round;
+}
+
+/* Lista de recomendaciones */
+#recomendaciones ul {
+    padding-left: 1.25rem;
+    margin-bottom: 0;
+}
+
+#recomendaciones li {
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+}
+
+#recomendaciones strong {
+    text-transform: capitalize;
+    color: var(--color-text); /* color azul Bootstrap */
+}
+
 .boton-volver {
     display: flex;
     justify-content: center;

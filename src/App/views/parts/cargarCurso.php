@@ -26,11 +26,14 @@
             <legend>Recomendaciones IA</legend>
             <button type="button" class="btn btn-primary mb-2" onclick="consultarIA()">Obtener recomendaciones</button>
 
-            <div id="cargandoIA" class="alert alert-secondary mt-2" style="display:none;">
+            <div id="cargandoIA" class="alert alert-warning d-flex align-items-center mt-2" style="display:none;">
+                <svg class="spinner-border flex-shrink-0 me-2" role="status" style="width: 1.5rem; height: 1.5rem;" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle class="spinner-path" cx="8" cy="8" r="7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
                 <strong>Consultando IA...</strong> Por favor, espere.
             </div>
 
-            <section id="recomendaciones" class="alert alert-info mt-2" style="display:none;"></section>
+            <section id="recomendaciones" class="alert alert-info mt-2 p-3" style="display:none; max-height: 250px; overflow-y: auto; border-radius: .375rem;"></section>
         </fieldset>
 
     </section>
